@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>AI Drivers | Build Your AI-Powered Agency in 30 Days</title>
-  <meta name="description" content="The complete operating system, done-for-you setup, and 1-on-1 consulting from operators running this model right now. Not a course. Not prompts. A production system install.">
-  <meta property="og:title" content="AI Drivers | Build Your AI-Powered Agency in 30 Days">
-  <meta property="og:description" content="Get the exact operating system behind a working AI agency. Built, configured, and customized for your business.">
+  <title>AI Drivers | Fully Automated AI Team in Less Than 5 Days</title>
+  <meta name="description" content="We assess your business, build a custom AI system trained on your operations, and install it for you. Two founders. One private channel. ROI back in 90 days.">
+  <meta property="og:title" content="AI Drivers | Fully Automated AI Team in Less Than 5 Days">
+  <meta property="og:description" content="Custom AI system team built, installed, and running inside your business in under 5 days. $5,000.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -18,16 +18,17 @@
       --bg: #05051f;
       --bg-elevated: #0a0a2e;
       --bg-card: rgba(17, 17, 51, 0.6);
-      --accent: #6331c8;
-      --accent-glow: rgba(99, 49, 200, 0.2);
-      --accent-secondary: #af94e4;
-      --teal: #11816a;
-      --teal-light: #5aa696;
-      --teal-glow: rgba(17, 129, 106, 0.2);
+      --accent: #7b3cf5;
+      --accent-glow: rgba(123, 60, 245, 0.25);
+      --accent-secondary: #c4a1ff;
+      --teal: #00d9a4;
+      --teal-light: #5aecc5;
+      --teal-glow: rgba(0, 217, 164, 0.2);
       --white: #ffffff;
       --gray: #a0a0c0;
       --gray-light: #c4c4d4;
       --border: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(123, 60, 245, 0.3);
       --font-head: 'Space Grotesk', sans-serif;
       --font-body: 'Inter', sans-serif;
       --font-mono: 'Space Mono', monospace;
@@ -37,6 +38,7 @@
       --radius-pill: 1000px;
       --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
       --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-snap: cubic-bezier(0.2, 0, 0, 1);
     }
 
     html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -55,307 +57,189 @@
 
     /* ── SCROLL PROGRESS ── */
     .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 3px;
-      width: 0%;
+      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
       background: linear-gradient(90deg, var(--accent), var(--teal), var(--accent-secondary));
-      z-index: 1001;
-      border-radius: 0 2px 2px 0;
+      z-index: 1001; border-radius: 0 2px 2px 0;
     }
 
     /* ── FILM GRAIN ── */
     body::before {
-      content: '';
-      position: fixed;
-      inset: -200%;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0.03;
+      content: ''; position: fixed; inset: -200%; z-index: 9999; pointer-events: none; opacity: 0.025;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 200px;
+      background-repeat: repeat; background-size: 200px;
       animation: grainDrift 0.5s steps(4) infinite;
     }
-    @keyframes grainDrift {
-      0%, 100% { transform: translate(0, 0); }
-      25% { transform: translate(-5%, -5%); }
-      50% { transform: translate(5%, 5%); }
-      75% { transform: translate(-2%, 3%); }
-    }
+    @keyframes grainDrift { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-5%, -5%); } 50% { transform: translate(5%, 5%); } 75% { transform: translate(-2%, 3%); } }
+
+    /* ── DRIVING CANVAS ── */
+    .drive-canvas { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
 
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
     /* ── NAV ── */
     nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 16px 0;
-      background: rgba(5, 5, 31, 0.8);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      transition: all 0.3s var(--ease-out);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 0; background: rgba(5, 5, 31, 0.8);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border); transition: all 0.2s var(--ease-snap);
     }
     nav.scrolled { padding: 10px 0; background: rgba(5, 5, 31, 0.95); }
     .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
     .nav-logo { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: -0.02em; }
     .nav-logo span { color: var(--accent-secondary); }
     .nav-links { display: flex; align-items: center; gap: 32px; }
-    .nav-links a { color: var(--gray); font-size: 0.875rem; text-decoration: none; transition: color 0.2s; }
+    .nav-links a { color: var(--gray); font-size: 0.875rem; text-decoration: none; transition: color 0.15s; }
     .nav-links a:hover { color: var(--white); }
     .nav-cta {
       background: linear-gradient(135deg, var(--accent), var(--teal));
-      color: var(--white);
-      padding: 10px 24px;
-      border-radius: var(--radius-pill);
-      font-size: 0.875rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
-      border: none;
-      cursor: pointer;
+      color: var(--white) !important; padding: 10px 24px; border-radius: var(--radius-pill);
+      font-size: 0.875rem; font-weight: 600; text-decoration: none;
+      transition: transform 0.15s var(--ease-spring), box-shadow 0.2s;
     }
     .nav-cta:hover { transform: scale(1.04); box-shadow: 0 0 30px var(--accent-glow); }
 
     /* ── BUTTONS ── */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 18px 40px;
-      background: linear-gradient(135deg, var(--accent), var(--teal));
-      color: var(--white);
-      font-family: var(--font-head);
-      font-size: 1.1rem;
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: var(--radius-pill);
-      border: none;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.25s var(--ease-spring), box-shadow 0.3s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 18px 44px; background: linear-gradient(135deg, var(--accent), var(--teal));
+      color: var(--white); font-family: var(--font-head); font-size: 1.15rem; font-weight: 700;
+      text-decoration: none; border-radius: var(--radius-pill); border: none; cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform 0.15s var(--ease-spring), box-shadow 0.2s;
       animation: ctaPulse 3s ease-in-out infinite;
     }
-    .btn:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--accent-glow), 0 0 80px var(--teal-glow); animation: none; }
+    .btn:hover { transform: scale(1.06); box-shadow: 0 0 50px var(--accent-glow), 0 0 100px var(--teal-glow); animation: none; }
     .btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at var(--btn-x, 50%) var(--btn-y, 50%), rgba(255,255,255,0.2) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.3s;
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at var(--btn-x, 50%) var(--btn-y, 50%), rgba(255,255,255,0.25) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.2s;
     }
     .btn:hover::after { opacity: 1; }
-    @keyframes ctaPulse {
-      0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
-      50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 60px var(--teal-glow); }
-    }
-
-    .btn-sm {
-      padding: 14px 32px;
-      font-size: 0.95rem;
-    }
+    @keyframes ctaPulse { 0%, 100% { box-shadow: 0 0 20px var(--accent-glow); } 50% { box-shadow: 0 0 50px var(--accent-glow), 0 0 70px var(--teal-glow); } }
 
     .friction { color: var(--gray); font-size: 0.875rem; margin-top: 16px; text-align: center; }
 
     /* ── SECTION LABEL ── */
     .section-label {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent-secondary);
-      margin-bottom: 16px;
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--teal-light); margin-bottom: 16px;
     }
 
     /* ── SECTION DIVIDERS ── */
     .section-fade {
-      height: 120px;
+      height: 100px; position: relative;
       background: linear-gradient(180deg, transparent 0%, var(--bg-elevated) 40%, var(--bg-elevated) 60%, transparent 100%);
-      position: relative;
     }
     .section-fade::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60%;
-      height: 1px;
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 60%; height: 1px;
       background: linear-gradient(90deg, transparent, var(--accent), var(--teal), transparent);
-      opacity: 0.3;
+      opacity: 0.25;
+    }
+
+    /* ── GLITCH TEXT ── */
+    .glitch { position: relative; display: inline-block; }
+    .glitch::before, .glitch::after {
+      content: attr(data-text); position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; pointer-events: none; opacity: 0;
+    }
+    .glitch::before { color: var(--teal); }
+    .glitch::after { color: var(--accent-secondary); }
+    .glitch:hover::before { animation: glitch1 0.3s linear; opacity: 0.7; }
+    .glitch:hover::after { animation: glitch2 0.3s linear; opacity: 0.7; }
+    @keyframes glitch1 {
+      0%, 100% { transform: translate(0); } 20% { transform: translate(-2px, 1px); }
+      40% { transform: translate(2px, -1px); } 60% { transform: translate(-1px, -1px); }
+      80% { transform: translate(1px, 2px); }
+    }
+    @keyframes glitch2 {
+      0%, 100% { transform: translate(0); } 20% { transform: translate(2px, -1px); }
+      40% { transform: translate(-2px, 1px); } 60% { transform: translate(1px, 1px); }
+      80% { transform: translate(-1px, -2px); }
     }
 
     /* ── SHIMMER TEXT ── */
     .shimmer {
       background: linear-gradient(90deg, var(--accent-secondary) 0%, var(--white) 40%, var(--accent-secondary) 80%);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shimmerAnim 4s ease-in-out infinite;
+      background-size: 200% 100%; -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; animation: shimmerAnim 4s ease-in-out infinite;
     }
-    @keyframes shimmerAnim {
-      0%, 100% { background-position: 200% center; }
-      50% { background-position: 0% center; }
-    }
+    @keyframes shimmerAnim { 0%, 100% { background-position: 200% center; } 50% { background-position: 0% center; } }
 
     /* ── GLASSMORPHISM CARDS ── */
     .glass-card {
-      background: var(--bg-card);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 32px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s var(--ease-out);
+      background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-active); border-radius: var(--radius-md);
+      padding: 32px; position: relative; overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.2s, transform 0.15s var(--ease-snap);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03);
     }
     .glass-card:hover {
-      border-color: rgba(99, 49, 200, 0.3);
-      box-shadow: 0 0 30px var(--accent-glow);
+      border-color: rgba(123, 60, 245, 0.5);
+      box-shadow: 0 0 40px var(--accent-glow), 0 8px 32px rgba(0,0,0,0.4);
       transform: translateY(-4px);
     }
     .glass-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 30% 0%, rgba(99, 49, 200, 0.08) 0%, transparent 70%);
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 0%, rgba(123, 60, 245, 0.08) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    /* ── ANIMATED GRADIENT BORDER (for offer cards) ── */
-    .gradient-border {
-      position: relative;
-      z-index: 1;
-    }
+    /* ── GRADIENT BORDER ── */
+    .gradient-border { position: relative; z-index: 1; }
     .gradient-border::after {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
+      content: ''; position: absolute; inset: -1px; border-radius: inherit;
       background: conic-gradient(from var(--border-angle, 0deg), var(--accent), var(--teal), var(--accent-secondary), var(--accent));
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.4s;
+      z-index: -1; opacity: 0.2; transition: opacity 0.2s;
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask-composite: exclude;
-      -webkit-mask-composite: xor;
-      padding: 1px;
+      mask-composite: exclude; -webkit-mask-composite: xor; padding: 1px;
       animation: borderSpin 4s linear infinite;
     }
-    .gradient-border:hover::after { opacity: 1; }
+    .gradient-border:hover::after { opacity: 0.8; }
     @keyframes borderSpin { to { --border-angle: 360deg; } }
     @property --border-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 
     /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
-    }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.5s var(--ease-snap), transform 0.5s var(--ease-snap); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-blur {
-      opacity: 0;
-      transform: translateY(20px);
-      filter: blur(8px);
-      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
-    }
-    .reveal-blur.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
 
     /* ── HERO ── */
     .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 140px 24px 100px;
-      overflow: hidden;
+      position: relative; min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; text-align: center; padding: 140px 24px 100px; overflow: hidden;
     }
-    .hero-canvas {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
+    .hero-canvas { position: absolute; inset: 0; z-index: 0; }
     .hero-mesh {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
+      position: absolute; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse at 20% 50%, rgba(99, 49, 200, 0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 30%, rgba(17, 129, 106, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(175, 148, 228, 0.08) 0%, transparent 50%);
+        radial-gradient(ellipse at 20% 50%, rgba(123, 60, 245, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(0, 217, 164, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(196, 161, 255, 0.08) 0%, transparent 50%);
       animation: meshMove 12s ease-in-out infinite alternate;
     }
-    @keyframes meshMove {
-      0% { background-position: 0% 0%, 100% 0%, 50% 100%; }
-      100% { background-position: 30% 20%, 70% 50%, 40% 60%; }
-    }
-    .hero-orbs {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.25;
-      animation: orbFloat 8s ease-in-out infinite alternate;
-    }
-    .orb-1 { width: 400px; height: 400px; background: var(--accent); top: 10%; left: -5%; animation-delay: 0s; }
+    @keyframes meshMove { 0% { background-position: 0% 0%, 100% 0%, 50% 100%; } 100% { background-position: 30% 20%, 70% 50%, 40% 60%; } }
+    .hero-orbs { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: orbFloat 8s ease-in-out infinite alternate; }
+    .orb-1 { width: 400px; height: 400px; background: var(--accent); top: 10%; left: -5%; }
     .orb-2 { width: 300px; height: 300px; background: var(--teal); bottom: 10%; right: -5%; animation-delay: -3s; }
     .orb-3 { width: 200px; height: 200px; background: var(--accent-secondary); top: 50%; left: 60%; animation-delay: -5s; }
-    @keyframes orbFloat {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(30px, -20px) scale(1.1); }
-    }
+    @keyframes orbFloat { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -20px) scale(1.1); } }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 800px;
-    }
+    .hero-content { position: relative; z-index: 3; max-width: 900px; }
     .hero h1 {
-      font-family: var(--font-head);
-      font-size: clamp(2.5rem, 6vw, 4.25rem);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 24px;
+      font-family: var(--font-head); font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 800; line-height: 1.05; letter-spacing: -0.04em; margin-bottom: 28px;
     }
     .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.2rem);
-      color: var(--gray-light);
-      max-width: 640px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
+      font-size: clamp(1rem, 2vw, 1.15rem); color: var(--gray-light);
+      max-width: 640px; margin: 0 auto 40px; line-height: 1.7;
     }
     .hero-video {
-      max-width: 700px;
-      margin: 0 auto 40px;
-      aspect-ratio: 16/9;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gray);
-      font-size: 0.875rem;
+      max-width: 700px; margin: 0 auto 40px; aspect-ratio: 16/9;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray); font-size: 0.875rem;
     }
 
     /* ── SECTIONS ── */
@@ -363,368 +247,163 @@
     section:nth-child(even) { background: var(--bg-elevated); }
 
     .section-heading {
-      font-family: var(--font-head);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
+      font-family: var(--font-head); font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 24px;
     }
-    .section-body {
-      color: var(--gray-light);
-      font-size: 1.05rem;
-      line-height: 1.8;
-      max-width: 700px;
-    }
+    .section-body { color: var(--gray-light); font-size: 1.05rem; line-height: 1.8; max-width: 700px; }
     .section-body p + p { margin-top: 20px; }
 
     /* ── PROBLEM SECTION ── */
     .pain-bullets { list-style: none; margin-top: 40px; display: flex; flex-direction: column; gap: 20px; max-width: 700px; }
-    .pain-bullets li {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      color: var(--gray-light);
-      font-size: 1rem;
-      line-height: 1.7;
-    }
+    .pain-bullets li { display: flex; gap: 16px; align-items: flex-start; color: var(--gray-light); font-size: 1rem; line-height: 1.7; }
     .pain-bullets li::before {
-      content: '';
-      flex-shrink: 0;
-      width: 8px;
-      height: 8px;
-      margin-top: 10px;
-      border-radius: 50%;
-      background: var(--accent-secondary);
-      box-shadow: 0 0 10px var(--accent-glow);
+      content: ''; flex-shrink: 0; width: 8px; height: 8px; margin-top: 10px;
+      border-radius: 50%; background: var(--accent-secondary); box-shadow: 0 0 12px var(--accent-glow);
     }
 
     /* ── PILLAR GRID ── */
     .pillar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
     .pillar-card .pillar-num {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--teal-light);
-      margin-bottom: 12px;
-      letter-spacing: 0.1em;
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--teal-light);
+      margin-bottom: 12px; letter-spacing: 0.1em;
     }
-    .pillar-card h3 {
-      font-family: var(--font-head);
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--white);
-    }
+    .pillar-card h3 { font-family: var(--font-head); font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; color: var(--white); }
     .pillar-card p { color: var(--gray); font-size: 0.95rem; line-height: 1.7; }
 
-    /* ── FOUNDER SECTION ── */
+    /* ── FOUNDERS ── */
     .founder-intro { color: var(--gray-light); font-size: 1.05rem; line-height: 1.8; max-width: 700px; margin-top: 8px; }
     .founder-intro p + p { margin-top: 16px; }
     .founders-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; margin-top: 48px; }
     .founder-card { text-align: center; }
     .founder-photo-wrap {
-      width: 240px;
-      height: 300px;
-      margin: 0 auto 24px;
-      border-radius: var(--radius-md);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 240px; height: 300px; margin: 0 auto 24px; border-radius: var(--radius-md);
+      position: relative; overflow: hidden; border: 1px solid var(--border-active);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
     .founder-photo-wrap:hover {
-      border-color: rgba(99, 49, 200, 0.4);
-      box-shadow: 0 0 40px var(--accent-glow), 0 0 60px var(--teal-glow);
+      border-color: rgba(123, 60, 245, 0.5);
+      box-shadow: 0 0 50px var(--accent-glow), 0 0 80px var(--teal-glow);
     }
     .founder-photo-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-      filter: saturate(0.85) brightness(0.95);
-      transition: filter 0.4s;
+      width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;
     }
-    .founder-photo-wrap:hover img { filter: saturate(1) brightness(1); }
     .founder-photo-wrap::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(5, 5, 31, 0.7) 100%);
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(5, 5, 31, 0.6) 100%);
       pointer-events: none;
     }
-    .founder-photo-wrap::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: inherit;
-      background: linear-gradient(135deg, var(--accent), var(--teal));
-      z-index: -1;
-      opacity: 0.4;
-    }
-    .founder-card h3 {
-      font-family: var(--font-head);
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-    .founder-role {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--teal-light);
-      margin-bottom: 16px;
-      letter-spacing: 0.05em;
-    }
-    .founder-bio {
-      color: var(--gray-light);
-      font-size: 0.95rem;
-      line-height: 1.7;
-      max-width: 440px;
-      margin: 0 auto;
-    }
-    .founder-closing {
-      text-align: center;
-      margin-top: 48px;
-      color: var(--accent-secondary);
-      font-weight: 500;
-      font-size: 1.05rem;
-    }
+    .founder-card h3 { font-family: var(--font-head); font-size: 1.3rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .founder-role { font-family: var(--font-mono); font-size: 0.8rem; color: var(--teal-light); margin-bottom: 16px; letter-spacing: 0.05em; }
+    .founder-bio { color: var(--gray-light); font-size: 0.95rem; line-height: 1.7; max-width: 440px; margin: 0 auto; text-align: left; }
+    .founder-closing { text-align: center; margin-top: 48px; color: var(--accent-secondary); font-weight: 600; font-size: 1.05rem; }
 
-    .proof-metrics {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-top: 48px;
+    .cred-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px;
     }
-    .metric-card {
-      text-align: center;
-      padding: 28px 16px;
+    .cred-item { text-align: center; padding: 24px 12px; }
+    .cred-item .cred-num {
+      font-family: var(--font-mono); font-size: 2rem; font-weight: 700;
+      color: var(--accent-secondary); margin-bottom: 6px;
     }
-    .metric-card .metric-num {
-      font-family: var(--font-mono);
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent-secondary);
-      margin-bottom: 8px;
-    }
-    .metric-card .metric-label {
-      color: var(--gray);
-      font-size: 0.85rem;
-      line-height: 1.5;
-    }
+    .cred-item .cred-label { color: var(--gray); font-size: 0.8rem; line-height: 1.4; }
 
-    /* ── CASE STUDIES ── */
-    .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
-    .case-card h3 {
-      font-family: var(--font-head);
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--white);
+    /* ── SYSTEM PROOF ── */
+    .proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+    .proof-card { text-align: center; padding: 28px 20px; }
+    .proof-card .proof-num {
+      font-family: var(--font-mono); font-size: 2.2rem; font-weight: 700;
+      color: var(--teal-light); margin-bottom: 8px;
     }
-    .case-card .case-tagline {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--teal-light);
-      margin-bottom: 16px;
-    }
-    .case-card p { color: var(--gray); font-size: 0.92rem; line-height: 1.7; }
+    .proof-card .proof-label { color: var(--gray); font-size: 0.85rem; line-height: 1.5; }
 
-    .counter-bar {
-      display: flex;
-      justify-content: center;
-      gap: 60px;
-      margin-top: 60px;
-      padding: 40px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+    .system-handles { margin-top: 48px; }
+    .system-handles h3 { font-family: var(--font-head); font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; }
+    .handles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .handles-grid li {
+      display: flex; gap: 10px; align-items: center; color: var(--gray-light);
+      font-size: 0.95rem; list-style: none;
     }
-    .counter-item { text-align: center; }
-    .counter-item .counter-num {
-      font-family: var(--font-mono);
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--white);
+    .handles-grid li::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--teal); flex-shrink: 0; box-shadow: 0 0 8px var(--teal-glow);
     }
-    .counter-item .counter-label { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
 
     /* ── OFFER STACK ── */
-    .stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 48px; }
-    .stack-card { padding: 28px; }
-    .stack-card h3 {
-      font-family: var(--font-head);
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: var(--white);
-    }
-    .stack-card p { color: var(--gray); font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px; }
-    .stack-card .stack-value {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--teal-light);
-    }
-    .stack-full { grid-column: 1 / -1; }
+    .stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+    .stack-card { padding: 24px; }
+    .stack-card h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--white); }
+    .stack-card p { color: var(--gray); font-size: 0.85rem; line-height: 1.6; margin-bottom: 10px; }
+    .stack-card .stack-value { font-family: var(--font-mono); font-size: 0.8rem; color: var(--teal-light); }
 
     .pricing-block {
-      text-align: center;
-      margin-top: 60px;
-      padding: 60px 40px;
-      border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, rgba(99, 49, 200, 0.1), rgba(17, 129, 106, 0.1));
-      border: 1px solid rgba(99, 49, 200, 0.2);
+      text-align: center; margin-top: 60px; padding: 60px 40px; border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(123, 60, 245, 0.12), rgba(0, 217, 164, 0.1));
+      border: 1px solid rgba(123, 60, 245, 0.25);
     }
-    .pricing-block .total-value {
-      font-size: 1.1rem;
-      color: var(--gray);
-      margin-bottom: 8px;
-    }
-    .pricing-block .total-value s { color: var(--gray); }
-    .pricing-block .price {
-      font-family: var(--font-head);
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .pricing-block .payment-plan {
-      color: var(--gray);
-      font-size: 0.9rem;
-      margin-bottom: 32px;
-    }
-    .pricing-block .roi-text {
-      color: var(--gray-light);
-      font-size: 0.95rem;
-      max-width: 600px;
-      margin: 24px auto 0;
-      line-height: 1.7;
-    }
+    .pricing-block .total-value { font-size: 1.1rem; color: var(--gray); margin-bottom: 8px; }
+    .pricing-block .price { font-family: var(--font-head); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 8px; }
+    .pricing-block .payment-plan { color: var(--gray); font-size: 0.9rem; margin-bottom: 32px; }
+    .pricing-block .roi-text { color: var(--gray-light); font-size: 0.95rem; max-width: 600px; margin: 24px auto 0; line-height: 1.7; }
 
     /* ── QUALIFICATION ── */
     .qual-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-top: 48px; }
-    .qual-col h3 {
-      font-family: var(--font-head);
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-    }
+    .qual-col h3 { font-family: var(--font-head); font-size: 1.25rem; font-weight: 600; margin-bottom: 24px; }
     .qual-col.for-you h3 { color: var(--teal-light); }
     .qual-col.not-you h3 { color: var(--accent-secondary); }
     .qual-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
-    .qual-list li {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      color: var(--gray-light);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
+    .qual-list li { display: flex; gap: 12px; align-items: flex-start; color: var(--gray-light); font-size: 0.95rem; line-height: 1.6; }
     .qual-list .icon { flex-shrink: 0; font-size: 1.1rem; margin-top: 2px; }
     .for-you .icon { color: var(--teal-light); }
     .not-you .icon { color: var(--accent-secondary); }
 
     /* ── FAQ ── */
     .faq-list { max-width: 750px; margin: 48px auto 0; display: flex; flex-direction: column; gap: 12px; }
-    .faq-item {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      transition: border-color 0.3s;
-    }
-    .faq-item:hover { border-color: rgba(99, 49, 200, 0.2); }
+    .faq-item { border: 1px solid var(--border-active); border-radius: var(--radius-sm); overflow: hidden; transition: border-color 0.2s; }
+    .faq-item:hover { border-color: rgba(123, 60, 245, 0.4); }
     .faq-q {
-      width: 100%;
-      padding: 20px 24px;
-      background: transparent;
-      border: none;
-      color: var(--white);
-      font-family: var(--font-head);
-      font-size: 1rem;
-      font-weight: 500;
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
+      width: 100%; padding: 20px 24px; background: transparent; border: none;
+      color: var(--white); font-family: var(--font-head); font-size: 1rem; font-weight: 600;
+      text-align: left; cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; gap: 16px;
     }
-    .faq-q::after {
-      content: '+';
-      font-size: 1.25rem;
-      color: var(--accent-secondary);
-      transition: transform 0.3s;
-      flex-shrink: 0;
-    }
+    .faq-q::after { content: '+'; font-size: 1.25rem; color: var(--teal-light); transition: transform 0.2s; flex-shrink: 0; }
     .faq-item.open .faq-q::after { transform: rotate(45deg); }
-    .faq-a {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s var(--ease-out), padding 0.3s;
-    }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s var(--ease-snap), padding 0.2s; }
     .faq-item.open .faq-a { max-height: 300px; padding: 0 24px 20px; }
     .faq-a p { color: var(--gray-light); font-size: 0.95rem; line-height: 1.7; }
 
     /* ── FINAL CTA ── */
-    .final-cta {
-      text-align: center;
-      padding: 120px 24px;
-      position: relative;
-      overflow: hidden;
-    }
+    .final-cta { text-align: center; padding: 120px 24px; position: relative; overflow: hidden; }
     .final-cta .cta-mesh {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 40% 50%, rgba(99, 49, 200, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse at 60% 50%, rgba(17, 129, 106, 0.1) 0%, transparent 60%);
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 40% 50%, rgba(123, 60, 245, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 60% 50%, rgba(0, 217, 164, 0.12) 0%, transparent 60%);
     }
-    .final-cta .container { position: relative; z-index: 1; }
-    .final-cta .section-heading { max-width: 600px; margin: 0 auto 20px; }
-    .final-cta .section-body { max-width: 580px; margin: 0 auto 40px; text-align: center; }
-
-    .guarantee-line {
-      color: var(--gray);
-      font-size: 0.875rem;
-      max-width: 600px;
-      margin: 24px auto 0;
-      line-height: 1.6;
-      font-style: italic;
-    }
-
-    .cta-friction-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 20px;
-      align-items: center;
-    }
+    .final-cta .container { position: relative; z-index: 3; }
+    .final-cta .section-heading { max-width: 650px; margin: 0 auto 20px; }
+    .final-cta .section-body { max-width: 620px; margin: 0 auto 40px; text-align: center; }
+    .guarantee-line { color: var(--gray); font-size: 0.9rem; max-width: 600px; margin: 24px auto 0; line-height: 1.6; font-weight: 500; }
+    .cta-friction-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 20px; align-items: center; }
     .cta-friction-list li { color: var(--gray); font-size: 0.85rem; }
 
-    /* ── FOOTER ── */
-    footer {
-      padding: 40px 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
+    .cta-stats {
+      display: flex; justify-content: center; gap: 48px; margin-bottom: 40px;
+      font-family: var(--font-mono); font-size: 0.9rem; color: var(--gray-light);
     }
+    .cta-stats strong { color: var(--white); font-size: 1.1rem; }
+
+    /* ── FOOTER ── */
+    footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
     footer .container { display: flex; justify-content: space-between; align-items: center; }
     footer p { color: var(--gray); font-size: 0.8rem; }
-    footer a { color: var(--gray); text-decoration: none; transition: color 0.2s; }
+    footer a { color: var(--gray); text-decoration: none; transition: color 0.15s; }
     footer a:hover { color: var(--accent-secondary); }
 
     /* ── MOBILE CTA BAR ── */
     .mobile-cta {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 99;
-      padding: 12px 20px;
-      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-      background: rgba(5, 5, 31, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
+      padding: 12px 20px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(5, 5, 31, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border-top: 1px solid var(--border);
     }
     .mobile-cta .btn { width: 100%; padding: 16px; font-size: 1rem; }
@@ -736,30 +415,31 @@
       .nav-links a:not(.nav-cta) { display: none; }
       .pillar-grid { grid-template-columns: 1fr; }
       .founders-grid { grid-template-columns: 1fr; gap: 48px; }
-      .founder-intro { text-align: center; }
-      .founder-photo-wrap { width: 200px; height: 260px; }
-      .proof-metrics { grid-template-columns: repeat(2, 1fr); }
-      .cases-grid { grid-template-columns: 1fr; }
+      .founder-bio { text-align: center; }
+      .cred-bar { grid-template-columns: repeat(2, 1fr); }
+      .proof-grid { grid-template-columns: 1fr; }
+      .handles-grid { grid-template-columns: 1fr; }
       .stack-grid { grid-template-columns: 1fr; }
       .qual-grid { grid-template-columns: 1fr; gap: 32px; }
-      .counter-bar { flex-direction: column; gap: 24px; }
       .mobile-cta { display: block; }
       .orb-1 { width: 200px; height: 200px; filter: blur(60px); }
       .orb-2 { width: 150px; height: 150px; filter: blur(60px); }
       .orb-3 { width: 100px; height: 100px; filter: blur(60px); }
       footer .container { flex-direction: column; gap: 12px; }
+      .cta-stats { flex-direction: column; gap: 16px; }
     }
 
     /* ── REDUCED MOTION ── */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
-      .reveal, .reveal-blur { opacity: 1; transform: none; filter: none; }
-      .hero-canvas { display: none; }
+      .reveal { opacity: 1; transform: none; }
+      .hero-canvas, .drive-canvas { display: none; }
     }
   </style>
 </head>
 <body>
   <div class="scroll-progress"></div>
+  <canvas class="drive-canvas"></canvas>
 
   <!-- NAV -->
   <nav>
@@ -768,7 +448,7 @@
       <div class="nav-links">
         <a href="#solution">How It Works</a>
         <a href="#offer">What's Included</a>
-        <a href="#results">Results</a>
+        <a href="#founders">About Us</a>
         <a href="#apply" class="nav-cta">Apply Now</a>
       </div>
     </div>
@@ -785,13 +465,11 @@
     <canvas class="hero-canvas"></canvas>
     <div class="hero-content">
       <div class="section-label reveal">AI DRIVERS</div>
-      <h1 class="reveal">Build Your AI-Powered Agency <span class="shimmer">in 30 Days.</span></h1>
-      <p class="hero-sub reveal">The complete operating system, done-for-you setup, and 1-on-1 consulting from operators running this model right now. Not a course. Not prompts. A production system install.</p>
-      <div class="hero-video reveal">
-        <span>VSL Coming Soon</span>
-      </div>
+      <h1 class="reveal"><span class="glitch" data-text="Get a Fully Automated AI Team">Get a Fully Automated AI Team</span> Installed in Your Business. <span class="shimmer">In Less Than 5 Days.</span></h1>
+      <p class="hero-sub reveal">We assess your business, build a custom AI system trained on your operations, and install it for you. Two founders. One private channel. ROI back in 90 days or you shouldn't do this.</p>
+      <div class="hero-video reveal"><span>VSL Coming Soon</span></div>
       <a href="#apply" class="btn magnetic reveal">Apply Now <span>&rarr;</span></a>
-      <p class="friction reveal">Limited spots. 1-on-1 attention means we cap enrollment. No commitment to apply.</p>
+      <p class="friction reveal">Limited spots. We build every system by hand. No commitment to apply.</p>
     </div>
   </section>
 
@@ -801,20 +479,20 @@
   <section id="problem">
     <div class="container">
       <div class="section-label reveal">THE PROBLEM</div>
-      <h2 class="section-heading reveal">Everyone says AI agencies are the future.<br>Nobody shows you how to actually build one.</h2>
+      <h2 class="section-heading reveal">Everyone says AI is the future of business. <span class="shimmer">Nobody actually installs it for you.</span></h2>
       <div class="section-body reveal">
         <p>You've seen the headlines.</p>
-        <p>Y Combinator just made AI-powered agencies a formal investment category. Their CEO says this batch is the most profitable in history. Anthropic's CEO predicts a one-person billion-dollar company by 2026.</p>
-        <p>And you're sitting there thinking: okay, but HOW?</p>
-        <p>You've tried ChatGPT. Maybe you bought a template. Maybe you watched 50 YouTube videos. You've played with prompts, tested tools, read threads. You know AI can do more than what you're getting out of it.</p>
-        <p>But you still don't have a system.</p>
+        <p>Y Combinator made AI-powered agencies a formal investment category. Anthropic's CEO predicts a one-person billion-dollar company by 2026.</p>
+        <p>And you're sitting there with a real business, real clients, real revenue. Thinking: okay, but HOW does this actually plug into what I do every day?</p>
+        <p>You've tried ChatGPT. Maybe you bought a course. Maybe you spent a weekend watching YouTube tutorials and ended up with a folder full of prompts that don't connect to anything.</p>
+        <p>But nothing changed.</p>
       </div>
       <ul class="pain-bullets">
-        <li class="reveal">You have the skills but not the infrastructure. You know your craft. You just don't have a system that multiplies your output.</li>
-        <li class="reveal">You're buying tools but not connecting them. Subscriptions stack up. Workflows don't.</li>
-        <li class="reveal">You're watching the window close. Every month you wait, more people figure this out. The early advantage shrinks.</li>
-        <li class="reveal">You want to take on more clients but can't. Your bottleneck isn't demand. It's capacity.</li>
-        <li class="reveal">The "AI agency" content online is surface-level. Prompt lists. ChatGPT tutorials. Nothing that shows you how to build an actual operating system.</li>
+        <li class="reveal">You have the skills. You don't have the infrastructure. Your expertise is real. Your output is capped by how fast you can personally produce.</li>
+        <li class="reveal">You're paying for tools that don't talk to each other. Subscriptions stack up. Workflows don't.</li>
+        <li class="reveal">You keep starting over. Every new AI tool means another learning curve, another half-built system, another abandoned experiment.</li>
+        <li class="reveal">You watch technical founders on Twitter build million-dollar operations with 3 people while you grind through deliverables one at a time.</li>
+        <li class="reveal">The "AI for business" content online is surface-level. Prompt lists. ChatGPT screenshots. Nothing that shows you how to build an actual operating system for YOUR business.</li>
       </ul>
     </div>
   </section>
@@ -825,13 +503,13 @@
   <section id="opportunity">
     <div class="container">
       <div class="section-label reveal">THE OPPORTUNITY</div>
-      <h2 class="section-heading reveal">The smartest investors in the world just validated this model.<br>But they built <span class="shimmer">no pathway</span> for the rest of us.</h2>
+      <h2 class="section-heading reveal">The smartest investors in the world validated this model. Nobody built the implementation <span class="shimmer">for the rest of us.</span></h2>
       <div class="section-body">
-        <p class="reveal">Y Combinator's Spring 2026 Request for Startups includes "AI-Powered Agencies" as a formal category. Their thesis: agencies of the future will look like software companies, with software margins. One person doing the work of ten. Tiny teams generating millions.</p>
-        <p class="reveal">But Y Combinator invests $500K per company and takes equity. They accept 200 founders per batch out of tens of thousands of applicants. And their narrative assumes you're a technical founder who can code.</p>
-        <p class="reveal">If you're a marketer, consultant, or agency operator with domain expertise but not a computer science degree, their pathway doesn't exist for you.</p>
-        <p class="reveal">The demand is real. The opportunity is validated. The gap is implementation.</p>
-        <p class="reveal" style="color: var(--white); font-weight: 500;">That's what AI Drivers is.</p>
+        <p class="reveal">Y Combinator's latest Request for Startups includes "AI-Powered Agencies" as a formal category. Their thesis: businesses of the future will look like software companies, with software margins. Tiny teams generating millions.</p>
+        <p class="reveal">But Y Combinator invests $500K per company and takes equity. They accept 200 founders per batch out of tens of thousands. And their model assumes you're a technical founder who can code.</p>
+        <p class="reveal">If you're a business owner, consultant, or operator with real domain expertise but not a computer science degree, their pathway doesn't exist for you.</p>
+        <p class="reveal">The demand is real. The opportunity is validated by the best investors on the planet. The gap is implementation.</p>
+        <p class="reveal" style="color: var(--white); font-weight: 600;">That's what AI Drivers is. We took the thesis and built the bridge.</p>
       </div>
     </div>
   </section>
@@ -841,32 +519,32 @@
   <!-- SOLUTION -->
   <section id="solution">
     <div class="container">
-      <div class="section-label reveal">AI DRIVERS</div>
-      <h2 class="section-heading reveal">Your agency. AI-powered. <span class="shimmer">Fully operational in 30 days.</span></h2>
+      <div class="section-label reveal">HOW IT WORKS</div>
+      <h2 class="section-heading reveal">Your business. AI-powered. <span class="shimmer">Fully operational in less than 5 days.</span></h2>
       <div class="section-body reveal">
-        <p>AI Drivers is a done-with-you, done-for-you hybrid that takes you from "I know AI can do more" to "I have a production system running my agency."</p>
-        <p>We don't hand you a course and wish you luck. We install the system, configure it for your business, and consult with you 1-on-1 until it's operational.</p>
+        <p>AI Drivers is not a course. Not a prompt library. Not a community where you figure it out on your own.</p>
+        <p>We assess your business, build a custom AI system trained on your specific operations, install it for you, and then stay in your corner for 6 full months to make sure it works.</p>
       </div>
       <div class="pillar-grid spotlight-grid">
         <div class="glass-card pillar-card gradient-border reveal">
-          <div class="pillar-num">01</div>
-          <h3>The System</h3>
-          <p>A production-grade AI operating system. Not prompts. Not templates. A multi-layer architecture with specialized agents, structured workflows, quality controls, and memory systems. The same system currently running multiple live client engagements.</p>
+          <div class="pillar-num">01 ASSESS</div>
+          <h3>Map Your Business</h3>
+          <p>We map your operations, identify the highest-value automation opportunities, and design a system architecture built specifically for how you work. Not a generic template. A blueprint for your business.</p>
         </div>
         <div class="glass-card pillar-card gradient-border reveal">
-          <div class="pillar-num">02</div>
-          <h3>The Setup</h3>
-          <p>Done-for-you environment configuration. We build your workspace, install your agents, configure your commands, and set up your quality gates. You're operational on day one. No technical skills required.</p>
+          <div class="pillar-num">02 BUILD</div>
+          <h3>Custom AI System</h3>
+          <p>We build your custom AI system. Agents trained on your business, structured workflows matching your operations, quality controls tuned to your standards. This is a production system, not a demo.</p>
         </div>
         <div class="glass-card pillar-card gradient-border reveal">
-          <div class="pillar-num">03</div>
-          <h3>The Strategy</h3>
-          <p>1-on-1 consulting covering two critical angles. Building the internal systems for your agency, so you take on more clients. And deploying AI into your clients' businesses, so you deliver better results.</p>
+          <div class="pillar-num">03 INSTALL</div>
+          <h3>Done-For-You Setup</h3>
+          <p>Full implementation. We configure your workspace, deploy your agents, set up your automation, and test everything end-to-end. Operational in less than 5 days. No technical skills required.</p>
         </div>
         <div class="glass-card pillar-card gradient-border reveal">
-          <div class="pillar-num">04</div>
-          <h3>The Support</h3>
-          <p>A private channel directly with us. Not a group chat. Not a community forum. A direct line for questions, feedback, work review, and troubleshooting. For the full duration and beyond.</p>
+          <div class="pillar-num">04 SUPPORT</div>
+          <h3>6 Months of Access</h3>
+          <p>Direct access to both founders through a private channel. 2x weekly coaching calls. Hands-on troubleshooting. We don't hand you a system and disappear. We stay until you've gotten your money back and then some.</p>
         </div>
       </div>
     </div>
@@ -874,96 +552,94 @@
 
   <div class="section-fade"></div>
 
-  <!-- FOUNDER / CREDIBILITY -->
-  <section id="founder">
+  <!-- FOUNDERS -->
+  <section id="founders">
     <div class="container">
-      <div class="section-label reveal">WHO'S BEHIND THIS</div>
-      <h2 class="section-heading reveal">Built by operators. Not theorists.</h2>
+      <div class="section-label reveal">ABOUT US</div>
+      <h2 class="section-heading reveal"><span class="glitch" data-text="Built by operators.">Built by operators.</span> Not theorists.</h2>
       <div class="founder-intro reveal">
-        <p>AI Drivers was built by two operators who run this model every day. Not influencers. Not course creators who read about AI and repackaged it. Two founders who use these systems to run real businesses, serve real clients, and generate real revenue.</p>
+        <p>Most people selling "AI for business" have never run a business that depends on AI. They teach frameworks they read about. They sell courses about things they haven't done.</p>
+        <p>We built AI Drivers because we needed it for ourselves first. Then we realized: the system is the product.</p>
       </div>
       <div class="founders-grid">
         <div class="founder-card reveal">
-          <div class="founder-photo-wrap">
+          <div class="founder-photo-wrap gradient-border">
             <img src="kabrin.jpg" alt="Kabrin Johal" loading="lazy">
           </div>
           <h3>Kabrin Johal</h3>
-          <div class="founder-role">Co-Founder / Crafted Marketing</div>
-          <p class="founder-bio">Runs Crafted Marketing, a high-ticket agency that uses AI for everything. Research. Copywriting. Funnels. Email sequences. Landing pages. Client delivery. The full stack. The system you get through AI Drivers is not something built to sell you. It's what was built to run a real agency. It powers every client engagement, every deliverable, every campaign.</p>
+          <div class="founder-role">Co-Founder</div>
+          <p class="founder-bio">Started in fitness. Opened and operated 11 Orange Theory Fitness franchise locations. Opened them, operated them, exited all of them in 2020. Went online. Tried dropshipping. Pivoted to high-ticket dropshipping and sold to a major Vegas hotel chain. April 2024: launched Crafted Marketing and built the entire fulfillment engine on AI. $3M+ in total revenue generated. All completed through AI systems.</p>
         </div>
         <div class="founder-card reveal">
-          <div class="founder-photo-wrap">
+          <div class="founder-photo-wrap gradient-border">
             <img src="elijah.jpg" alt="Elijah Bricker" loading="lazy">
           </div>
           <h3>Elijah Bricker</h3>
-          <div class="founder-role">Co-Founder / Arbory LLC</div>
-          <p class="founder-bio">At 18, decided not to pursue college and started as a commercial realtor for out-of-state investors. After hitting a time leverage ceiling, transitioned to creating Arbory LLC. In 14 months, generated $1M in revenue for business owners. After hitting another ceiling, went all in on systems automation with Claude Code and OpenClaw. Now runs a business that operates closed-loop automated.</p>
+          <div class="founder-role">Co-Founder (21)</div>
+          <p class="founder-bio">Skipped college at 18. Started as a commercial realtor placing out-of-state investors. Hit a ceiling. Created Arbory LLC in 2025 and generated $1M in revenue for business owners in 14 months. Hit another ceiling. Went all-in on systems automation with Claude Code and OpenClaw. Built a closed-loop automated business where the systems handle the execution.</p>
         </div>
       </div>
-      <p class="founder-closing reveal">The page you're reading right now was built using the same system you'd be getting.</p>
-      <div class="proof-metrics">
-        <div class="glass-card metric-card reveal">
-          <div class="metric-num" data-count="4" data-suffix="+">0</div>
-          <div class="metric-label">Active client engagements on the system</div>
+      <div class="cred-bar">
+        <div class="glass-card cred-item reveal">
+          <div class="cred-num" data-count="4" data-prefix="$" data-suffix="M+">0</div>
+          <div class="cred-label">Combined revenue generated</div>
         </div>
-        <div class="glass-card metric-card reveal">
-          <div class="metric-num" data-count="15" data-suffix="+">0</div>
-          <div class="metric-label">Deliverables produced for a single launch</div>
+        <div class="glass-card cred-item reveal">
+          <div class="cred-num" data-count="11">0</div>
+          <div class="cred-label">Franchise locations opened and operated</div>
         </div>
-        <div class="glass-card metric-card reveal">
-          <div class="metric-num" data-count="35">0</div>
-          <div class="metric-label">Specialized skills in the system</div>
+        <div class="glass-card cred-item reveal">
+          <div class="cred-num" data-count="2">0</div>
+          <div class="cred-label">Businesses running closed-loop automated</div>
         </div>
-        <div class="glass-card metric-card reveal">
-          <div class="metric-num" data-count="1">0</div>
-          <div class="metric-label">System powering everything</div>
+        <div class="glass-card cred-item reveal">
+          <div class="cred-num" data-count="5" data-suffix=" days">0</div>
+          <div class="cred-label">From assessment to operational</div>
         </div>
       </div>
+      <p class="founder-closing reveal">The page you're reading right now was built with the same system you'd be getting.</p>
     </div>
   </section>
 
   <div class="section-fade"></div>
 
-  <!-- RESULTS / CASE STUDIES -->
-  <section id="results">
+  <!-- SYSTEM PROOF -->
+  <section id="proof">
     <div class="container">
-      <div class="section-label reveal">THE SYSTEM IN ACTION</div>
-      <h2 class="section-heading reveal">Real clients. Real work. Built with the system.</h2>
-      <div class="cases-grid">
-        <div class="glass-card case-card gradient-border reveal">
-          <h3>Trading Education Launch</h3>
-          <div class="case-tagline">15+ deliverables. One launch system.</div>
-          <p>Full organic launch for a $3,500 product: webinar script, sales page, 14 launch emails, 5 welcome emails, 5 re-engagement emails, 59 Instagram stories, Telegram campaign, sales guide, trust assets, confirmation page, YouTube content plan, and daily execution calendar.</p>
+      <div class="section-label reveal">THE SYSTEM</div>
+      <h2 class="section-heading reveal">This is what it does. <span class="shimmer">Not what we say it does.</span></h2>
+      <div class="section-body reveal">
+        <p>We don't have 47 testimonials from students yet. We're not going to fake it. Here's what we do have: two businesses that run on this system every day, and the numbers to prove it works.</p>
+      </div>
+      <div class="proof-grid">
+        <div class="glass-card proof-card gradient-border reveal">
+          <div class="proof-num" data-prefix="$" data-count="4" data-suffix="M+">0</div>
+          <div class="proof-label">Combined revenue through AI-powered systems</div>
         </div>
-        <div class="glass-card case-card gradient-border reveal">
-          <h3>Fitness Consulting</h3>
-          <div class="case-tagline">14 deliverables. Done-with-you engagement.</div>
-          <p>Full consulting package for a multi-location fitness brand: training plan, strategy deck, talking points, asset library. The done-with-you model validated with a real client.</p>
+        <div class="glass-card proof-card gradient-border reveal">
+          <div class="proof-num" data-prefix="$" data-count="1" data-suffix="M">0</div>
+          <div class="proof-label">Revenue for clients in 14 months (Arbory LLC)</div>
         </div>
-        <div class="glass-card case-card gradient-border reveal">
-          <h3>Web3 Landing Page</h3>
-          <div class="case-tagline">Designed. Built. Deployed. One session.</div>
-          <p>Full landing page with 20+ animated effects, mobile and desktop optimization, web3 design system. From blank file to live URL in a single working session.</p>
-        </div>
-        <div class="glass-card case-card gradient-border reveal">
-          <h3>Nutrition Coaching Funnel</h3>
-          <div class="case-tagline">Landing page + 6 Stripe checkouts. Live.</div>
-          <p>Complete redesign with testimonials, tiered pricing, video testimonials, and case studies. Full funnel from landing page through payment.</p>
+        <div class="glass-card proof-card gradient-border reveal">
+          <div class="proof-num" data-prefix="<" data-count="5" data-suffix=" days">0</div>
+          <div class="proof-label">From assessment to fully operational AI system</div>
         </div>
       </div>
-      <div class="counter-bar metrics">
-        <div class="counter-item reveal">
-          <div class="counter-num" data-count="50" data-suffix="+">0</div>
-          <div class="counter-label">Client deliverables produced</div>
-        </div>
-        <div class="counter-item reveal">
-          <div class="counter-num" data-count="4">0</div>
-          <div class="counter-label">Live client engagements</div>
-        </div>
-        <div class="counter-item reveal">
-          <div class="counter-num" data-count="1">0</div>
-          <div class="counter-label">System powering it all</div>
-        </div>
+      <div class="system-handles reveal">
+        <h3>What the system handles:</h3>
+        <ul class="handles-grid">
+          <li>Client research and market analysis</li>
+          <li>Copywriting and content production</li>
+          <li>Sales page and funnel builds</li>
+          <li>Email sequences and nurture campaigns</li>
+          <li>Landing page design and deployment</li>
+          <li>Client onboarding and delivery workflows</li>
+          <li>Campaign management and execution</li>
+          <li>Business operations and automation</li>
+        </ul>
+      </div>
+      <div class="section-body reveal" style="margin-top: 32px;">
+        <p>This is not a prototype. Both founders operate their primary businesses on this system. When we say "built by operators," we mean it was built under pressure, with real clients, real deadlines, and real money on the line.</p>
       </div>
     </div>
   </section>
@@ -974,46 +650,61 @@
   <section id="offer">
     <div class="container">
       <div class="section-label reveal">WHAT'S INCLUDED</div>
-      <h2 class="section-heading reveal">Everything you need to go from zero to operational.</h2>
+      <h2 class="section-heading reveal">Everything you need. <span class="shimmer">Nothing you don't.</span></h2>
       <div class="stack-grid">
         <div class="glass-card stack-card gradient-border reveal">
-          <h3>Full AI Operating System</h3>
-          <p>Production-grade agent architecture with specialized skills, structured workflows, automation hooks, and memory systems. The exact system running live client work right now.</p>
-          <div class="stack-value">Value: $4,997</div>
-        </div>
-        <div class="glass-card stack-card gradient-border reveal">
-          <h3>Done-For-You Environment Setup</h3>
-          <p>We configure your entire workspace. Custom agents, commands, quality gates, client management. Operational on day one.</p>
+          <h3>Full Business Assessment</h3>
+          <p>We map your operations and identify exactly where AI systems create the most impact. Not generic recommendations. A specific map of your highest-ROI automation opportunities.</p>
           <div class="stack-value">Value: $2,500</div>
         </div>
         <div class="glass-card stack-card gradient-border reveal">
-          <h3>1-on-1 Private Channel</h3>
-          <p>Direct access. Ask questions, share work for review, troubleshoot in real-time. Not a group chat. A private line.</p>
+          <h3>Custom AI System Build</h3>
+          <p>Agents, workflows, quality controls, and automation built on YOUR business processes, YOUR data, YOUR voice. Not a template. A custom build.</p>
+          <div class="stack-value">Value: $5,000</div>
+        </div>
+        <div class="glass-card stack-card gradient-border reveal">
+          <h3>DFY Installation (Less Than 5 Days)</h3>
+          <p>We configure your workspace, deploy your agents, wire your automation, and test everything. Zero technical skills required on your end.</p>
           <div class="stack-value">Value: $3,000</div>
         </div>
         <div class="glass-card stack-card gradient-border reveal">
-          <h3>Internal Agency Consulting</h3>
-          <p>Strategic plan for your agency: which workflows to automate first, how to position your services, how to take on more clients without burning out.</p>
-          <div class="stack-value">Value: $5,000</div>
+          <h3>Private Channel (6 Months)</h3>
+          <p>Direct access to both Kabrin and Elijah. Not a group chat. Not a community forum. A private line to both founders for 6 full months.</p>
+          <div class="stack-value">Value: $6,000</div>
         </div>
         <div class="glass-card stack-card gradient-border reveal">
-          <h3>Client-Facing Consulting</h3>
-          <p>Strategic plan for deploying AI into your clients' businesses. Better results, more capacity, higher value per engagement.</p>
-          <div class="stack-value">Value: $5,000</div>
+          <h3>2x Weekly Coaching Calls</h3>
+          <p>Both founders on every call. Strategy, implementation, troubleshooting. That's roughly 48 calls with the people who designed the system.</p>
+          <div class="stack-value">Value: $4,800</div>
         </div>
         <div class="glass-card stack-card gradient-border reveal">
-          <h3>Custom Skills + Lifetime Updates</h3>
-          <p>3-5 skills built for your niche during consulting. Plus every future update to the system at no additional cost.</p>
-          <div class="stack-value">Value: $4,500</div>
+          <h3>Video Module Library</h3>
+          <p>Full training modules covering every aspect of operating and expanding your AI system. Included at no additional cost.</p>
+          <div class="stack-value">Value: $1,500</div>
+        </div>
+        <div class="glass-card stack-card gradient-border reveal">
+          <h3>Hands-On Troubleshooting</h3>
+          <p>Something breaks? We fix it. This isn't "submit a ticket." Real support from the people who built the system.</p>
+          <div class="stack-value">Value: $2,500</div>
+        </div>
+        <div class="glass-card stack-card gradient-border reveal">
+          <h3>Mastermind Access</h3>
+          <p>Connect with other operators running AI systems. Share wins, swap strategies. Not 10,000 strangers. A tight group of builders.</p>
+          <div class="stack-value">Value: $1,200</div>
+        </div>
+        <div class="glass-card stack-card gradient-border reveal">
+          <h3>Lifetime Agent Access</h3>
+          <p>Every agent we ever build. Every project, every update, every improvement. Yours. Forever. The system grows and you grow with it.</p>
+          <div class="stack-value">Value: $3,000</div>
         </div>
       </div>
 
       <div class="pricing-block reveal" id="apply">
-        <div class="total-value">Total Value: <s>$25,000+</s></div>
-        <div class="price shimmer">$8,000</div>
-        <div class="payment-plan">Payment plan available: 2 payments of $4,250</div>
+        <div class="total-value">Total Value: <s>$29,500+</s></div>
+        <div class="price shimmer">$5,000</div>
+        <div class="payment-plan">Payment plan available. Ask during your application call.</div>
         <a href="#" class="btn">Apply Now <span>&rarr;</span></a>
-        <p class="roi-text">If you use the system to close just one additional client at $3,000, you've made back more than a third of your investment. Two clients and you're in profit. The system doesn't expire.</p>
+        <p class="roi-text">The average client makes the $5,000 back within their first 90 days. Close one additional client, take on one more project, or save 15+ hours per week on operations. The math handles itself. And the system doesn't expire.</p>
       </div>
     </div>
   </section>
@@ -1029,21 +720,21 @@
         <div class="qual-col for-you glass-card reveal">
           <h3>This is for you if...</h3>
           <ul class="qual-list">
-            <li><span class="icon">&#10003;</span> You run an agency, freelance practice, or consulting business and want to multiply output without multiplying headcount</li>
-            <li><span class="icon">&#10003;</span> You have domain expertise and want to build an AI-powered agency</li>
-            <li><span class="icon">&#10003;</span> You're tired of scattered tools and disconnected workflows that don't add up to a system</li>
-            <li><span class="icon">&#10003;</span> You understand AI is a force multiplier, not a magic button</li>
-            <li><span class="icon">&#10003;</span> You want 1-on-1 guidance from someone who runs this model, not a group course</li>
+            <li><span class="icon">&#10003;</span> You run a business, agency, or consultancy and want to multiply output without multiplying headcount</li>
+            <li><span class="icon">&#10003;</span> You have real domain expertise and want AI systems built around it</li>
+            <li><span class="icon">&#10003;</span> You're tired of buying tools that don't connect and starting over every few months</li>
+            <li><span class="icon">&#10003;</span> You're willing to invest 5 days for the install and show up for coaching calls</li>
+            <li><span class="icon">&#10003;</span> You want direct access to two founders who run this system, not a pre-recorded course</li>
           </ul>
         </div>
         <div class="qual-col not-you glass-card reveal">
           <h3>This is NOT for you if...</h3>
           <ul class="qual-list">
-            <li><span class="icon">&times;</span> You're looking for passive income or a "push button" solution. This is an operating system. You operate it.</li>
-            <li><span class="icon">&times;</span> You don't have a service, skill, or business idea. We build infrastructure. You bring the business.</li>
-            <li><span class="icon">&times;</span> You won't commit 5-10 hours per week to implementation</li>
+            <li><span class="icon">&times;</span> You're looking for passive income or a magic button. This is an operating system. You still run your business.</li>
+            <li><span class="icon">&times;</span> You don't have a business, service, or clear idea. We install infrastructure for a real operation.</li>
             <li><span class="icon">&times;</span> You want ChatGPT prompts. This is a multi-layer architecture with agents and automation. Different category.</li>
-            <li><span class="icon">&times;</span> You expect results without effort. The consulting accelerates your timeline. You still do the work.</li>
+            <li><span class="icon">&times;</span> You're not willing to show up for calls and engage with the process.</li>
+            <li><span class="icon">&times;</span> You expect results in 24 hours without doing anything. Install takes 5 days. ROI takes up to 90 days.</li>
           </ul>
         </div>
       </div>
@@ -1059,32 +750,32 @@
       <h2 class="section-heading reveal" style="text-align: center;">Straight answers.</h2>
       <div class="faq-list">
         <div class="faq-item reveal">
-          <button class="faq-q">Is this just ChatGPT prompts?</button>
-          <div class="faq-a"><p>No. This is a production system with specialized agents, structured workflows, quality controls, and memory that maintains context across sessions. ChatGPT prompts are like having a notepad. This is like having an operating system. Different category entirely.</p></div>
+          <button class="faq-q">Why $5,000?</button>
+          <div class="faq-a"><p>Because we build a custom system for your business, install it in less than 5 days, and coach you through 6 months of implementation. The system is designed to pay for itself within 90 days. One new client. One freed-up bottleneck. One workflow that used to take 3 days now taking 3 hours. If you can't see a path to making $5,000 back within 90 days using AI automation, this probably isn't for you yet.</p></div>
         </div>
         <div class="faq-item reveal">
-          <button class="faq-q">Do I need technical skills or coding experience?</button>
-          <div class="faq-a"><p>No. The done-for-you setup handles all the technical configuration. You need to know your business and your craft. The system is built for operators, not developers.</p></div>
+          <button class="faq-q">How long does implementation take?</button>
+          <div class="faq-a"><p>Less than 5 days from assessment to fully operational system. We assess your business, build the system, and install it. You don't need to learn anything technical during that phase. The 6 months of coaching after that is where you learn to operate, optimize, and squeeze every dollar out of it.</p></div>
         </div>
         <div class="faq-item reveal">
-          <button class="faq-q">How fast will I see results?</button>
-          <div class="faq-a"><p>The system is operational from day one after setup. Most people start producing client-level output within the first week. The full 30-day consulting period optimizes the system for your specific workflows. By day 30, you should be running at 3-5x your previous speed.</p></div>
+          <button class="faq-q">What happens after the 6 months?</button>
+          <div class="faq-a"><p>You keep everything. The system, the agents, every update we've ever released. Your Lifetime Agent Access means you get every future build at no extra cost. If you want continued 1-on-1 coaching beyond 6 months, we offer an advisory option. But the system is yours forever.</p></div>
         </div>
         <div class="faq-item reveal">
-          <button class="faq-q">What if my niche is different from your examples?</button>
-          <div class="faq-a"><p>The consulting phase covers customization. We build 3-5 custom skills specifically for your vertical. The underlying system is architecture, not templates. It adapts to any service-based business.</p></div>
+          <button class="faq-q">Do I need technical skills?</button>
+          <div class="faq-a"><p>No. The entire install is done for you. You need to know your business and your craft. We handle the technical configuration. If you can use a computer and attend a video call, you have enough technical skill for this.</p></div>
         </div>
         <div class="faq-item reveal">
-          <button class="faq-q">Why $8,000?</button>
-          <div class="faq-a"><p>Because the system saves you hundreds of hours per year and enables you to serve more clients at higher quality. Close one additional client at $3,000 and you've recovered more than a third of the cost. Two clients and you're in profit. The ROI compounds every month.</p></div>
+          <button class="faq-q">What if my niche is different from yours?</button>
+          <div class="faq-a"><p>The system is architecture, not templates. We've built systems for marketing agencies, trading educators, fitness brands, nutrition coaches, and e-commerce operators. The assessment phase is where we learn your business. The build phase is where we customize everything for it.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">What's the ROI guarantee?</button>
+          <div class="faq-a"><p>Your investment back within 90 days. The system should generate or save you at least $5,000 through new revenue, saved time, increased capacity, or all three. If you show up for calls, implement what we build, and engage with the process, the 90-day timeline is conservative.</p></div>
         </div>
         <div class="faq-item reveal">
           <button class="faq-q">What do I need to get started?</button>
-          <div class="faq-a"><p>A Claude Pro or Claude Team subscription (~$20-100/month), a computer with Claude Code installed (we help with this), and a clear idea of what your agency does or will do.</p></div>
-        </div>
-        <div class="faq-item reveal">
-          <button class="faq-q">What happens after the 30 days?</button>
-          <div class="faq-a"><p>You keep the entire system, all updates, and private channel access. If you want ongoing strategic consulting, there's a monthly advisory option. But the system is yours. No recurring fee for the core product. It doesn't expire.</p></div>
+          <div class="faq-a"><p>A business (or a clear plan for one), a computer, and a Claude Pro or Claude Team subscription (roughly $20 to $100/month). We handle the rest during the install phase.</p></div>
         </div>
       </div>
     </div>
@@ -1097,25 +788,30 @@
     <div class="cta-mesh"></div>
     <div class="container">
       <div class="section-label reveal">TAKE THE NEXT STEP</div>
-      <h2 class="section-heading reveal">You've heard the thesis.<br>Here's the <span class="shimmer">implementation.</span></h2>
+      <h2 class="section-heading reveal">Your investment back in 90 days. <span class="shimmer">Or you shouldn't do this.</span></h2>
       <div class="section-body reveal">
-        <p>AI-powered agencies are not a prediction anymore. They're a category. The system exists. It's running right now. It built the page you're reading.</p>
-        <p>The question is whether you want to keep hearing about it or start running it.</p>
+        <p>Both of us run our businesses on this system. It works because we built it under real conditions, with real pressure, for real results.</p>
+        <p>The question is whether you're going to keep watching from the sidelines or let two people who've already built this install it in your business this week.</p>
+      </div>
+      <div class="cta-stats reveal">
+        <span><strong>&lt;5 days</strong> to operational</span>
+        <span><strong>6 months</strong> of direct support</span>
+        <span><strong>$5,000</strong></span>
       </div>
       <a href="#" class="btn magnetic reveal">Apply Now <span>&rarr;</span></a>
       <ul class="cta-friction-list reveal">
-        <li>Limited spots per month. 1-on-1 means this isn't scalable beyond that.</li>
-        <li>No commitment to apply. Just a conversation to see if it fits.</li>
-        <li>Same system running live client engagements today. Not a beta.</li>
+        <li>Limited spots. Every system is custom-built. We don't batch this.</li>
+        <li>No commitment to apply. The application is a conversation.</li>
+        <li>Both founders on every call.</li>
       </ul>
-      <p class="guarantee-line reveal">If you complete the full consulting process and don't see measurable improvement in your operational capacity, we continue working with you at no additional cost until you do.</p>
+      <p class="guarantee-line reveal">ROI back within 90 days. That's the promise. Show up, implement, and engage with the coaching. The system handles the rest.</p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
     <div class="container">
-      <p>AI Drivers. Built by Crafted Marketing.</p>
+      <p>AI Drivers. Built by Crafted Marketing + Arbory LLC.</p>
       <p><a href="mailto:kabrin@craftedmarketing.io">kabrin@craftedmarketing.io</a></p>
       <p>&copy; 2026 AI Drivers. All rights reserved.</p>
     </div>
@@ -1152,130 +848,220 @@
       });
     });
 
-    // ── PARTICLE NETWORK ──
+    // ── PARTICLE NETWORK (HERO) ──
     (function() {
       if (reducedMotion) return;
       var canvas = document.querySelector('.hero-canvas');
       var ctx = canvas.getContext('2d');
       var particles = [];
-      var pCount = isMobile ? 20 : 55;
+      var pCount = isMobile ? 18 : 50;
       var cDist = isMobile ? 100 : 150;
       var mouse = { x: -1000, y: -1000 };
       var raf = null;
 
       function resize() { canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight; }
-
       function create() {
         particles = [];
         for (var i = 0; i < pCount; i++) {
-          var isPurple = Math.random() > 0.4;
           particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.4,
-            vy: (Math.random() - 0.5) * 0.4,
-            r: Math.random() * 1.8 + 0.6,
-            alpha: Math.random() * 0.4 + 0.2,
-            hue: isPurple ? 270 : 160
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
+            r: Math.random() * 1.8 + 0.5, alpha: Math.random() * 0.4 + 0.2,
+            hue: Math.random() > 0.4 ? 270 : 160
           });
         }
       }
-
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (var i = 0; i < particles.length; i++) {
           for (var j = i + 1; j < particles.length; j++) {
-            var dx = particles[i].x - particles[j].x;
-            var dy = particles[i].y - particles[j].y;
+            var dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
             var dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < cDist) {
-              var a = (1 - dist / cDist) * 0.08;
-              ctx.strokeStyle = 'rgba(99, 49, 200, ' + a + ')';
-              ctx.lineWidth = 0.5;
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.stroke();
+              ctx.strokeStyle = 'rgba(123, 60, 245, ' + ((1 - dist / cDist) * 0.07) + ')';
+              ctx.lineWidth = 0.5; ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
             }
           }
         }
         for (var k = 0; k < particles.length; k++) {
           var p = particles[k];
-          if (!isMobile) {
-            var mdx = mouse.x - p.x, mdy = mouse.y - p.y;
-            var md = Math.sqrt(mdx * mdx + mdy * mdy);
-            if (md < 200) { var f = (200 - md) / 200 * 0.01; p.vx += mdx * f; p.vy += mdy * f; }
-          }
+          if (!isMobile) { var mdx = mouse.x - p.x, mdy = mouse.y - p.y, md = Math.sqrt(mdx * mdx + mdy * mdy); if (md < 200) { var f = (200 - md) / 200 * 0.008; p.vx += mdx * f; p.vy += mdy * f; } }
           p.x += p.vx; p.y += p.vy; p.vx *= 0.99; p.vy *= 0.99;
           if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
           if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
-          var clr = p.hue === 270 ? 'rgba(175, 148, 228, ' + p.alpha + ')' : 'rgba(90, 166, 150, ' + p.alpha + ')';
-          ctx.fillStyle = clr;
+          ctx.fillStyle = p.hue === 270 ? 'rgba(196, 161, 255, ' + p.alpha + ')' : 'rgba(90, 236, 197, ' + p.alpha + ')';
           ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
         }
         raf = requestAnimationFrame(draw);
       }
-
       resize(); create(); draw();
-
-      var resizeTimer;
-      window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-          isMobile = window.innerWidth < 810;
-          pCount = isMobile ? 20 : 55;
-          resize(); create();
-        }, 150);
-      });
-
+      window.addEventListener('resize', function() { isMobile = window.innerWidth < 810; resize(); create(); });
       if (!isMobile) {
         document.querySelector('.hero').addEventListener('mousemove', function(e) { var r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
         document.querySelector('.hero').addEventListener('mouseleave', function() { mouse.x = -1000; mouse.y = -1000; });
       }
-
       var hObs = new IntersectionObserver(function(e) {
         if (e[0].isIntersecting) { if (!raf) draw(); } else { if (raf) { cancelAnimationFrame(raf); raf = null; } }
       }, { threshold: 0 });
       hObs.observe(canvas.parentElement);
     })();
 
+    // ── DRIVING ANIMATION SYSTEM ──
+    (function() {
+      if (reducedMotion || isMobile) return;
+      var canvas = document.querySelector('.drive-canvas');
+      var ctx = canvas.getContext('2d');
+      var W, H, maxScroll, lastScroll = 0, scrollDelta = 0;
+      var particles = [];
+      var MAX_PARTICLES = 120;
+
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; maxScroll = document.documentElement.scrollHeight - H; }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Vehicle configs
+      var vehicles = [
+        { x: 0, y: 0, w: 56, h: 24, color: '#7b3cf5', glow: 'rgba(123,60,245,0.5)', trail: 'rgba(123,60,245,', pathFn: function(p) { return { x: -80 + p * (W + 160), y: H * 0.2 + Math.sin(p * Math.PI * 3) * 40 }; }, wheelR: 5 },
+        { x: 0, y: 0, w: 48, h: 20, color: '#00d9a4', glow: 'rgba(0,217,164,0.5)', trail: 'rgba(0,217,164,', pathFn: function(p) { return { x: W + 80 - p * (W + 160), y: H * 0.55 + Math.cos(p * Math.PI * 2.5) * 50 }; }, wheelR: 4 },
+        { x: 0, y: 0, w: 40, h: 18, color: '#c4a1ff', glow: 'rgba(196,161,255,0.4)', trail: 'rgba(196,161,255,', pathFn: function(p) { return { x: -60 + p * (W + 120), y: H * 0.8 + Math.sin(p * Math.PI * 4) * 30 }; }, wheelR: 3.5 }
+      ];
+
+      function drawVehicle(v, scrollPct) {
+        var pos = v.pathFn(scrollPct);
+        v.x = pos.x; v.y = pos.y;
+        var dir = scrollPct > 0.001 ? v.pathFn(scrollPct + 0.001) : v.pathFn(scrollPct);
+        var angle = Math.atan2(dir.y - pos.y, dir.x - pos.x);
+
+        ctx.save();
+        ctx.translate(v.x, v.y);
+        ctx.rotate(angle);
+
+        // Glow
+        ctx.shadowColor = v.color;
+        ctx.shadowBlur = 18;
+
+        // Body
+        ctx.fillStyle = v.color;
+        ctx.beginPath();
+        ctx.roundRect(-v.w / 2, -v.h / 2, v.w, v.h, 6);
+        ctx.fill();
+
+        // Windshield
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.beginPath();
+        ctx.roundRect(v.w / 2 - 16, -v.h / 2 + 3, 12, v.h - 6, 3);
+        ctx.fill();
+
+        // Headlight
+        ctx.shadowColor = '#fff';
+        ctx.shadowBlur = 12;
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.beginPath();
+        ctx.arc(v.w / 2 - 2, -v.h / 4, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(v.w / 2 - 2, v.h / 4, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Wheels
+        ctx.shadowBlur = 0;
+        var wheelSpin = scrollPct * 360 * 6;
+        [-1, 1].forEach(function(side) {
+          ctx.save();
+          ctx.translate(-v.w / 3, side * (v.h / 2 + 1));
+          ctx.rotate(wheelSpin * Math.PI / 180);
+          ctx.fillStyle = 'rgba(255,255,255,0.6)';
+          ctx.beginPath(); ctx.arc(0, 0, v.wheelR, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+          ctx.lineWidth = 0.5;
+          ctx.beginPath(); ctx.moveTo(-v.wheelR, 0); ctx.lineTo(v.wheelR, 0); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(0, -v.wheelR); ctx.lineTo(0, v.wheelR); ctx.stroke();
+          ctx.restore();
+
+          ctx.save();
+          ctx.translate(v.w / 4, side * (v.h / 2 + 1));
+          ctx.rotate(wheelSpin * Math.PI / 180);
+          ctx.fillStyle = 'rgba(255,255,255,0.6)';
+          ctx.beginPath(); ctx.arc(0, 0, v.wheelR, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        });
+
+        ctx.restore();
+
+        // Spawn trail particles
+        if (Math.abs(scrollDelta) > 0.5 && particles.length < MAX_PARTICLES) {
+          for (var t = 0; t < 2; t++) {
+            particles.push({
+              x: v.x - Math.cos(angle) * v.w / 2,
+              y: v.y - Math.sin(angle) * v.w / 2,
+              vx: (Math.random() - 0.5) * 1.5 - Math.cos(angle) * 1,
+              vy: (Math.random() - 0.5) * 1.5 - Math.sin(angle) * 1,
+              life: 1, decay: 0.02 + Math.random() * 0.015,
+              size: 1.5 + Math.random() * 2,
+              color: v.trail
+            });
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, W, H);
+
+        var scrollPct = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+        scrollDelta = window.scrollY - lastScroll;
+        lastScroll = window.scrollY;
+
+        // Draw particles
+        for (var i = particles.length - 1; i >= 0; i--) {
+          var p = particles[i];
+          p.x += p.vx; p.y += p.vy;
+          p.vx *= 0.96; p.vy *= 0.96;
+          p.life -= p.decay;
+          if (p.life <= 0) { particles.splice(i, 1); continue; }
+          ctx.fillStyle = p.color + (p.life * 0.5) + ')';
+          ctx.shadowColor = p.color + '0.3)';
+          ctx.shadowBlur = 6;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+
+        // Draw vehicles
+        vehicles.forEach(function(v) { drawVehicle(v, scrollPct); });
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
     // ── ANIMATED COUNTERS ──
     (function() {
-      var counted = false;
-      var counters = document.querySelectorAll('[data-count]');
-      function go() {
-        if (counted) return; counted = true;
-        counters.forEach(function(el) {
+      var counted = new Set();
+      var allCounters = document.querySelectorAll('[data-count]');
+      function animateCounters(els) {
+        els.forEach(function(el) {
+          if (counted.has(el)) return;
+          counted.add(el);
           var target = parseFloat(el.getAttribute('data-count'));
           var pre = el.getAttribute('data-prefix') || '';
           var suf = el.getAttribute('data-suffix') || '';
-          var dur = 2000, start = performance.now();
+          var dur = 1800, start = performance.now();
           function step(now) {
             var p = Math.min((now - start) / dur, 1);
             var e = 1 - Math.pow(1 - p, 3);
-            var c = e * target;
-            el.textContent = pre + Math.floor(c) + suf;
+            el.textContent = pre + Math.floor(e * target) + suf;
             if (p < 1) requestAnimationFrame(step);
           }
           requestAnimationFrame(step);
         });
       }
-      if (counters.length) {
-        var obs = new IntersectionObserver(function(e) { e.forEach(function(en) { if (en.isIntersecting) { go(); obs.disconnect(); } }); }, { threshold: 0.3 });
-        obs.observe(document.querySelector('.proof-metrics') || document.querySelector('.metrics') || counters[0]);
-      }
-    })();
-
-    // ── SPOTLIGHT MOUSE-FOLLOW ──
-    if (!isMobile && !reducedMotion) {
-      document.querySelectorAll('.spotlight-grid').forEach(function(grid) {
-        grid.addEventListener('mousemove', function(e) {
-          var r = grid.getBoundingClientRect();
-          grid.style.setProperty('--spot-x', (e.clientX - r.left) + 'px');
-          grid.style.setProperty('--spot-y', (e.clientY - r.top) + 'px');
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(en) {
+          if (en.isIntersecting) { animateCounters(en.target.querySelectorAll('[data-count]')); }
         });
-      });
-    }
+      }, { threshold: 0.3 });
+      document.querySelectorAll('.cred-bar, .proof-grid').forEach(function(el) { obs.observe(el); });
+    })();
 
     // ── SHINY BUTTON MOUSE-FOLLOW ──
     if (!isMobile) {
@@ -1312,13 +1098,10 @@
     });
 
     // ── SCROLL REVEAL ──
-    var allReveals = document.querySelectorAll('.reveal, .reveal-blur');
+    var allReveals = document.querySelectorAll('.reveal');
     var revealObs = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObs.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObs.unobserve(entry.target); }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
     allReveals.forEach(function(el) { revealObs.observe(el); });
@@ -1326,9 +1109,8 @@
     // ── MOBILE CTA ──
     var mobileCta = document.querySelector('.mobile-cta');
     if (mobileCta) {
-      mobileCta.style.transform = 'translateY(100%)';
-      mobileCta.style.opacity = '0';
-      mobileCta.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s';
+      mobileCta.style.transform = 'translateY(100%)'; mobileCta.style.opacity = '0';
+      mobileCta.style.transition = 'transform 0.3s var(--ease-snap), opacity 0.2s';
       window.addEventListener('scroll', function() {
         if (window.scrollY > 600) { mobileCta.style.transform = 'translateY(0)'; mobileCta.style.opacity = '1'; }
         else { mobileCta.style.transform = 'translateY(100%)'; mobileCta.style.opacity = '0'; }
