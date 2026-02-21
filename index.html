@@ -519,6 +519,12 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 810px) {
+      .hero { padding: 64px 16px 24px; min-height: auto; }
+      .hero h1 { font-size: clamp(1.6rem, 7vw, 2.2rem); margin-bottom: 10px; }
+      .hero-sub { font-size: 0.85rem; margin: 0 auto 12px; line-height: 1.5; }
+      .hero-badge { font-size: 0.65rem; padding: 6px 16px; margin-bottom: 10px; }
+      .vsl-wrap { margin: 0 auto 16px; }
+      .btn { padding: 14px 32px; font-size: 1rem; }
       section { padding: 72px 0; }
       .section-fade { height: 60px; }
       .nav-links a:not(.nav-cta) { display: none; }
@@ -1541,7 +1547,7 @@
           r = springStep(sp.hT, sp.hTV, tgt.headTilt, CHAR_SPRING, CHAR_DAMP); sp.hT = r.v; sp.hTV = r.vel;
           r = springStep(sp.vP, sp.vPV, tgt.visorPulse, 0.05, 0.9); sp.vP = r.v; sp.vPV = r.vel;
 
-          ctx.globalAlpha = d.opacity;
+          ctx.globalAlpha = isMobile ? d.opacity * 0.45 : d.opacity;
           drawF1Driver(cx, cy + sp.bounce, d.scale, {
             wobble: sp.wobble, squashX: sp.sqX, squashY: sp.sqY,
             armL: sp.aL, armR: sp.aR, headTilt: sp.hT, visorPulse: sp.vP
@@ -1549,10 +1555,17 @@
 
           // ── SPEECH BUBBLE ──
           if (d.quote && d.opacity > 0.3) {
-            var bFontSize = isMobile ? 9 : 11;
-            var bLineH = isMobile ? 13 : 16;
-            var bx = d.side === 'left' ? cx + d.scale * 28 : cx - d.scale * 28;
-            var by = cy + sp.bounce - d.scale * 30;
+            var bFontSize = isMobile ? 8 : 11;
+            var bLineH = isMobile ? 11 : 16;
+            var bx, by;
+            if (isMobile) {
+              // On mobile: bubble centered above the character, out of the content area
+              bx = cx;
+              by = cy + sp.bounce - d.scale * 42;
+            } else {
+              bx = d.side === 'left' ? cx + d.scale * 28 : cx - d.scale * 28;
+              by = cy + sp.bounce - d.scale * 30;
+            }
             var maxW = isMobile ? 140 : 180;
             ctx.font = bFontSize + 'px "Space Mono", monospace';
             var words = d.quote.split(' ');
@@ -1565,13 +1578,16 @@
             if (line) lines.push(line);
             var bW = Math.min(maxW, Math.max.apply(null, lines.map(function(l) { return ctx.measureText(l).width; })) + 20);
             var bH = lines.length * bLineH + 14;
-            var bLeft = d.side === 'left' ? bx : bx - bW;
-            // Clamp bubble to screen edges on mobile
+            var bLeft;
             if (isMobile) {
+              // Center bubble above the character
+              bLeft = bx - bW / 2;
               if (bLeft < 4) bLeft = 4;
               if (bLeft + bW > W - 4) bLeft = W - 4 - bW;
+            } else {
+              bLeft = d.side === 'left' ? bx : bx - bW;
             }
-            ctx.globalAlpha = d.opacity * 0.9;
+            ctx.globalAlpha = isMobile ? d.opacity * 0.85 : d.opacity * 0.9;
             ctx.fillStyle = 'rgba(17, 17, 51, 0.88)';
             ctx.strokeStyle = 'rgba(123, 60, 245, 0.35)';
             ctx.lineWidth = 1;
