@@ -602,7 +602,7 @@
           </div>
           <h3>Kabrin Johal</h3>
           <div class="founder-role">Co-Founder</div>
-          <p class="founder-bio">Started in fitness. Opened and operated 11 Orange Theory Fitness franchise locations, managing 400+ staff across all locations. Exited in 2020. Went online. Tried dropshipping. Pivoted to high-ticket dropshipping and sold to a major Vegas hotel chain. April 2024: launched Crafted Marketing and built the entire fulfillment engine on AI. $3M+ in total revenue generated across marketing, sales, and operations. All fulfilled through AI systems.</p>
+          <p class="founder-bio">Started in the fitness industry at 22. Opened and operated 11 Orange Theory Fitness franchise locations across multiple markets, building teams of 400+ staff and managing multi-location P&Ls, operations, and marketing. Led the portfolio to a successful exit in 2020. Transitioned to e-commerce with high-ticket dropshipping, landing a distribution deal with a major Las Vegas hotel chain. In April 2024, launched an AI-first marketing agency in the information product space, building the entire fulfillment engine on agentic workflows. $3M+ in total revenue generated across marketing, sales, and operations. Every deliverable, every system, every client result. Fulfilled through AI.</p>
         </div>
         <div class="founder-card reveal">
           <div class="founder-photo-wrap gradient-border">
@@ -627,8 +627,8 @@
           <div class="cred-label">Staff managed across brick-and-mortar operations</div>
         </div>
         <div class="glass-card cred-item reveal">
-          <div class="cred-num" data-count="36" data-prefix="$" data-suffix="K">0</div>
-          <div class="cred-label">Revenue in first soft launch week</div>
+          <div class="cred-num" data-count="2">0</div>
+          <div class="cred-label">Businesses running fully automated on AI</div>
         </div>
       </div>
       <p class="founder-closing reveal">The page you're reading right now was built with the same system you'd be getting.</p>
@@ -643,7 +643,7 @@
       <div class="section-label reveal">THE SYSTEM</div>
       <h2 class="section-heading reveal">This is what it does. <span class="shimmer">Not what we say it does.</span></h2>
       <div class="section-body reveal">
-        <p>We don't have 47 testimonials from students yet. We're not going to fake it. Here's what we do have: two businesses that run on this system every day, $36K in revenue from our first soft launch week, and the numbers to prove it works.</p>
+        <p>We don't have 47 testimonials from students yet. We're not going to fake it. Here's what we do have: two businesses that run on this system every day and the numbers to prove it works.</p>
       </div>
       <div class="proof-grid">
         <div class="glass-card proof-card gradient-border reveal">
@@ -651,8 +651,8 @@
           <div class="proof-label">Combined revenue through AI-powered systems</div>
         </div>
         <div class="glass-card proof-card gradient-border reveal">
-          <div class="proof-num" data-prefix="$" data-count="36" data-suffix="K">0</div>
-          <div class="proof-label">Revenue generated in first soft launch week</div>
+          <div class="proof-num" data-count="2">0</div>
+          <div class="proof-label">Businesses running fully automated, closed-loop AI operations</div>
         </div>
         <div class="glass-card proof-card gradient-border reveal">
           <div class="proof-num" data-count="60" data-suffix=" days">0</div>
@@ -841,7 +841,7 @@
       <div class="section-label reveal">TAKE THE NEXT STEP</div>
       <h2 class="section-heading reveal">Your investment back in 60 days. <span class="shimmer">Or we work for free.</span></h2>
       <div class="section-body reveal">
-        <p>Both of us run our businesses on this system. It works because we built it under real conditions, with real pressure, for real results. $36K in our first soft launch week.</p>
+        <p>Both of us run our businesses on this system. It works because we built it under real conditions, with real pressure, for real results. Two businesses running on it every single day.</p>
         <p>The question is whether you're going to keep watching from the sidelines or let two people who've already built this plug it into your business this week.</p>
       </div>
       <div class="cta-stats reveal">
@@ -861,8 +861,8 @@
   <!-- FOOTER -->
   <footer>
     <div class="container">
-      <p>AI Drivers. Built by Crafted Marketing + Arbory LLC.</p>
-      <p><a href="mailto:kabrin@craftedmarketing.io">kabrin@craftedmarketing.io</a></p>
+      <p>AI Drivers. Built by Kabrin Johal + Elijah Bricker.</p>
+      <p><a href="mailto:kabrin@aidrivers.io">kabrin@aidrivers.io</a></p>
       <p>&copy; 2026 AI Drivers. All rights reserved.</p>
     </div>
   </footer>
@@ -968,17 +968,46 @@
       var MAX_TRAILS = 80;
       var time = 0;
 
-      // Spring physics for bouncy Pudgy-style movement
-      var car = {
-        x: 0, y: 0, targetY: 0, vy: 0,
-        bobPhase: 0, tilt: 0, targetTilt: 0,
-        squash: 1, targetSquash: 1,
-        scale: 1
-      };
+      // Spring physics constants
       var SPRING = 0.06;
       var DAMPING = 0.82;
       var BOB_SPEED = 0.025;
       var BOB_AMP = 6;
+      var CHAR_SPRING = 0.08;
+      var CHAR_DAMP = 0.82;
+
+      // ── SPRING HELPER ──
+      function springStep(cur, vel, tgt, k, d) {
+        vel += (tgt - cur) * k;
+        vel *= d;
+        return { v: cur + vel, vel: vel };
+      }
+
+      // ── CAR STATE ──
+      var car = {
+        x: 0, y: 0, vy: 0,
+        bobPhase: 0, tilt: 0, targetTilt: 0,
+        squash: 1, targetSquash: 1,
+        facing: 1, facingSmooth: 1
+      };
+
+      // ── WAYPOINT ROUTE (scroll% -> position + facing) ──
+      var waypoints = [
+        { s: 0.00, x: 0.80, y: 0.20, f:  1 },
+        { s: 0.08, x: 0.90, y: 0.50, f:  1 },
+        { s: 0.15, x: 0.70, y: 0.70, f: -1 },
+        { s: 0.22, x: 0.20, y: 0.40, f: -1 },
+        { s: 0.30, x: 0.10, y: 0.60, f: -1 },
+        { s: 0.38, x: 0.30, y: 0.80, f:  1 },
+        { s: 0.45, x: 0.85, y: 0.30, f:  1 },
+        { s: 0.52, x: 0.75, y: 0.70, f:  1 },
+        { s: 0.60, x: 0.50, y: 0.50, f: -1 },
+        { s: 0.68, x: 0.15, y: 0.30, f: -1 },
+        { s: 0.75, x: 0.25, y: 0.70, f:  1 },
+        { s: 0.82, x: 0.80, y: 0.40, f:  1 },
+        { s: 0.90, x: 0.60, y: 0.60, f: -1 },
+        { s: 1.00, x: 0.50, y: 0.50, f:  1 }
+      ];
 
       function resize() {
         W = canvas.width = window.innerWidth;
@@ -989,159 +1018,312 @@
       window.addEventListener('resize', resize);
 
       function getCarPos(scrollPct) {
-        // Car drives a sinusoidal path across the right side of the screen
-        var pathX = W * 0.75 + Math.sin(scrollPct * Math.PI * 4) * (W * 0.15);
-        var pathY = H * 0.15 + scrollPct * (H * 0.7);
-        return { x: pathX, y: pathY };
+        var prev = waypoints[0], next = waypoints[waypoints.length - 1];
+        for (var i = 0; i < waypoints.length - 1; i++) {
+          if (scrollPct >= waypoints[i].s && scrollPct <= waypoints[i + 1].s) {
+            prev = waypoints[i]; next = waypoints[i + 1]; break;
+          }
+        }
+        var range = next.s - prev.s;
+        var t = range > 0 ? (scrollPct - prev.s) / range : 0;
+        t = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        return {
+          x: (prev.x + (next.x - prev.x) * t) * W,
+          y: (prev.y + (next.y - prev.y) * t) * H,
+          f: t < 0.5 ? prev.f : next.f
+        };
       }
 
-      function drawF1Car(x, y, tilt, squashX, squashY) {
+      // ── DRAW F1 CAR (with facing direction) ──
+      function drawF1Car(x, y, tilt, squashX, squashY, facing) {
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(tilt);
-        ctx.scale(squashX, squashY);
-
-        var s = 1.1; // scale factor
+        ctx.scale(squashX * facing, squashY);
+        var s = 1.1;
 
         // Neon underglow
-        ctx.shadowColor = '#7b3cf5';
-        ctx.shadowBlur = 30;
+        ctx.shadowColor = '#7b3cf5'; ctx.shadowBlur = 30;
         ctx.fillStyle = 'rgba(123, 60, 245, 0.08)';
-        ctx.beginPath();
-        ctx.ellipse(0, 14 * s, 50 * s, 8 * s, 0, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.ellipse(0, 14 * s, 50 * s, 8 * s, 0, 0, Math.PI * 2); ctx.fill();
         ctx.shadowBlur = 0;
 
         // Rear wing supports
-        ctx.strokeStyle = 'rgba(196, 161, 255, 0.6)';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(196, 161, 255, 0.6)'; ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(-38 * s, -4 * s); ctx.lineTo(-42 * s, -18 * s);
         ctx.moveTo(-32 * s, -4 * s); ctx.lineTo(-36 * s, -18 * s);
         ctx.stroke();
 
         // Rear wing
-        ctx.fillStyle = '#7b3cf5';
-        ctx.shadowColor = '#7b3cf5';
-        ctx.shadowBlur = 12;
-        ctx.beginPath();
-        ctx.roundRect(-48 * s, -22 * s, 22 * s, 6 * s, 2);
-        ctx.fill();
+        ctx.fillStyle = '#7b3cf5'; ctx.shadowColor = '#7b3cf5'; ctx.shadowBlur = 12;
+        ctx.beginPath(); ctx.roundRect(-48 * s, -22 * s, 22 * s, 6 * s, 2); ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Main body (monocoque)
+        // Main body
         var bodyGrad = ctx.createLinearGradient(-40 * s, 0, 50 * s, 0);
-        bodyGrad.addColorStop(0, '#5a2ab5');
-        bodyGrad.addColorStop(0.4, '#7b3cf5');
-        bodyGrad.addColorStop(1, '#9b6ff5');
+        bodyGrad.addColorStop(0, '#5a2ab5'); bodyGrad.addColorStop(0.4, '#7b3cf5'); bodyGrad.addColorStop(1, '#9b6ff5');
         ctx.fillStyle = bodyGrad;
         ctx.beginPath();
-        ctx.moveTo(-36 * s, -6 * s);
-        ctx.lineTo(-36 * s, 8 * s);
+        ctx.moveTo(-36 * s, -6 * s); ctx.lineTo(-36 * s, 8 * s);
         ctx.quadraticCurveTo(-20 * s, 12 * s, 10 * s, 10 * s);
-        ctx.lineTo(48 * s, 4 * s);
-        ctx.lineTo(52 * s, 0);
-        ctx.lineTo(48 * s, -2 * s);
-        ctx.lineTo(10 * s, -6 * s);
-        ctx.quadraticCurveTo(-5 * s, -12 * s, -20 * s, -10 * s);
-        ctx.closePath();
-        ctx.fill();
+        ctx.lineTo(48 * s, 4 * s); ctx.lineTo(52 * s, 0); ctx.lineTo(48 * s, -2 * s);
+        ctx.lineTo(10 * s, -6 * s); ctx.quadraticCurveTo(-5 * s, -12 * s, -20 * s, -10 * s);
+        ctx.closePath(); ctx.fill();
 
         // Neon stripe
-        ctx.strokeStyle = '#00d9a4';
-        ctx.lineWidth = 1.5;
-        ctx.shadowColor = '#00d9a4';
-        ctx.shadowBlur = 8;
-        ctx.beginPath();
-        ctx.moveTo(-30 * s, 1 * s);
-        ctx.quadraticCurveTo(10 * s, -2 * s, 48 * s, 1 * s);
-        ctx.stroke();
+        ctx.strokeStyle = '#00d9a4'; ctx.lineWidth = 1.5;
+        ctx.shadowColor = '#00d9a4'; ctx.shadowBlur = 8;
+        ctx.beginPath(); ctx.moveTo(-30 * s, 1 * s);
+        ctx.quadraticCurveTo(10 * s, -2 * s, 48 * s, 1 * s); ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Cockpit opening
+        // Cockpit
         ctx.fillStyle = 'rgba(5, 5, 31, 0.7)';
-        ctx.beginPath();
-        ctx.ellipse(-5 * s, -6 * s, 12 * s, 7 * s, -0.1, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.ellipse(-5 * s, -6 * s, 12 * s, 7 * s, -0.1, 0, Math.PI * 2); ctx.fill();
 
-        // Halo (safety device)
-        ctx.strokeStyle = 'rgba(196, 161, 255, 0.7)';
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(-16 * s, -7 * s);
-        ctx.quadraticCurveTo(-5 * s, -16 * s, 6 * s, -7 * s);
-        ctx.stroke();
+        // Halo
+        ctx.strokeStyle = 'rgba(196, 161, 255, 0.7)'; ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.moveTo(-16 * s, -7 * s);
+        ctx.quadraticCurveTo(-5 * s, -16 * s, 6 * s, -7 * s); ctx.stroke();
 
-        // Driver helmet
+        // Helmet
         ctx.fillStyle = '#1a1a3e';
-        ctx.beginPath();
-        ctx.arc(-5 * s, -9 * s, 7 * s, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(-5 * s, -9 * s, 7 * s, 0, Math.PI * 2); ctx.fill();
 
-        // AI Visor (glowing)
+        // AI Visor
         var visorGrad = ctx.createLinearGradient(-10 * s, -10 * s, 2 * s, -8 * s);
-        visorGrad.addColorStop(0, '#00d9a4');
-        visorGrad.addColorStop(1, '#7b3cf5');
-        ctx.fillStyle = visorGrad;
-        ctx.shadowColor = '#00d9a4';
-        ctx.shadowBlur = 10;
-        ctx.beginPath();
-        ctx.ellipse(-3 * s, -9 * s, 5 * s, 2.5 * s, -0.1, 0, Math.PI * 2);
-        ctx.fill();
+        visorGrad.addColorStop(0, '#00d9a4'); visorGrad.addColorStop(1, '#7b3cf5');
+        ctx.fillStyle = visorGrad; ctx.shadowColor = '#00d9a4'; ctx.shadowBlur = 10;
+        ctx.beginPath(); ctx.ellipse(-3 * s, -9 * s, 5 * s, 2.5 * s, -0.1, 0, Math.PI * 2); ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Front wing
-        ctx.fillStyle = '#7b3cf5';
-        ctx.shadowColor = '#7b3cf5';
-        ctx.shadowBlur = 6;
-        ctx.beginPath();
-        ctx.roundRect(44 * s, -4 * s, 10 * s, 2 * s, 1);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.roundRect(44 * s, 4 * s, 10 * s, 2 * s, 1);
-        ctx.fill();
+        // Front wings
+        ctx.fillStyle = '#7b3cf5'; ctx.shadowColor = '#7b3cf5'; ctx.shadowBlur = 6;
+        ctx.beginPath(); ctx.roundRect(44 * s, -4 * s, 10 * s, 2 * s, 1); ctx.fill();
+        ctx.beginPath(); ctx.roundRect(44 * s, 4 * s, 10 * s, 2 * s, 1); ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Front nose cone
+        // Nose cone
         ctx.fillStyle = '#9b6ff5';
-        ctx.beginPath();
-        ctx.moveTo(48 * s, -2 * s);
-        ctx.lineTo(56 * s, 0);
-        ctx.lineTo(48 * s, 2 * s);
-        ctx.closePath();
-        ctx.fill();
+        ctx.beginPath(); ctx.moveTo(48 * s, -2 * s); ctx.lineTo(56 * s, 0); ctx.lineTo(48 * s, 2 * s);
+        ctx.closePath(); ctx.fill();
 
-        // Rear wheels
+        // Wheels
         var wheelSpin = time * 3;
         [[-28, 10], [-28, -8]].forEach(function(pos) {
-          ctx.save();
-          ctx.translate(pos[0] * s, pos[1] * s);
-          ctx.rotate(wheelSpin);
+          ctx.save(); ctx.translate(pos[0] * s, pos[1] * s); ctx.rotate(wheelSpin);
           ctx.fillStyle = 'rgba(40, 40, 80, 0.9)';
           ctx.beginPath(); ctx.arc(0, 0, 6 * s, 0, Math.PI * 2); ctx.fill();
-          ctx.strokeStyle = 'rgba(196, 161, 255, 0.4)';
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = 'rgba(196, 161, 255, 0.4)'; ctx.lineWidth = 1;
           ctx.beginPath(); ctx.moveTo(-5 * s, 0); ctx.lineTo(5 * s, 0); ctx.stroke();
           ctx.beginPath(); ctx.moveTo(0, -5 * s); ctx.lineTo(0, 5 * s); ctx.stroke();
           ctx.restore();
         });
-
-        // Front wheels
         [[38, 6], [38, -4]].forEach(function(pos) {
-          ctx.save();
-          ctx.translate(pos[0] * s, pos[1] * s);
-          ctx.rotate(wheelSpin);
+          ctx.save(); ctx.translate(pos[0] * s, pos[1] * s); ctx.rotate(wheelSpin);
           ctx.fillStyle = 'rgba(40, 40, 80, 0.9)';
           ctx.beginPath(); ctx.arc(0, 0, 4.5 * s, 0, Math.PI * 2); ctx.fill();
-          ctx.strokeStyle = 'rgba(196, 161, 255, 0.4)';
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = 'rgba(196, 161, 255, 0.4)'; ctx.lineWidth = 1;
           ctx.beginPath(); ctx.moveTo(-4 * s, 0); ctx.lineTo(4 * s, 0); ctx.stroke();
           ctx.restore();
         });
+        ctx.restore();
+      }
+
+      // ── DRAW F1 DRIVER MASCOT (Pudgy Penguins chibi style) ──
+      function drawF1Driver(x, y, scale, a) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(scale, scale);
+        ctx.rotate(a.wobble);
+
+        // Apply squash-and-stretch from center bottom
+        ctx.translate(0, 20);
+        ctx.scale(a.squashX, a.squashY);
+        ctx.translate(0, -20);
+
+        // Shadow under feet
+        ctx.fillStyle = 'rgba(123, 60, 245, 0.06)';
+        ctx.beginPath(); ctx.ellipse(0, 38, 18 * a.squashX, 4, 0, 0, Math.PI * 2); ctx.fill();
+
+        // Left arm (behind body)
+        ctx.save();
+        ctx.translate(-14, -2);
+        ctx.rotate(a.armL);
+        ctx.fillStyle = '#5a2ab5';
+        ctx.beginPath(); ctx.roundRect(-4, 0, 8, 18, 4); ctx.fill();
+        // Glove
+        ctx.fillStyle = '#1a1a3e';
+        ctx.beginPath(); ctx.arc(0, 18, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+
+        // Legs
+        ctx.fillStyle = '#1a1a3e';
+        ctx.beginPath(); ctx.roundRect(-10, 20, 8, 16, 4); ctx.fill();
+        ctx.beginPath(); ctx.roundRect(2, 20, 8, 16, 4); ctx.fill();
+        // Boots
+        ctx.fillStyle = '#7b3cf5';
+        ctx.beginPath(); ctx.roundRect(-11, 32, 10, 6, 3); ctx.fill();
+        ctx.beginPath(); ctx.roundRect(1, 32, 10, 6, 3); ctx.fill();
+
+        // Body / racing suit
+        var suitGrad = ctx.createLinearGradient(0, -10, 0, 22);
+        suitGrad.addColorStop(0, '#7b3cf5'); suitGrad.addColorStop(1, '#5a2ab5');
+        ctx.fillStyle = suitGrad;
+        ctx.beginPath();
+        ctx.moveTo(-14, -8);
+        ctx.quadraticCurveTo(-16, 8, -12, 22);
+        ctx.lineTo(12, 22);
+        ctx.quadraticCurveTo(16, 8, 14, -8);
+        ctx.closePath();
+        ctx.fill();
+
+        // Racing stripe (teal neon)
+        ctx.strokeStyle = '#00d9a4'; ctx.lineWidth = 2;
+        ctx.shadowColor = '#00d9a4'; ctx.shadowBlur = 6;
+        ctx.beginPath(); ctx.moveTo(0, -6); ctx.lineTo(0, 20); ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Number badge
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.beginPath(); ctx.arc(0, 4, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 7px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('AI', 0, 4);
+
+        // Right arm (in front of body)
+        ctx.save();
+        ctx.translate(14, -2);
+        ctx.rotate(a.armR);
+        ctx.fillStyle = '#7b3cf5';
+        ctx.beginPath(); ctx.roundRect(-4, 0, 8, 18, 4); ctx.fill();
+        // Glove
+        ctx.fillStyle = '#1a1a3e';
+        ctx.beginPath(); ctx.arc(0, 18, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+
+        // Helmet (big head)
+        ctx.save();
+        ctx.rotate(a.headTilt);
+        ctx.fillStyle = '#1a1a3e';
+        ctx.beginPath(); ctx.arc(0, -22, 18, 0, Math.PI * 2); ctx.fill();
+
+        // Helmet accent stripe
+        ctx.strokeStyle = '#7b3cf5'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(0, -22, 18, -2.5, -0.6); ctx.stroke();
+
+        // AI Visor (glowing)
+        var vGrad = ctx.createLinearGradient(-12, -22, 12, -22);
+        vGrad.addColorStop(0, '#00d9a4'); vGrad.addColorStop(1, '#7b3cf5');
+        ctx.fillStyle = vGrad;
+        ctx.shadowColor = '#00d9a4'; ctx.shadowBlur = 8 + a.visorPulse * 8;
+        ctx.beginPath(); ctx.ellipse(2, -20, 12, 5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Visor reflection
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.beginPath(); ctx.ellipse(-3, -22, 4, 2, -0.3, 0, Math.PI * 2); ctx.fill();
+
+        // Helmet highlight
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        ctx.beginPath(); ctx.arc(-6, -32, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
 
         ctx.restore();
       }
 
+      // ── ANIMATION FUNCTIONS (return target values) ──
+      function animIdle(t) {
+        return {
+          wobble: Math.sin(t * 1.2) * 0.06,
+          bounce: Math.sin(t * 2.4) * 2,
+          squashX: 1 + Math.sin(t * 2.4) * 0.02,
+          squashY: 1 - Math.sin(t * 2.4) * 0.02,
+          armL: Math.sin(t * 1.2 + 0.3) * 0.08,
+          armR: Math.sin(t * 1.2 - 0.3) * 0.08,
+          headTilt: Math.sin(t * 0.8) * 0.03,
+          visorPulse: 0.5 + Math.sin(t * 0.8) * 0.3
+        };
+      }
+      function animWave(t) {
+        return {
+          wobble: Math.sin(t * 1.0) * 0.04,
+          bounce: Math.sin(t * 2.0) * 1.5,
+          squashX: 1, squashY: 1,
+          armL: Math.sin(t * 1.0) * 0.05,
+          armR: -1.2 + Math.sin(t * 4.0) * 0.4,
+          headTilt: Math.sin(t * 4.0) * 0.06,
+          visorPulse: 0.7
+        };
+      }
+      function animBounce(t) {
+        var phase = (t % 2.0) / 2.0;
+        var b = -Math.abs(Math.sin(phase * Math.PI)) * 15;
+        var landing = Math.abs(b) < 1;
+        var peak = phase > 0.15 && phase < 0.35;
+        return {
+          wobble: Math.sin(t * 1.5) * 0.03,
+          bounce: b,
+          squashX: landing ? 1.12 : (peak ? 0.9 : 1),
+          squashY: landing ? 0.88 : (peak ? 1.1 : 1),
+          armL: phase < 0.5 ? -0.5 : 0,
+          armR: phase < 0.5 ? -0.5 : 0,
+          headTilt: 0,
+          visorPulse: 0.6
+        };
+      }
+      function animLean(t, dir) {
+        return {
+          wobble: dir * 0.1,
+          bounce: Math.sin(t * 2.0) * 1.5,
+          squashX: 1, squashY: 1,
+          armL: dir > 0 ? 0.1 : -0.4,
+          armR: dir > 0 ? -0.4 : 0.1,
+          headTilt: dir * 0.08,
+          visorPulse: 0.5 + Math.sin(t * 0.8) * 0.2
+        };
+      }
+      function animCelebrate(t) {
+        return {
+          wobble: Math.sin(t * 3.0) * 0.08,
+          bounce: -Math.abs(Math.sin(t * 6.0)) * 10,
+          squashX: 1 + Math.sin(t * 6.0) * 0.04,
+          squashY: 1 - Math.sin(t * 6.0) * 0.04,
+          armL: -1.0 + Math.sin(t * 5.0) * 0.2,
+          armR: -1.0 + Math.sin(t * 5.0 + 0.5) * 0.2,
+          headTilt: -0.1,
+          visorPulse: 0.8 + Math.sin(t * 3.0) * 0.2
+        };
+      }
+
+      // ── DRIVER CHARACTER CONFIGS ──
+      var drivers = [
+        { sel: '#problem',   side: 'right', yPct: 0.35, anim: 'lean',      leanDir: -1, scale: 0.85, entry: 'wave' },
+        { sel: '#solution',  side: 'left',  yPct: 0.5,  anim: 'idle',      leanDir: 0,  scale: 0.9,  entry: 'wave' },
+        { sel: '#founders',  side: 'right', yPct: 0.25, anim: 'lean',      leanDir: -1, scale: 0.8,  entry: 'bounce' },
+        { sel: '#proof',     side: 'left',  yPct: 0.4,  anim: 'celebrate', leanDir: 0,  scale: 0.9,  entry: 'celebrate' },
+        { sel: '.final-cta', side: 'right', yPct: 0.5,  anim: 'bounce',   leanDir: 0,  scale: 1.0,  entry: 'celebrate' }
+      ];
+
+      // Initialize character state
+      drivers.forEach(function(d) {
+        d.el = document.querySelector(d.sel);
+        d.opacity = 0; d.entered = false; d.entryTimer = 0; d.currentAnim = d.anim;
+        d.sp = { wobble: 0, wV: 0, bounce: 0, bV: 0, sqX: 1, sqXV: 0, sqY: 1, sqYV: 0,
+                 aL: 0, aLV: 0, aR: 0, aRV: 0, hT: 0, hTV: 0, vP: 0.5, vPV: 0 };
+      });
+
+      function getAnimTargets(d, t) {
+        switch (d.currentAnim) {
+          case 'wave': return animWave(t);
+          case 'bounce': return animBounce(t);
+          case 'lean': return animLean(t, d.leanDir);
+          case 'celebrate': return animCelebrate(t);
+          default: return animIdle(t);
+        }
+      }
+
+      // ── MAIN ANIMATE LOOP ──
       function animate() {
         ctx.clearRect(0, 0, W, H);
         time += 0.016;
@@ -1151,70 +1333,119 @@
         scrollSpeed = scrollSpeed * 0.85 + newScrollSpeed * 0.15;
         lastScroll = window.scrollY;
 
-        // Target position from scroll
+        // ── CAR ──
         var target = getCarPos(scrollPct);
 
-        // Spring physics for Y (Pudgy-style bouncy movement)
+        // Spring Y
         var dy = target.y - car.y;
         car.vy += dy * SPRING;
         car.vy *= DAMPING;
         car.y += car.vy;
 
-        // Smooth X tracking
+        // Smooth X
         car.x += (target.x - car.x) * 0.08;
 
-        // Idle bobbing
+        // Smooth facing transition
+        car.facingSmooth += (target.f - car.facingSmooth) * 0.06;
+        var actualFacing = car.facingSmooth > 0 ? 1 : -1;
+
+        // Idle bob
         car.bobPhase += BOB_SPEED;
         var bob = Math.sin(car.bobPhase) * BOB_AMP;
 
-        // Tilt based on scroll direction (spring)
-        car.targetTilt = Math.max(-0.15, Math.min(0.15, scrollSpeed * 0.003));
+        // Path-based tilt
+        var ahead = getCarPos(Math.min(scrollPct + 0.005, 1));
+        var tdx = ahead.x - target.x, tdy = ahead.y - target.y;
+        var pathTilt = Math.atan2(tdy, Math.abs(tdx)) * 0.3;
+        car.targetTilt = pathTilt + Math.max(-0.1, Math.min(0.1, scrollSpeed * 0.002));
         car.tilt += (car.targetTilt - car.tilt) * 0.1;
 
-        // Squash-and-stretch on direction changes
+        // Squash
         var absSpeed = Math.abs(scrollSpeed);
         car.targetSquash = absSpeed > 5 ? 1.0 + absSpeed * 0.002 : 1.0;
         car.squash += (car.targetSquash - car.squash) * 0.15;
         var squashX = car.squash;
         var squashY = 2 - car.squash;
 
-        // Spawn trail particles when scrolling
+        // Trail particles (direction-aware)
         if (Math.abs(scrollSpeed) > 1 && trails.length < MAX_TRAILS) {
           trails.push({
-            x: car.x - 40, y: car.y + bob + (Math.random() - 0.5) * 8,
-            vx: -1.5 + Math.random() * -1, vy: (Math.random() - 0.5) * 0.8,
+            x: car.x + 40 * (-actualFacing), y: car.y + bob + (Math.random() - 0.5) * 8,
+            vx: (1.5 + Math.random()) * (-actualFacing), vy: (Math.random() - 0.5) * 0.8,
             life: 1, decay: 0.025 + Math.random() * 0.015,
             size: 2 + Math.random() * 3,
             hue: Math.random() > 0.5 ? 'rgba(123,60,245,' : 'rgba(0,217,164,'
           });
         }
-
-        // Draw + update trail particles
         for (var i = trails.length - 1; i >= 0; i--) {
           var p = trails[i];
-          p.x += p.vx; p.y += p.vy;
-          p.vx *= 0.97; p.vy *= 0.97;
-          p.life -= p.decay;
+          p.x += p.vx; p.y += p.vy; p.vx *= 0.97; p.vy *= 0.97; p.life -= p.decay;
           if (p.life <= 0) { trails.splice(i, 1); continue; }
           ctx.fillStyle = p.hue + (p.life * 0.4) + ')';
-          ctx.shadowColor = p.hue + '0.3)';
-          ctx.shadowBlur = 6;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.shadowColor = p.hue + '0.3)'; ctx.shadowBlur = 6;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2); ctx.fill();
         }
         ctx.shadowBlur = 0;
 
-        // Draw F1 car
-        drawF1Car(car.x, car.y + bob, car.tilt, squashX, squashY);
+        drawF1Car(car.x, car.y + bob, car.tilt, squashX, squashY, actualFacing);
+
+        // ── DRIVER CHARACTERS ──
+        for (var ci = 0; ci < drivers.length; ci++) {
+          var d = drivers[ci];
+          if (!d.el) continue;
+
+          var rect = d.el.getBoundingClientRect();
+          var isVis = rect.top < H + 100 && rect.bottom > -100;
+
+          // Fade
+          d.opacity += ((isVis ? 1 : 0) - d.opacity) * 0.08;
+          if (d.opacity < 0.01) continue;
+
+          // First entry
+          if (isVis && !d.entered) {
+            d.entered = true;
+            d.currentAnim = d.entry;
+            d.entryTimer = 0;
+          }
+          if (d.entered && d.currentAnim === d.entry && d.currentAnim !== d.anim) {
+            d.entryTimer += 0.016;
+            if (d.entryTimer > 3.0) d.currentAnim = d.anim;
+          }
+
+          // Position
+          var cx = d.side === 'left' ? W * 0.06 : W * 0.94;
+          var cy = rect.top + rect.height * d.yPct;
+          cy = Math.max(50, Math.min(H - 50, cy));
+
+          // Animation targets
+          var tgt = getAnimTargets(d, time + ci * 1.7);
+          var sp = d.sp;
+
+          // Spring each property
+          var r;
+          r = springStep(sp.wobble, sp.wV, tgt.wobble, CHAR_SPRING, CHAR_DAMP); sp.wobble = r.v; sp.wV = r.vel;
+          r = springStep(sp.bounce, sp.bV, tgt.bounce, CHAR_SPRING, CHAR_DAMP); sp.bounce = r.v; sp.bV = r.vel;
+          r = springStep(sp.sqX, sp.sqXV, tgt.squashX, CHAR_SPRING, CHAR_DAMP); sp.sqX = r.v; sp.sqXV = r.vel;
+          r = springStep(sp.sqY, sp.sqYV, tgt.squashY, CHAR_SPRING, CHAR_DAMP); sp.sqY = r.v; sp.sqYV = r.vel;
+          r = springStep(sp.aL, sp.aLV, tgt.armL, CHAR_SPRING, CHAR_DAMP); sp.aL = r.v; sp.aLV = r.vel;
+          r = springStep(sp.aR, sp.aRV, tgt.armR, CHAR_SPRING, CHAR_DAMP); sp.aR = r.v; sp.aRV = r.vel;
+          r = springStep(sp.hT, sp.hTV, tgt.headTilt, CHAR_SPRING, CHAR_DAMP); sp.hT = r.v; sp.hTV = r.vel;
+          r = springStep(sp.vP, sp.vPV, tgt.visorPulse, 0.05, 0.9); sp.vP = r.v; sp.vPV = r.vel;
+
+          ctx.globalAlpha = d.opacity;
+          drawF1Driver(cx, cy + sp.bounce, d.scale, {
+            wobble: sp.wobble, squashX: sp.sqX, squashY: sp.sqY,
+            armL: sp.aL, armR: sp.aR, headTilt: sp.hT, visorPulse: sp.vP
+          });
+          ctx.globalAlpha = 1;
+        }
 
         requestAnimationFrame(animate);
       }
 
-      // Initialize car position
+      // Initialize car
       var initPos = getCarPos(0);
-      car.x = initPos.x;
-      car.y = initPos.y;
+      car.x = initPos.x; car.y = initPos.y;
 
       animate();
     })();
