@@ -959,20 +959,20 @@
 
     // ── F1 DRIVER CHARACTER ANIMATION (Pudgy Penguins Style) ──
     (function() {
-      if (reducedMotion || isMobile) return;
+      if (reducedMotion) return;
       var canvas = document.querySelector('.f1-canvas');
       var ctx = canvas.getContext('2d');
       var W, H, maxScroll;
       var lastScroll = 0, scrollSpeed = 0;
       var trails = [];
-      var MAX_TRAILS = 80;
+      var MAX_TRAILS = isMobile ? 30 : 80;
       var time = 0;
 
       // Spring physics constants
       var SPRING = 0.06;
       var DAMPING = 0.82;
       var BOB_SPEED = 0.025;
-      var BOB_AMP = 6;
+      var BOB_AMP = isMobile ? 3 : 6;
       var CHAR_SPRING = 0.08;
       var CHAR_DAMP = 0.82;
 
@@ -992,7 +992,12 @@
       };
 
       // ── WAYPOINT ROUTE (scroll% -> position + facing) ──
-      var waypoints = [
+      var waypoints = isMobile ? [
+        // Mobile: straight line down the right edge, always facing down (facing right)
+        { s: 0.00, x: 0.88, y: 0.10, f: 1 },
+        { s: 0.50, x: 0.88, y: 0.50, f: 1 },
+        { s: 1.00, x: 0.88, y: 0.90, f: 1 }
+      ] : [
         { s: 0.00, x: 0.80, y: 0.20, f:  1 },
         { s: 0.08, x: 0.90, y: 0.50, f:  1 },
         { s: 0.15, x: 0.70, y: 0.70, f: -1 },
@@ -1035,11 +1040,13 @@
       }
 
       // ── DRAW F1 CAR (with facing direction) ──
+      var carScale = isMobile ? 0.7 : 1;
       function drawF1Car(x, y, tilt, squashX, squashY, facing) {
         ctx.save();
         ctx.translate(x, y);
+        if (isMobile) ctx.rotate(Math.PI / 2); // face downward on mobile
         ctx.rotate(tilt);
-        ctx.scale(squashX * facing, squashY);
+        ctx.scale(squashX * facing * carScale, squashY * carScale);
         var s = 1.1;
 
         // Neon underglow
@@ -1297,12 +1304,14 @@
       }
 
       // ── DRIVER CHARACTER CONFIGS ──
+      // Desktop: large Pudgy-style characters (scale 1.8-2.2)
+      // Mobile: smaller but still visible (scale 0.7-0.85)
       var drivers = [
-        { sel: '#problem',   side: 'right', yPct: 0.35, anim: 'lean',      leanDir: -1, scale: 0.85, entry: 'wave' },
-        { sel: '#solution',  side: 'left',  yPct: 0.5,  anim: 'idle',      leanDir: 0,  scale: 0.9,  entry: 'wave' },
-        { sel: '#founders',  side: 'right', yPct: 0.25, anim: 'lean',      leanDir: -1, scale: 0.8,  entry: 'bounce' },
-        { sel: '#proof',     side: 'left',  yPct: 0.4,  anim: 'celebrate', leanDir: 0,  scale: 0.9,  entry: 'celebrate' },
-        { sel: '.final-cta', side: 'right', yPct: 0.5,  anim: 'bounce',   leanDir: 0,  scale: 1.0,  entry: 'celebrate' }
+        { sel: '#problem',   side: 'right', yPct: 0.35, anim: 'lean',      leanDir: -1, scale: isMobile ? 0.75 : 1.9,  entry: 'wave' },
+        { sel: '#solution',  side: 'left',  yPct: 0.5,  anim: 'idle',      leanDir: 0,  scale: isMobile ? 0.8  : 2.0,  entry: 'wave' },
+        { sel: '#founders',  side: 'right', yPct: 0.25, anim: 'lean',      leanDir: -1, scale: isMobile ? 0.7  : 1.8,  entry: 'bounce' },
+        { sel: '#proof',     side: 'left',  yPct: 0.4,  anim: 'celebrate', leanDir: 0,  scale: isMobile ? 0.8  : 2.0,  entry: 'celebrate' },
+        { sel: '.final-cta', side: 'right', yPct: 0.5,  anim: 'bounce',   leanDir: 0,  scale: isMobile ? 0.85 : 2.2,  entry: 'celebrate' }
       ];
 
       // Initialize character state
@@ -1354,10 +1363,15 @@
         var bob = Math.sin(car.bobPhase) * BOB_AMP;
 
         // Path-based tilt
-        var ahead = getCarPos(Math.min(scrollPct + 0.005, 1));
-        var tdx = ahead.x - target.x, tdy = ahead.y - target.y;
-        var pathTilt = Math.atan2(tdy, Math.abs(tdx)) * 0.3;
-        car.targetTilt = pathTilt + Math.max(-0.1, Math.min(0.1, scrollSpeed * 0.002));
+        if (isMobile) {
+          // Mobile: minimal tilt, car just drives straight down
+          car.targetTilt = Math.max(-0.05, Math.min(0.05, scrollSpeed * 0.001));
+        } else {
+          var ahead = getCarPos(Math.min(scrollPct + 0.005, 1));
+          var tdx = ahead.x - target.x, tdy = ahead.y - target.y;
+          var pathTilt = Math.atan2(tdy, Math.abs(tdx)) * 0.3;
+          car.targetTilt = pathTilt + Math.max(-0.1, Math.min(0.1, scrollSpeed * 0.002));
+        }
         car.tilt += (car.targetTilt - car.tilt) * 0.1;
 
         // Squash
@@ -1369,13 +1383,24 @@
 
         // Trail particles (direction-aware)
         if (Math.abs(scrollSpeed) > 1 && trails.length < MAX_TRAILS) {
-          trails.push({
-            x: car.x + 40 * (-actualFacing), y: car.y + bob + (Math.random() - 0.5) * 8,
-            vx: (1.5 + Math.random()) * (-actualFacing), vy: (Math.random() - 0.5) * 0.8,
-            life: 1, decay: 0.025 + Math.random() * 0.015,
-            size: 2 + Math.random() * 3,
-            hue: Math.random() > 0.5 ? 'rgba(123,60,245,' : 'rgba(0,217,164,'
-          });
+          if (isMobile) {
+            // Mobile: car faces down, trails go upward
+            trails.push({
+              x: car.x + (Math.random() - 0.5) * 6, y: car.y - 35,
+              vx: (Math.random() - 0.5) * 0.5, vy: -1.2 + Math.random() * -0.8,
+              life: 1, decay: 0.035 + Math.random() * 0.02,
+              size: 1.5 + Math.random() * 2,
+              hue: Math.random() > 0.5 ? 'rgba(123,60,245,' : 'rgba(0,217,164,'
+            });
+          } else {
+            trails.push({
+              x: car.x + 40 * (-actualFacing), y: car.y + bob + (Math.random() - 0.5) * 8,
+              vx: (1.5 + Math.random()) * (-actualFacing), vy: (Math.random() - 0.5) * 0.8,
+              life: 1, decay: 0.025 + Math.random() * 0.015,
+              size: 2 + Math.random() * 3,
+              hue: Math.random() > 0.5 ? 'rgba(123,60,245,' : 'rgba(0,217,164,'
+            });
+          }
         }
         for (var i = trails.length - 1; i >= 0; i--) {
           var p = trails[i];
@@ -1413,7 +1438,9 @@
           }
 
           // Position
-          var cx = d.side === 'left' ? W * 0.06 : W * 0.94;
+          var edgeL = isMobile ? W * 0.08 : W * 0.06;
+          var edgeR = isMobile ? W * 0.92 : W * 0.94;
+          var cx = d.side === 'left' ? edgeL : edgeR;
           var cy = rect.top + rect.height * d.yPct;
           cy = Math.max(50, Math.min(H - 50, cy));
 
