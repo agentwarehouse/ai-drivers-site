@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>AI Drivers - VSL Slides</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05051f;
+    --bg-elevated: #0a0a2e;
+    --bg-card: rgba(17, 17, 51, 0.6);
+    --accent: #7b3cf5;
+    --accent-glow: rgba(123, 60, 245, 0.25);
+    --accent-secondary: #c4a1ff;
+    --teal: #00d9a4;
+    --teal-light: #5aecc5;
+    --teal-glow: rgba(0, 217, 164, 0.2);
+    --white: #ffffff;
+    --gray: #a0a0c0;
+    --gray-light: #c4c4d4;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-active: rgba(123, 60, 245, 0.3);
+    --font-head: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-snap: cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    background: var(--bg);
+    overflow: hidden;
+    font-family: var(--font-body);
+    color: var(--white);
+    position: relative;
+    cursor: none;
+  }
+
+  /* Film grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0.025;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grainDrift 0.5s steps(4) infinite;
+  }
+  @keyframes grainDrift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-2px, 1px); }
+    50% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, 2px); }
+    100% { transform: translate(0, 0); }
+  }
+
+  /* Mesh gradient background */
+  .mesh-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(123, 60, 245, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 30%, rgba(0, 217, 164, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(196, 161, 255, 0.08) 0%, transparent 50%);
+    animation: meshMove 12s ease-in-out infinite alternate;
+  }
+  @keyframes meshMove {
+    0% { background-position: 0% 0%, 100% 0%, 50% 100%; }
+    100% { background-position: 30% 20%, 70% 50%, 40% 60%; }
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--teal), var(--accent-secondary));
+    z-index: 100;
+    transition: width 0.4s var(--ease-snap);
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* Slide counter */
+  .slide-counter {
+    position: fixed;
+    bottom: 20px;
+    right: 32px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: rgba(160, 160, 192, 0.4);
+    z-index: 100;
+    letter-spacing: 0.1em;
+  }
+
+  /* Slides container */
+  .slides {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    z-index: 1;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 160px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease-snap);
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Animate-in elements */
+  .slide .anim {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s var(--ease-snap), transform 0.5s var(--ease-snap);
+  }
+  .slide.active .anim {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .slide.active .anim.d1 { transition-delay: 0.1s; }
+  .slide.active .anim.d2 { transition-delay: 0.25s; }
+  .slide.active .anim.d3 { transition-delay: 0.4s; }
+  .slide.active .anim.d4 { transition-delay: 0.55s; }
+  .slide.active .anim.d5 { transition-delay: 0.7s; }
+  .slide.active .anim.d6 { transition-delay: 0.85s; }
+  .slide.active .anim.d7 { transition-delay: 1.0s; }
+  .slide.active .anim.d8 { transition-delay: 1.15s; }
+  .slide.active .anim.d9 { transition-delay: 1.3s; }
+
+  /* Common typography */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 72px;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    text-align: center;
+  }
+  h2 {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 56px;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 22px;
+    color: var(--gray-light);
+    margin-top: 16px;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .big-number {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 120px;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--accent-secondary), var(--white), var(--accent-secondary));
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 200% 0; }
+    50% { background-position: 0% 0; }
+  }
+
+  /* Frosted card */
+  .card {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-active);
+    border-radius: 20px;
+    padding: 32px 40px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .card:hover {
+    box-shadow: 0 0 40px var(--accent-glow), 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  /* Bullet points */
+  .points {
+    list-style: none;
+    margin-top: 40px;
+    text-align: left;
+    width: 100%;
+    max-width: 900px;
+  }
+  .points li {
+    font-size: 28px;
+    color: var(--gray-light);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .points li:last-child { border-bottom: none; }
+  .points .bullet {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  /* Two column layout */
+  .two-col {
+    display: flex;
+    gap: 60px;
+    width: 100%;
+    max-width: 1400px;
+    margin-top: 48px;
+  }
+  .col {
+    flex: 1;
+  }
+
+  /* Glow text */
+  .glow-text {
+    text-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(123, 60, 245, 0.15);
+  }
+  .teal-glow {
+    text-shadow: 0 0 40px var(--teal-glow), 0 0 80px rgba(0, 217, 164, 0.15);
+  }
+
+  /* Accent text */
+  .accent { color: var(--accent-secondary); }
+  .teal { color: var(--teal); }
+  .dimmed { color: var(--gray); opacity: 0.5; }
+
+  /* CTA button visual */
+  .cta-visual {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--teal));
+    border-radius: 1000px;
+    padding: 20px 48px;
+    font-family: var(--font-head);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    animation: ctaPulse 3s ease-in-out infinite;
+  }
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
+    50% { box-shadow: 0 0 50px var(--accent-glow), 0 0 70px var(--teal-glow); }
+  }
+
+  /* Bridge visual */
+  .bridge-visual {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-top: 60px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .bridge-side {
+    flex: 1;
+    text-align: center;
+    padding: 40px;
+  }
+  .bridge-side h3 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  .bridge-side p {
+    color: var(--gray);
+    font-size: 18px;
+  }
+  .bridge-line-wrap {
+    flex: 0 0 200px;
+    position: relative;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bridge-line {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--teal));
+    border-radius: 2px;
+    transform: scaleX(0);
+    transition: transform 1s var(--ease-out);
+    box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--teal-glow);
+  }
+  .slide.active .bridge-line { transform: scaleX(1); transition-delay: 0.6s; }
+  .bridge-label {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--teal);
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  /* Offer stack */
+  .offer-list {
+    list-style: none;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 32px;
+  }
+  .offer-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    margin-bottom: 8px;
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.4s var(--ease-snap), transform 0.4s var(--ease-snap), border-color 0.3s;
+  }
+  .offer-item.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .offer-item.revealed:last-child {
+    border-color: var(--border-active);
+  }
+  .offer-item .check {
+    color: var(--teal);
+    font-size: 22px;
+    margin-right: 16px;
+    flex-shrink: 0;
+  }
+  .offer-item .name {
+    flex: 1;
+    font-size: 22px;
+    font-weight: 500;
+  }
+  .offer-item .value {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--accent-secondary);
+    letter-spacing: 0.05em;
+  }
+  .offer-total {
+    margin-top: 24px;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--gray);
+    text-align: right;
+    max-width: 1000px;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .offer-total.visible { opacity: 1; }
+  .offer-total span { color: var(--teal); font-weight: 700; }
+
+  /* Price slide */
+  .old-price {
+    font-family: var(--font-head);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--gray);
+    position: relative;
+    display: inline-block;
+  }
+  .old-price::after {
+    content: '';
+    position: absolute;
+    left: -8px;
+    right: -8px;
+    top: 50%;
+    height: 4px;
+    background: #ef4444;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .slide.active .old-price::after { transform: scaleX(1); transition-delay: 0.5s; }
+
+  .new-price {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 96px;
+    letter-spacing: -0.03em;
+    margin-top: 16px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.5s var(--ease-spring), transform 0.5s var(--ease-spring);
+  }
+  .slide.active .new-price { opacity: 1; transform: scale(1); transition-delay: 0.9s; }
+
+  .payment-options {
+    display: flex;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .pay-option {
+    padding: 16px 32px;
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-align: center;
+  }
+  .pay-option .amount {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 28px;
+  }
+  .pay-option .period {
+    font-size: 14px;
+    color: var(--gray);
+    margin-top: 4px;
+  }
+
+  /* Shield / guarantee */
+  .shield {
+    width: 120px;
+    height: 140px;
+    margin-bottom: 32px;
+  }
+  .shield svg {
+    width: 100%;
+    height: 100%;
+  }
+  .shield-path {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    transition: stroke-dashoffset 1.2s var(--ease-out);
+  }
+  .slide.active .shield-path { stroke-dashoffset: 0; transition-delay: 0.3s; }
+
+  /* Objection cards */
+  .objection-grid {
+    display: flex;
+    gap: 32px;
+    margin-top: 48px;
+    width: 100%;
+    max-width: 1300px;
+  }
+  .objection-card {
+    flex: 1;
+    perspective: 800px;
+  }
+  .objection-inner {
+    position: relative;
+    border-radius: 20px;
+    min-height: 240px;
+    transition: transform 0.6s var(--ease-spring);
+    transform-style: preserve-3d;
+  }
+  .objection-front, .objection-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+  }
+  .objection-front {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+  }
+  .objection-back {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-active);
+    transform: rotateY(180deg);
+  }
+  .objection-inner.flipped { transform: rotateY(180deg); }
+  .objection-q {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--accent-secondary);
+  }
+  .objection-a {
+    font-size: 20px;
+    color: var(--gray-light);
+    line-height: 1.6;
+  }
+
+  /* Qualify columns */
+  .qualify-grid {
+    display: flex;
+    gap: 60px;
+    margin-top: 48px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .qualify-col {
+    flex: 1;
+  }
+  .qualify-col h3 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .qualify-col ul {
+    list-style: none;
+  }
+  .qualify-col li {
+    font-size: 22px;
+    color: var(--gray-light);
+    padding: 14px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    line-height: 1.4;
+  }
+  .qualify-col li .icon { flex-shrink: 0; font-size: 20px; }
+  .for-you h3 { color: var(--teal); }
+  .for-you .icon { color: var(--teal); }
+  .not-you h3 { color: #ef4444; }
+  .not-you .icon { color: #ef4444; }
+
+  /* Counter animation helper */
+  .counter-row {
+    display: flex;
+    gap: 80px;
+    align-items: center;
+    margin-top: 48px;
+  }
+  .counter-item { text-align: center; }
+  .counter-value {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 72px;
+    letter-spacing: -0.03em;
+  }
+  .counter-value .dollar { color: var(--accent-secondary); }
+  .counter-label {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 8px;
+  }
+  .counter-divider {
+    width: 1px;
+    height: 80px;
+    background: var(--border);
+  }
+
+  /* Comparison columns */
+  .compare-grid {
+    display: flex;
+    gap: 40px;
+    margin-top: 48px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .compare-card {
+    flex: 1;
+    border-radius: 20px;
+    padding: 48px 40px;
+    text-align: center;
+  }
+  .compare-card.dim {
+    background: rgba(17, 17, 51, 0.3);
+    border: 1px solid var(--border);
+  }
+  .compare-card.glow {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-active);
+    box-shadow: 0 0 40px var(--accent-glow);
+  }
+  .compare-card h3 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  .compare-card p {
+    font-size: 22px;
+    line-height: 1.6;
+    color: var(--gray-light);
+  }
+  .compare-card.dim h3 { color: var(--gray); }
+  .compare-card.glow h3 { color: var(--teal); }
+
+  /* Demo transition slide */
+  .demo-cue {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 80px;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--accent), var(--teal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease-in-out infinite;
+    background-size: 200% 100%;
+  }
+
+  /* Failed attempts list */
+  .failed-list {
+    list-style: none;
+    margin-top: 40px;
+    text-align: center;
+  }
+  .failed-list li {
+    font-size: 32px;
+    font-weight: 600;
+    padding: 12px 0;
+    color: var(--gray);
+  }
+  .failed-list li.punchline {
+    color: var(--white);
+    font-size: 36px;
+    margin-top: 16px;
+  }
+
+  /* Gap visual */
+  .gap-visual {
+    margin-top: 48px;
+    width: 100%;
+    max-width: 1000px;
+  }
+  .gap-item {
+    font-size: 28px;
+    color: var(--gray-light);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .gap-item:last-child { border-bottom: none; }
+  .gap-item .icon { color: #ef4444; font-size: 24px; }
+
+  /* Story cards */
+  .story-cards {
+    display: flex;
+    gap: 24px;
+    margin-top: 48px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .story-card {
+    flex: 1;
+    padding: 32px;
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 22px;
+    color: var(--gray-light);
+    line-height: 1.5;
+  }
+  .story-card .num {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+
+  /* Credential pills */
+  .cred-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 32px;
+    justify-content: center;
+    max-width: 900px;
+  }
+  .cred-pill {
+    padding: 14px 28px;
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 1000px;
+    font-size: 20px;
+    color: var(--gray-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cred-pill .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+</style>
+</head>
+<body>
+
+<div class="mesh-bg"></div>
+<div class="progress-bar" id="progress"></div>
+<div class="slide-counter" id="counter"></div>
+
+<div class="slides" id="slides">
+
+  <!-- SLIDE 1: Title / Hook -->
+  <div class="slide" data-slide="1">
+    <div class="label anim d1">AI Drivers</div>
+    <h1 class="anim d2 glow-text">AI Systems That<br>Make You Rich</h1>
+    <p class="subtitle anim d3">If you run a business and you're doing most of the work yourself,<br>this is the most important video you'll watch this year.</p>
+  </div>
+
+  <!-- SLIDE 2: What We Do -->
+  <div class="slide" data-slide="2">
+    <div class="label anim d1">What We Do</div>
+    <h2 class="anim d2">Build. Train. Install.</h2>
+    <ul class="points">
+      <li class="anim d3"><span class="bullet"></span>Build custom AI agent systems</li>
+      <li class="anim d4"><span class="bullet"></span>Train them on <strong class="accent">YOUR</strong> business, <strong class="accent">YOUR</strong> SOPs, <strong class="accent">YOUR</strong> workflows</li>
+      <li class="anim d5"><span class="bullet"></span>Install into your operations: marketing, sales, fulfillment</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 3: The Result -->
+  <div class="slide" data-slide="3">
+    <div class="label anim d1">The Result</div>
+    <div class="anim d2 big-number">1 = 5-10</div>
+    <h2 class="anim d3" style="font-size:36px; margin-top:16px;">One person outputs what used to take a team</h2>
+    <p class="subtitle anim d4">Without hiring. Without contractors. Without burning out.</p>
+  </div>
+
+  <!-- SLIDE 4: This Is Different -->
+  <div class="slide" data-slide="4">
+    <div class="label anim d1">This Is Different</div>
+    <div class="two-col" style="max-width:1100px; margin-top:40px;">
+      <div class="card anim d2" style="flex:1; text-align:center;">
+        <div style="font-size:20px; color:var(--gray); margin-bottom:16px;">MOST AI CONTENT</div>
+        <div style="font-size:28px; color:var(--gray);">Prompt lists. ChatGPT screenshots.<br>A folder of bookmarks.</div>
+      </div>
+      <div class="card anim d3" style="flex:1; text-align:center; border-color:var(--border-active); box-shadow: 0 0 40px var(--accent-glow);">
+        <div style="font-size:20px; color:var(--teal); margin-bottom:16px;">AI DRIVERS</div>
+        <div style="font-size:28px; color:var(--white);">We build a system and install it<br>inside your business in <strong class="teal">&lt; 5 days</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Early CTA -->
+  <div class="slide" data-slide="5">
+    <div class="label anim d1">Ready?</div>
+    <h2 class="anim d2">Get Started Now</h2>
+    <div class="anim d3" style="margin-top:40px;">
+      <div class="cta-visual">$5,000 &mdash; Payment Plans Available</div>
+    </div>
+    <p class="subtitle anim d4" style="margin-top:24px; font-size:24px; color:var(--teal);">60-Day ROI Guarantee</p>
+    <p class="subtitle anim d5" style="font-size:18px; color:var(--gray);">If you want to see how it works, keep watching.</p>
+  </div>
+
+  <!-- SLIDE 6: Kabrin -->
+  <div class="slide" data-slide="6">
+    <div class="label anim d1">Meet The Founders</div>
+    <h2 class="anim d2">Kabrin Johal</h2>
+    <p class="subtitle anim d3" style="color:var(--accent-secondary);">Founder, Crafted Marketing</p>
+    <div class="cred-pills anim d4">
+      <div class="cred-pill"><span class="dot"></span>11 Orange Theory locations</div>
+      <div class="cred-pill"><span class="dot"></span>200+ staff managed</div>
+      <div class="cred-pill"><span class="dot"></span>Exited 2020</div>
+    </div>
+    <div class="cred-pills anim d5">
+      <div class="cred-pill"><span class="dot" style="background:var(--teal);box-shadow:0 0 8px var(--teal-glow);"></span>Agency built entirely on AI agents</div>
+    </div>
+    <p class="subtitle anim d6" style="font-style:italic; color:var(--gray); margin-top:24px;">"The page you're on right now? Built with this system."</p>
+  </div>
+
+  <!-- SLIDE 7: Elijah -->
+  <div class="slide" data-slide="7">
+    <div class="label anim d1">Meet The Founders</div>
+    <h2 class="anim d2">Elijah Bricker</h2>
+    <p class="subtitle anim d3" style="color:var(--accent-secondary);">Co-Founder, Age 21</p>
+    <div class="cred-pills anim d4">
+      <div class="cred-pill"><span class="dot"></span>$10M+ commercial real estate</div>
+      <div class="cred-pill"><span class="dot"></span>Arbory LLC</div>
+    </div>
+    <div class="cred-pills anim d5">
+      <div class="cred-pill"><span class="dot" style="background:var(--teal);box-shadow:0 0 8px var(--teal-glow);"></span>$1M+ revenue for business owners in 14 months</div>
+    </div>
+    <p class="subtitle anim d6" style="color:var(--gray);">His entire business runs closed-loop automated.</p>
+  </div>
+
+  <!-- SLIDE 8: The Numbers -->
+  <div class="slide" data-slide="8">
+    <div class="label anim d1">Proof</div>
+    <h2 class="anim d2">The Numbers</h2>
+    <div class="counter-row anim d3">
+      <div class="counter-item">
+        <div class="counter-value"><span class="dollar">$</span><span class="count-up" data-target="4000000">0</span>+</div>
+        <div class="counter-label">Combined Revenue</div>
+      </div>
+    </div>
+    <div class="counter-row anim d4" style="margin-top:32px;">
+      <div class="counter-item">
+        <div class="counter-value" style="font-size:56px;"><span class="dollar">$</span><span class="count-up" data-target="36000">0</span></div>
+        <div class="counter-label">Generated (Soft Launch)</div>
+      </div>
+      <div class="counter-divider"></div>
+      <div class="counter-item">
+        <div class="counter-value" style="font-size:56px;"><span class="dollar">$</span><span class="count-up" data-target="14500">0</span></div>
+        <div class="counter-label">Cash Collected</div>
+      </div>
+    </div>
+    <p class="subtitle anim d5" style="margin-top:24px; color:var(--gray);">Before we ran a single ad.</p>
+  </div>
+
+  <!-- SLIDE 9: Origin Story -->
+  <div class="slide" data-slide="9">
+    <div class="label anim d1">The Origin</div>
+    <h2 class="anim d2">How AI Drivers Started</h2>
+    <div class="story-cards">
+      <div class="story-card anim d3">
+        <div class="num">The Problem</div>
+        Getting clients, but couldn't fulfill fast enough. Hiring was slow. Contractors were inconsistent.
+      </div>
+      <div class="story-card anim d4">
+        <div class="num">The Solution</div>
+        Built AI agents. Not chatbots. Not prompts. Actual systems with skills, SOPs, and quality control.
+      </div>
+      <div class="story-card anim d5" style="border-color:var(--border-active);">
+        <div class="num" style="color:var(--teal);">The Result</div>
+        Producing what used to take a team of 5-10 people. Research, copy, pages, emails, ads, funnels.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: The Realization -->
+  <div class="slide" data-slide="10">
+    <div class="label anim d1">The Realization</div>
+    <h1 class="anim d2" style="font-size:52px;">"This isn't just a tool.<br><span class="teal">It's a product.</span>"</h1>
+    <p class="subtitle anim d3" style="max-width:700px; margin-top:32px; font-size:24px;">
+      Every business owner has the same problem. Maxed out on output. Can't scale without hiring. Tried AI. Got a glorified chatbot.
+    </p>
+    <p class="subtitle anim d4" style="font-size:28px; color:var(--accent-secondary); margin-top:24px; font-weight:600;">
+      That's why we built AI Drivers.
+    </p>
+  </div>
+
+  <!-- SLIDE 11: Sound Familiar? -->
+  <div class="slide" data-slide="11">
+    <div class="label anim d1">Where You Are Right Now</div>
+    <h2 class="anim d2">Sound Familiar?</h2>
+    <ul class="failed-list">
+      <li class="anim d3">ChatGPT</li>
+      <li class="anim d4">Courses</li>
+      <li class="anim d5">YouTube tutorials</li>
+      <li class="anim d6">A folder of prompts that don't connect to anything</li>
+      <li class="anim d7 punchline">"Nothing actually changed."</li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 12: The Real Problem -->
+  <div class="slide" data-slide="12">
+    <div class="label anim d1">The Real Problem</div>
+    <h2 class="anim d2">Prompts vs. Systems</h2>
+    <div class="compare-grid">
+      <div class="compare-card dim anim d3">
+        <h3>A Prompt</h3>
+        <p>A one-off question.<br>No memory. No process.<br>No standards.</p>
+      </div>
+      <div class="compare-card glow anim d4">
+        <h3>A System</h3>
+        <p>A trained agent that knows your business, follows your process, and produces output at your standard. <strong style="color:var(--white);">Every single time.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: The Gap -->
+  <div class="slide" data-slide="13">
+    <div class="label anim d1">The Problem</div>
+    <h2 class="anim d2">The Gap</h2>
+    <div class="gap-visual">
+      <div class="gap-item anim d3"><span class="icon">&#10005;</span> AI agents live in the tech world</div>
+      <div class="gap-item anim d4"><span class="icon">&#10005;</span> Engineers build them for engineers</div>
+      <div class="gap-item anim d5"><span class="icon">&#10005;</span> No pathway for business owners, consultants, or operators</div>
+      <div class="gap-item anim d6"><span class="icon">&#10005;</span> Nobody is building this for the people who actually need it</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: The Bridge -->
+  <div class="slide" data-slide="14">
+    <div class="label anim d1">The Solution</div>
+    <h2 class="anim d2">We Are The Bridge</h2>
+    <div class="bridge-visual">
+      <div class="bridge-side anim d3">
+        <h3 style="color:var(--gray);">&lt;/&gt; Tech World</h3>
+        <p>Engineers building<br>for engineers</p>
+      </div>
+      <div class="bridge-line-wrap anim d4">
+        <div class="bridge-label">AI DRIVERS</div>
+        <div class="bridge-line"></div>
+      </div>
+      <div class="bridge-side anim d5">
+        <h3 style="color:var(--teal);">$ Business Owners</h3>
+        <p>Marketing, sales,<br>and operations</p>
+      </div>
+    </div>
+    <p class="subtitle anim d6" style="margin-top:32px; font-size:22px; color:var(--gray-light);">We take the technology, make it practical, and plug it into your business.</p>
+  </div>
+
+  <!-- SLIDE 15: Demo Transition -->
+  <div class="slide" data-slide="15">
+    <div class="demo-cue anim d1">Let Me Show You.</div>
+    <p class="subtitle anim d2" style="font-size:28px; margin-top:24px;">Crafted Marketing. Real deliverables. Live.</p>
+    <p class="subtitle anim d3" style="font-size:16px; color:var(--gray); margin-top:48px; font-family:var(--font-mono); letter-spacing:0.1em;">SWITCH TO DEMO NOW</p>
+  </div>
+
+  <!-- SLIDE 16: Offer Stack (Interactive) -->
+  <div class="slide" data-slide="16" data-interactive="offer">
+    <div class="label anim d1">The Offer</div>
+    <h2 class="anim d2" style="font-size:44px;">Here's Exactly What You Get</h2>
+    <ul class="offer-list" id="offerList">
+      <li class="offer-item" data-val="2500"><span class="check">&#10003;</span><span class="name">Onboarding call + full business assessment</span><span class="value">$2,500</span></li>
+      <li class="offer-item" data-val="5000"><span class="check">&#10003;</span><span class="name">Custom AI agent workflows built on your business</span><span class="value">$5,000</span></li>
+      <li class="offer-item" data-val="3000"><span class="check">&#10003;</span><span class="name">Done-for-you installation. Operational in &lt; 5 days.</span><span class="value">$3,000</span></li>
+      <li class="offer-item" data-val="6000"><span class="check">&#10003;</span><span class="name">Private channel with both founders for 6 months</span><span class="value">$6,000</span></li>
+      <li class="offer-item" data-val="4800"><span class="check">&#10003;</span><span class="name">Bi-weekly 1:1 calls for 6 months</span><span class="value">$4,800</span></li>
+      <li class="offer-item" data-val="1500"><span class="check">&#10003;</span><span class="name">Video module library</span><span class="value">$1,500</span></li>
+      <li class="offer-item" data-val="2500"><span class="check">&#10003;</span><span class="name">Hands-on troubleshooting</span><span class="value">$2,500</span></li>
+      <li class="offer-item" data-val="3000"><span class="check">&#10003;</span><span class="name">Mastermind ticket (3-day in-person event)</span><span class="value">$3,000</span></li>
+      <li class="offer-item" data-val="3000"><span class="check">&#10003;</span><span class="name">Lifetime agent access. Every update. Forever.</span><span class="value">$3,000</span></li>
+    </ul>
+    <div class="offer-total" id="offerTotal">Running total: <span id="runningTotal">$0</span></div>
+  </div>
+
+  <!-- SLIDE 17: Price Reveal -->
+  <div class="slide" data-slide="17">
+    <div class="label anim d1">Your Investment</div>
+    <div class="anim d2">
+      <div class="old-price">$31,300+ value</div>
+    </div>
+    <div class="new-price glow-text">$5,000</div>
+    <div class="payment-options anim d4" style="opacity:0; transform:translateY(24px); transition: opacity 0.5s var(--ease-snap) 1.3s, transform 0.5s var(--ease-snap) 1.3s;">
+      <div class="pay-option">
+        <div class="amount">$5,000</div>
+        <div class="period">Pay in full</div>
+      </div>
+      <div class="pay-option">
+        <div class="amount">$2,500 x 2</div>
+        <div class="period">2 monthly payments</div>
+      </div>
+      <div class="pay-option">
+        <div class="amount">$1,667 x 3</div>
+        <div class="period">3 monthly payments</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: Guarantee -->
+  <div class="slide" data-slide="18">
+    <div class="label anim d1">Risk-Free</div>
+    <div class="shield anim d2">
+      <svg viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="shield-path" d="M60 10 L110 35 L110 80 Q110 120 60 135 Q10 120 10 80 L10 35 Z" stroke="url(#shieldGrad)" stroke-width="3" fill="rgba(123, 60, 245, 0.1)"/>
+        <defs>
+          <linearGradient id="shieldGrad" x1="10" y1="10" x2="110" y2="135">
+            <stop stop-color="#7b3cf5"/>
+            <stop offset="1" stop-color="#00d9a4"/>
+          </linearGradient>
+        </defs>
+        <text x="60" y="72" text-anchor="middle" font-family="Space Grotesk" font-weight="800" font-size="18" fill="white">60-DAY</text>
+        <text x="60" y="92" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="13" fill="#a0a0c0">ROI GUARANTEE</text>
+      </svg>
+    </div>
+    <h2 class="anim d3" style="font-size:44px;">60-Day ROI Guarantee</h2>
+    <p class="subtitle anim d4" style="font-size:26px; max-width:800px; margin-top:24px;">
+      If the system doesn't generate or save you at least <strong class="teal">$5,000</strong> in 60 days,<br>we keep working with you <strong>for free</strong> until it does.
+    </p>
+  </div>
+
+  <!-- SLIDE 19: Objections -->
+  <div class="slide" data-slide="19">
+    <div class="label anim d1">Let Me Handle That</div>
+    <h2 class="anim d2" style="font-size:44px;">3 Things You're Thinking</h2>
+    <div class="objection-grid">
+      <div class="objection-card anim d3">
+        <div class="objection-inner" id="obj1">
+          <div class="objection-front">
+            <div class="objection-q">"I'm not technical."</div>
+          </div>
+          <div class="objection-back">
+            <div class="objection-a">We build it. We install it. We configure everything. If you can use a computer, you're good.</div>
+          </div>
+        </div>
+      </div>
+      <div class="objection-card anim d4">
+        <div class="objection-inner" id="obj2">
+          <div class="objection-front">
+            <div class="objection-q">"Will this work for<br>my business?"</div>
+          </div>
+          <div class="objection-back">
+            <div class="objection-a">That's what the assessment is for. We map your operations first and build specifically for your workflows.</div>
+          </div>
+        </div>
+      </div>
+      <div class="objection-card anim d5">
+        <div class="objection-inner" id="obj3">
+          <div class="objection-front">
+            <div class="objection-q">"Is $5,000 worth it?"</div>
+          </div>
+          <div class="objection-back">
+            <div class="objection-a">10 hrs/week saved at $50/hr = $2,000/month. That's $6,000 in 90 days. One client covers it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="subtitle anim d6" style="font-size:14px; color:var(--gray); margin-top:32px; font-family:var(--font-mono); letter-spacing:0.1em;">PRESS SPACE TO FLIP CARDS</p>
+  </div>
+
+  <!-- SLIDE 20: Qualify -->
+  <div class="slide" data-slide="20">
+    <div class="label anim d1">Is This For You?</div>
+    <h2 class="anim d2">Who This Is For</h2>
+    <div class="qualify-grid">
+      <div class="qualify-col for-you anim d3">
+        <h3><span style="font-size:28px;">&#10003;</span> This Is For You If</h3>
+        <ul>
+          <li><span class="icon">&#10003;</span> Business owner with real revenue</li>
+          <li><span class="icon">&#10003;</span> Want to scale without adding headcount</li>
+          <li><span class="icon">&#10003;</span> Willing to show up for calls</li>
+          <li><span class="icon">&#10003;</span> Can commit ~3 hours/week</li>
+        </ul>
+      </div>
+      <div class="qualify-col not-you anim d4">
+        <h3><span style="font-size:28px;">&#10005;</span> This Is Not For You If</h3>
+        <ul>
+          <li><span class="icon">&#10005;</span> You don't have a business yet</li>
+          <li><span class="icon">&#10005;</span> Looking for autopilot with zero effort</li>
+          <li><span class="icon">&#10005;</span> Won't engage with the process</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 21: Final CTA -->
+  <div class="slide" data-slide="21">
+    <div class="label anim d1">Let's Go</div>
+    <h1 class="anim d2 glow-text" style="font-size:64px;">Get Started</h1>
+    <div class="anim d3" style="margin-top:40px;">
+      <div class="cta-visual" style="font-size:32px; padding:24px 56px;">$5,000 &mdash; Click Below</div>
+    </div>
+    <p class="subtitle anim d4" style="margin-top:24px; font-size:22px;">Payment plans available. 60-day ROI guarantee.</p>
+    <p class="subtitle anim d5" style="font-size:24px; color:var(--accent-secondary); margin-top:16px; font-weight:600;">
+      We build it. Install it. Stay in your corner for 6 months.
+    </p>
+  </div>
+
+</div>
+
+<script>
+  // === SLIDE ENGINE ===
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let currentSlide = 0;
+
+  // Offer stack state
+  let offerRevealed = 0;
+  const offerItems = document.querySelectorAll('.offer-item');
+  const offerTotal = document.getElementById('offerTotal');
+  const runningTotalEl = document.getElementById('runningTotal');
+  let runningTotal = 0;
+
+  // Objection card state
+  let objFlipped = 0;
+
+  function updateProgress() {
+    const pct = ((currentSlide + 1) / totalSlides) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+    document.getElementById('counter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+  }
+
+  function showSlide(index) {
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === index);
+    });
+    currentSlide = index;
+    updateProgress();
+
+    // Trigger counters on slide 8 (index 7)
+    if (index === 7) {
+      setTimeout(startCounters, 400);
+    }
+
+    // Fix payment options animation on slide 17 (index 16)
+    if (index === 16) {
+      const payOpts = slides[16].querySelector('.payment-options');
+      if (payOpts) {
+        setTimeout(() => {
+          payOpts.style.opacity = '1';
+          payOpts.style.transform = 'translateY(0)';
+        }, 1300);
+      }
+    }
+
+    // Reset offer stack if navigating away and back
+    if (index === 15) {
+      // Reset offer items if coming back
+      if (offerRevealed > 0 && offerRevealed < offerItems.length) {
+        // Keep current state
+      }
+    }
+  }
+
+  function nextSlide() {
+    // Check for interactive slides
+    const activeSlide = slides[currentSlide];
+    const interactive = activeSlide.dataset.interactive;
+
+    if (interactive === 'offer' && offerRevealed < offerItems.length) {
+      // Reveal next offer item
+      const item = offerItems[offerRevealed];
+      item.classList.add('revealed');
+      runningTotal += parseInt(item.dataset.val);
+      runningTotalEl.textContent = '$' + runningTotal.toLocaleString();
+      offerTotal.classList.add('visible');
+      offerRevealed++;
+      return;
+    }
+
+    if (currentSlide < totalSlides - 1) {
+      showSlide(currentSlide + 1);
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      showSlide(currentSlide - 1);
+    }
+  }
+
+  // Counter animation
+  function startCounters() {
+    document.querySelectorAll('.slide.active .count-up').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      if (el.dataset.counted) return;
+      el.dataset.counted = 'true';
+      const duration = 2000;
+      const start = performance.now();
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased).toLocaleString();
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    });
+  }
+
+  // Objection card flip
+  function flipNextObjection() {
+    if (objFlipped < 3) {
+      document.getElementById('obj' + (objFlipped + 1)).classList.add('flipped');
+      objFlipped++;
+    }
+  }
+
+  // Keyboard controls
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+
+      // Special handling for objection slide (index 18)
+      if (currentSlide === 18 && objFlipped < 3) {
+        flipNextObjection();
+        return;
+      }
+
+      nextSlide();
+    }
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevSlide();
+    }
+  });
+
+  // Click to advance
+  document.addEventListener('click', (e) => {
+    // Special handling for objection slide
+    if (currentSlide === 18 && objFlipped < 3) {
+      flipNextObjection();
+      return;
+    }
+    nextSlide();
+  });
+
+  // Right-click to go back
+  document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    prevSlide();
+  });
+
+  // Initialize
+  showSlide(0);
+</script>
+</body>
+</html>
