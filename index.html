@@ -519,7 +519,9 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 810px) {
-      .hero { padding: 64px 16px 24px; min-height: auto; }
+      nav { transform: translateY(-100%); opacity: 0; pointer-events: none; transition: transform 0.3s var(--ease-snap), opacity 0.25s, padding 0.2s var(--ease-snap), background 0.2s var(--ease-snap); }
+      nav.nav-visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
+      .hero { padding: 24px 16px 24px; min-height: auto; }
       .hero h1 { font-size: clamp(1.6rem, 7vw, 2.2rem); margin-bottom: 10px; }
       .hero-sub { font-size: 0.85rem; margin: 0 auto 12px; line-height: 1.5; }
       .hero-badge { font-size: 0.65rem; padding: 6px 16px; margin-bottom: 10px; }
@@ -590,7 +592,7 @@
           <span>Watch the full breakdown</span>
         </div>
       </div>
-      <a href="#apply" class="btn magnetic reveal">Get Started <span>&rarr;</span></a>
+      <a href="#apply" class="btn magnetic reveal" id="hero-cta">Get Started <span>&rarr;</span></a>
       <p class="friction reveal"></p>
     </div>
   </section>
@@ -1823,6 +1825,26 @@
       positionCar();
       window.addEventListener('resize', function() { buildTrack(); positionCar(); });
       window.addEventListener('scroll', positionCar, { passive: true });
+    })();
+
+    // ── MOBILE NAV VISIBILITY ──
+    (function() {
+      var heroCta = document.getElementById('hero-cta');
+      var navEl = document.querySelector('nav');
+      if (!heroCta || !navEl) return;
+      var mql = window.matchMedia('(max-width: 810px)');
+      var navObs = new IntersectionObserver(function(entries) {
+        if (!mql.matches) return;
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) navEl.classList.remove('nav-visible');
+          else navEl.classList.add('nav-visible');
+        });
+      }, { threshold: 0 });
+      navObs.observe(heroCta);
+      // On desktop, always show nav
+      mql.addEventListener('change', function(e) {
+        if (!e.matches) navEl.classList.remove('nav-visible');
+      });
     })();
 
     // ── MOBILE CTA ──
