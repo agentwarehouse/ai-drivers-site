@@ -273,11 +273,20 @@
     .footer-text a { color: var(--accent-secondary); text-decoration: none; transition: color 0.15s; }
     .footer-text a:hover { color: var(--white); }
 
-    /* ── SMALL MOBILE ── */
-    @media (max-width: 400px) {
-      .form-wrap { padding: 12px 8px; border-radius: var(--radius-md); }
+    /* ── MOBILE FORM: clean, full-width, no cramped box ── */
+    @media (max-width: 810px) {
+      .form-wrap {
+        background: transparent; border: none; border-radius: 0;
+        padding: 0; box-shadow: none; overflow: visible;
+      }
+      .form-wrap iframe { min-height: 500px; }
+      .form-section { padding: 24px 0 48px; }
+      .form-sub { margin-bottom: 24px; }
       .booking-wrap { padding: 24px 16px; border-radius: var(--radius-md); }
       .discord-wrap { padding: 24px 16px; border-radius: var(--radius-md); }
+    }
+
+    @media (max-width: 400px) {
       .discord-btn { padding: 14px 28px; font-size: 0.95rem; }
     }
 
