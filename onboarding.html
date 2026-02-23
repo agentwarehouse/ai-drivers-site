@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Start Your Build | AI Drivers</title>
-  <meta name="description" content="Complete your onboarding questionnaire and book your 1-on-1 assessment call with Kabrin and Elijah.">
-  <meta property="og:title" content="Start Your Build | AI Drivers">
-  <meta property="og:description" content="Complete your onboarding questionnaire and book your 1-on-1 assessment call with Kabrin and Elijah.">
+  <title>Welcome to AI Drivers</title>
+  <meta name="description" content="You're in. Complete your onboarding to get started with your custom AI build.">
+  <meta property="og:title" content="Welcome to AI Drivers">
+  <meta property="og:description" content="You're in. Complete your onboarding to get started with your custom AI build.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,7 +118,11 @@
     .hero h1 .accent { color: var(--accent-secondary); }
     .hero-sub {
       font-size: clamp(1rem, 2vw, 1.15rem); color: var(--gray-light);
-      max-width: 560px; margin: 0 auto 32px; line-height: 1.7;
+      max-width: 560px; margin: 0 auto 20px; line-height: 1.7;
+    }
+    .hero-reassurance {
+      font-size: 0.95rem; color: var(--teal-light); max-width: 520px;
+      margin: 0 auto 32px; line-height: 1.6;
     }
     .hero-arrow {
       display: inline-flex; align-items: center; justify-content: center;
@@ -136,7 +140,7 @@
       font-family: var(--font-head); font-size: clamp(1.5rem, 3.5vw, 2rem);
       font-weight: 700; text-align: center; margin-bottom: 32px; letter-spacing: -0.02em;
     }
-    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .steps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 600px; margin: 0 auto; }
     .step-card {
       background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border); border-radius: var(--radius-md);
@@ -164,8 +168,8 @@
     }
     .step-card p { color: var(--gray); font-size: 0.9rem; line-height: 1.6; }
 
-    /* ── CONNECTOR LINES (desktop) ── */
-    .step-card:not(:last-child)::after {
+    /* ── CONNECTOR LINE (desktop) ── */
+    .step-card:first-child::after {
       content: ''; position: absolute; top: 50%; right: -12px;
       width: 24px; height: 1px;
       background: linear-gradient(90deg, var(--accent), var(--teal));
@@ -173,11 +177,7 @@
     }
 
     /* ── ACTIVE STEP HIGHLIGHT ── */
-    .step-card[data-step="1"].active {
-      border-color: var(--teal);
-      box-shadow: 0 0 30px var(--teal-glow);
-    }
-    .step-card[data-step="2"].active {
+    .step-card.active {
       border-color: var(--teal);
       box-shadow: 0 0 30px var(--teal-glow);
     }
@@ -192,7 +192,7 @@
       background: var(--teal); display: flex; align-items: center; justify-content: center;
     }
 
-    /* ── FORM / BOOKING SECTIONS ── */
+    /* ── FORM / DISCORD SECTIONS ── */
     .form-section { padding: 48px 0 80px; }
     .section-label {
       font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em;
@@ -207,24 +207,31 @@
       margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto;
     }
     .form-wrap {
-      background: #ffffff; border-radius: var(--radius-lg);
+      background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-active); border-radius: var(--radius-lg);
       padding: 32px 28px; position: relative; overflow: hidden;
       box-shadow: 0 4px 40px rgba(0,0,0,0.3), 0 0 60px var(--accent-glow);
     }
+    .form-wrap::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 0%, rgba(123, 60, 245, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
     .form-wrap iframe {
       width: 100%; min-height: 600px; border: none; position: relative; z-index: 1;
+      filter: invert(1) hue-rotate(180deg);
     }
 
-    /* ── BOOKING SECTION (hidden by default) ── */
-    .booking-section { display: none; padding: 0 0 100px; }
-    .booking-section.visible { display: block; }
-    .booking-wrap {
+    /* ── DISCORD JOIN SECTION (hidden by default) ── */
+    .discord-section { display: none; padding: 0 0 100px; }
+    .discord-section.visible { display: block; }
+    .discord-wrap {
       background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(0, 217, 164, 0.25); border-radius: var(--radius-lg);
-      padding: 48px 40px; position: relative; overflow: hidden;
+      padding: 48px 40px; position: relative; overflow: hidden; text-align: center;
       box-shadow: 0 4px 40px rgba(0,0,0,0.3), 0 0 60px var(--teal-glow);
     }
-    .booking-wrap::before {
+    .discord-wrap::before {
       content: ''; position: absolute; inset: 0;
       background: radial-gradient(ellipse at 70% 0%, rgba(0, 217, 164, 0.06) 0%, transparent 70%);
       pointer-events: none;
@@ -236,7 +243,7 @@
       padding: 20px 24px; border-radius: var(--radius-sm);
       background: linear-gradient(135deg, rgba(0, 217, 164, 0.1), rgba(90, 236, 197, 0.05));
       border: 1px solid rgba(0, 217, 164, 0.25);
-      margin-bottom: 32px;
+      margin-bottom: 32px; text-align: left;
     }
     .success-icon {
       width: 40px; height: 40px; min-width: 40px; border-radius: 50%;
@@ -250,6 +257,36 @@
     }
     .success-text p { color: var(--gray-light); font-size: 0.9rem; line-height: 1.5; }
 
+    /* ── DISCORD BUTTON ── */
+    .discord-heading {
+      font-family: var(--font-head); font-size: 1.5rem; font-weight: 700;
+      color: var(--white); margin-bottom: 12px; position: relative; z-index: 1;
+    }
+    .discord-sub {
+      color: var(--gray-light); font-size: 0.95rem; line-height: 1.6;
+      max-width: 440px; margin: 0 auto 32px; position: relative; z-index: 1;
+    }
+    .discord-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 16px 40px; border-radius: var(--radius-pill);
+      background: #5865F2; color: var(--white);
+      font-family: var(--font-head); font-size: 1.05rem; font-weight: 700;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: transform 0.2s var(--ease-spring), box-shadow 0.2s, background 0.2s;
+      box-shadow: 0 4px 24px rgba(88, 101, 242, 0.3);
+      position: relative; z-index: 1;
+    }
+    .discord-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(88, 101, 242, 0.45);
+      background: #4752C4;
+    }
+    .discord-btn:active { transform: translateY(0); }
+    .discord-btn svg { width: 24px; height: 24px; }
+    .discord-note {
+      color: var(--gray); font-size: 0.8rem; margin-top: 20px; position: relative; z-index: 1;
+    }
+
     /* ── FOOTER ── */
     .page-footer {
       padding: 40px 0; border-top: 1px solid var(--border); text-align: center;
@@ -261,9 +298,9 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 810px) {
       .steps-grid { grid-template-columns: 1fr; gap: 12px; }
-      .step-card:not(:last-child)::after { display: none; }
+      .step-card:first-child::after { display: none; }
       .form-wrap { padding: 16px 12px; }
-      .booking-wrap { padding: 24px 16px; }
+      .discord-wrap { padding: 32px 20px; }
       .hero { padding: 100px 20px 32px; }
       .steps-section { padding: 32px 0; }
       .form-section { padding: 32px 0 60px; }
@@ -271,7 +308,8 @@
 
     @media (max-width: 400px) {
       .form-wrap { padding: 12px 8px; border-radius: var(--radius-md); }
-      .booking-wrap { padding: 20px 12px; border-radius: var(--radius-md); }
+      .discord-wrap { padding: 24px 16px; border-radius: var(--radius-md); }
+      .discord-btn { padding: 14px 28px; font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -296,9 +334,10 @@
       <div class="orb orb-2"></div>
     </div>
     <div class="hero-content">
-      <div class="hero-badge">NEW MEMBER ONBOARDING</div>
-      <h1>Start Your <span class="accent">AI Build</span></h1>
-      <p class="hero-sub">Two steps. Fill out the questionnaire so we know your business, then book your 1-on-1 assessment call with Kabrin and Elijah.</p>
+      <div class="hero-badge">YOU'RE IN</div>
+      <h1>Welcome to <span class="accent">AI Drivers</span></h1>
+      <p class="hero-sub">You just made the best investment in your business this year. We're going to build you a custom AI system that saves you hours every single week.</p>
+      <p class="hero-reassurance">Two quick steps below and we'll get moving on your build.</p>
       <a href="#step-1" class="hero-arrow">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><polyline points="19 12 12 19 5 12"/></svg>
       </a>
@@ -319,23 +358,16 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           </div>
           <h3>Tell us about your business</h3>
-          <p>Fill out the questionnaire below so we come to your call prepared with automation opportunities mapped out.</p>
+          <p>Fill out the questionnaire so we come prepared with automation opportunities mapped out for you.</p>
         </div>
         <div class="step-card reveal" data-step="2">
           <p class="step-num">02</p>
           <div class="step-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+            <!-- Discord icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
-          <h3>Book your assessment call</h3>
-          <p>Pick a time for your 45-minute 1-on-1 with both founders. This is where we map out exactly what to build.</p>
-        </div>
-        <div class="step-card reveal" data-step="3">
-          <p class="step-num">03</p>
-          <div class="step-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-          </div>
-          <h3>We start building</h3>
-          <p>After the call, we go to work. Your custom AI system is built and installed within 5 days.</p>
+          <h3>Join the Discord server</h3>
+          <p>This is where everything happens. Your builds, support, training, and direct access to us.</p>
         </div>
       </div>
     </div>
@@ -347,38 +379,11 @@
       <div class="reveal">
         <p class="section-label">Step 1 of 2</p>
         <h2 class="form-heading">Tell us about your business</h2>
-        <p class="form-sub">Takes about 5 minutes. The more detail you give us, the better your assessment call will be.</p>
+        <p class="form-sub">Takes about 5 minutes. The more detail you give us, the better your build will be.</p>
       </div>
       <div class="form-wrap reveal">
-        <!-- ═══════════════════════════════════════════════════
-             SETUP: Replace the Tally embed URL below.
-             Create a Tally form with these 11 questions:
-
-             Business Basics:
-             1. What's your business name and website?
-             2. What industry are you in?
-             3. What do you sell? (Service / Product / Coaching / Consulting / Other)
-             4. Monthly revenue range (dropdown: Under $5K / $5K-$10K / $10K-$25K / $25K-$50K / $50K-$100K / $100K+)
-             5. Team size (dropdown: Just me / 2-5 / 6-10 / 10+)
-
-             Current Operations:
-             6. List 3-5 tasks that take you the most time every week
-             7. What tools do you currently use? (CRM, email, project management, etc.)
-             8. AI experience level (dropdown: Never used it / Tried ChatGPT / Use occasionally / Built automations / Use daily)
-
-             Goals:
-             9. Top 3 business goals for the next 90 days
-             10. If you could automate ONE thing tomorrow, what would it be?
-             11. What made you join AI Drivers?
-
-             Also add: Name, Email, Discord username
-
-             In Tally settings:
-             - Thank you page: "Custom close message" (we handle the transition in JS)
-             - Webhooks: Add https://YOUR-DOMAIN.vercel.app/api/onboarding-webhook
-             ═══════════════════════════════════════════════════ -->
         <iframe
-          data-tally-src="https://tally.so/embed/rj6RdX?alignLeft=1&hideTitle=1&dynamicHeight=1"
+          data-tally-src="https://tally.so/embed/rj6RdX?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
           loading="lazy" width="100%" height="600" frameborder="0"
           marginheight="0" marginwidth="0"
           title="AI Drivers Onboarding Questionnaire">
@@ -387,43 +392,41 @@
     </div>
   </section>
 
-  <!-- STEP 2: BOOK CALL (hidden until form is submitted) -->
-  <section class="booking-section" id="step-2">
+  <!-- STEP 2: JOIN DISCORD (hidden until form is submitted) -->
+  <section class="discord-section" id="step-2">
     <div class="container">
       <div>
         <p class="section-label">Step 2 of 2</p>
-        <h2 class="form-heading">Book your assessment call</h2>
-        <p class="form-sub">Pick a time that works. 45 minutes with both Kabrin and Elijah.</p>
+        <h2 class="form-heading">Join the server</h2>
+        <p class="form-sub">This is where your build, training, and support all happen.</p>
       </div>
-      <div class="booking-wrap">
+      <div class="discord-wrap">
         <div class="success-banner">
           <div class="success-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <div class="success-text">
             <h4>Questionnaire submitted</h4>
-            <p>We've got your answers. Now pick a time for your 1-on-1 assessment call.</p>
+            <p>We've got your answers and we're already mapping out your automation opportunities.</p>
           </div>
         </div>
+        <h3 class="discord-heading">Now join the AI Drivers server</h3>
+        <p class="discord-sub">This is home base. Your custom build, weekly trainings, direct support from Kabrin and Elijah, and the full community are all here.</p>
         <!-- ═══════════════════════════════════════════════════
-             SETUP: Replace the Cal.com embed below.
+             SETUP: Replace YOUR_DISCORD_INVITE_LINK below
+             with your permanent Discord invite link.
 
-             1. Create a Cal.com event type:
-                - Name: "AI Drivers Onboarding Call"
-                - Duration: 45 minutes
-                - Hosts: Kabrin + Elijah (both required)
-                - Location: Zoom or Google Meet
-
-             2. Replace "YOUR_CAL_USERNAME/YOUR_EVENT" below
-                with your actual Cal.com link.
-                Example: "ai-drivers/onboarding" or "kabrin/ai-drivers-onboarding"
-
-             3. Cal.com webhook (for Discord notifications):
-                Go to Cal.com > Settings > Developer > Webhooks
-                Add: https://YOUR-DOMAIN.vercel.app/api/cal-webhook
-                Event: BOOKING_CREATED
+             To create one:
+             1. Open Discord > your server
+             2. Right-click any channel > Invite People
+             3. Click gear icon at bottom > toggle "Never expire"
+             4. Copy the link (e.g. https://discord.gg/XXXXXX)
              ═══════════════════════════════════════════════════ -->
-        <div id="cal-embed" style="min-height: 500px; position: relative; z-index: 1;"></div>
+        <a href="YOUR_DISCORD_INVITE_LINK" target="_blank" rel="noopener" class="discord-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          Join AI Drivers Discord
+        </a>
+        <p class="discord-note">You'll get access to your private channel, weekly trainings, and direct support.</p>
       </div>
     </div>
   </section>
@@ -431,32 +434,12 @@
   <!-- FOOTER -->
   <footer class="page-footer">
     <div class="container">
-      <p class="footer-text">Questions? Tag <a href="#">@Kabrin</a> or <a href="#">@Elijah</a> in Discord.</p>
+      <p class="footer-text">Questions? Email <a href="mailto:kabrin@craftedmarketing.io">kabrin@craftedmarketing.io</a></p>
     </div>
   </footer>
 
   <!-- Tally embed loader -->
   <script src="https://tally.so/widgets/embed.js"></script>
-
-  <!-- Cal.com embed loader -->
-  <script>
-    (function (C, A, L) {
-      let p = function (a, ar) { a.q.push(ar); };
-      let d = C.document;
-      C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments;
-        if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A;
-          cal.loaded = true; }
-        if (ar[0] === L) { const api = function () { p(api, arguments); };
-          const namespace = ar[1]; api.q = api.q || [];
-          if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar);
-          return; }
-        p(cal, ar);
-      };
-    })(window, "https://app.cal.com/embed/embed.js", "init");
-
-    // Initialize Cal but don't render yet (renders after form submission)
-    Cal("init", "onboarding", { origin: "https://cal.com" });
-  </script>
 
   <script>
     // ── SCROLL REVEAL ──
@@ -469,8 +452,7 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // ── FORM → BOOKING TRANSITION ──
-    // Listen for Tally form submission
+    // ── FORM → DISCORD TRANSITION ──
     window.addEventListener('message', function(event) {
       if (event.data && typeof event.data === 'string') {
         try {
@@ -478,55 +460,28 @@
           if (msg.event === 'Tally.FormSubmitted') {
             handleFormSubmitted();
           }
-        } catch (e) {
-          // Not a JSON message, ignore
-        }
+        } catch (e) {}
       }
 
-      // Tally also sends messages as objects
       if (event.data && event.data.event === 'Tally.FormSubmitted') {
         handleFormSubmitted();
       }
     });
 
     function handleFormSubmitted() {
-      // 1. Update step cards
       const step1 = document.querySelector('[data-step="1"]');
       const step2 = document.querySelector('[data-step="2"]');
       step1.classList.remove('active');
       step1.classList.add('completed');
       step2.classList.add('active');
 
-      // 2. Hide form section, show booking section
       const formSection = document.getElementById('step-1');
-      const bookingSection = document.getElementById('step-2');
+      const discordSection = document.getElementById('step-2');
       formSection.style.display = 'none';
-      bookingSection.classList.add('visible');
+      discordSection.classList.add('visible');
 
-      // 3. Render the Cal.com booking widget
-      Cal.ns.onboarding("inline", {
-        elementOrSelector: "#cal-embed",
-        /* ══════════════════════════════════════════
-           SETUP: Replace with your Cal.com link
-           Example: "ai-drivers/onboarding"
-           ══════════════════════════════════════════ */
-        calLink: "team/ai-drivers/onboarding-call-dwy",
-        layout: "month_view",
-        config: {
-          theme: "dark"
-        }
-      });
-
-      Cal.ns.onboarding("ui", {
-        theme: "dark",
-        styles: { branding: { brandColor: "#7b3cf5" } },
-        hideEventTypeDetails: false,
-        layout: "month_view"
-      });
-
-      // 4. Scroll to booking section
       setTimeout(function() {
-        bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        discordSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 300);
     }
   </script>
