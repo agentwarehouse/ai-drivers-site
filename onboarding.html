@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Start Your Build | AI Drivers</title>
+  <meta name="description" content="Complete your onboarding questionnaire and book your 1-on-1 assessment call with Kabrin and Elijah.">
+  <meta property="og:title" content="Start Your Build | AI Drivers">
+  <meta property="og:description" content="Complete your onboarding questionnaire and book your 1-on-1 assessment call with Kabrin and Elijah.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #05051f;
+      --bg-elevated: #0a0a2e;
+      --bg-card: rgba(17, 17, 51, 0.6);
+      --accent: #7b3cf5;
+      --accent-glow: rgba(123, 60, 245, 0.25);
+      --accent-secondary: #c4a1ff;
+      --teal: #00d9a4;
+      --teal-light: #5aecc5;
+      --teal-glow: rgba(0, 217, 164, 0.2);
+      --white: #ffffff;
+      --gray: #a0a0c0;
+      --gray-light: #c4c4d4;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(123, 60, 245, 0.3);
+      --font-head: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --radius-sm: 14px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --radius-pill: 1000px;
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-snap: cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── FILM GRAIN ── */
+    body::before {
+      content: ''; position: fixed; inset: -200%; z-index: 9999; pointer-events: none; opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 200px;
+      animation: grainDrift 0.5s steps(4) infinite;
+    }
+    @keyframes grainDrift { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-5%, -5%); } 50% { transform: translate(5%, 5%); } 75% { transform: translate(-2%, 3%); } }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 0; background: rgba(5, 5, 31, 0.8);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner { max-width: 800px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-logo span { color: var(--accent-secondary); }
+    .nav-back { color: var(--gray); font-size: 0.875rem; text-decoration: none; transition: color 0.15s; display: flex; align-items: center; gap: 6px; }
+    .nav-back:hover { color: var(--white); }
+    .nav-back svg { width: 16px; height: 16px; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.5s var(--ease-snap), transform 0.5s var(--ease-snap); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; padding: 140px 24px 60px; text-align: center; overflow: hidden;
+    }
+    .hero-mesh {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(123, 60, 245, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(0, 217, 164, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(196, 161, 255, 0.08) 0%, transparent 50%);
+    }
+    .hero-orbs { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.25; animation: orbFloat 8s ease-in-out infinite alternate; }
+    .orb-1 { width: 300px; height: 300px; background: var(--accent); top: 10%; left: -10%; }
+    .orb-2 { width: 200px; height: 200px; background: var(--teal); bottom: 10%; right: -10%; animation-delay: -3s; }
+    @keyframes orbFloat { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -20px) scale(1.1); } }
+
+    .hero-content { position: relative; z-index: 3; max-width: 700px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-block; margin-bottom: 20px;
+      padding: 8px 24px; border-radius: var(--radius-pill);
+      font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--teal-light);
+      background: linear-gradient(135deg, rgba(0, 217, 164, 0.1), rgba(90, 236, 197, 0.06));
+      border: 1px solid rgba(0, 217, 164, 0.25);
+      box-shadow: 0 0 20px rgba(0, 217, 164, 0.08);
+    }
+    .hero h1 {
+      font-family: var(--font-head); font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.04em; margin-bottom: 16px;
+    }
+    .hero h1 .accent { color: var(--accent-secondary); }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.15rem); color: var(--gray-light);
+      max-width: 560px; margin: 0 auto 32px; line-height: 1.7;
+    }
+    .hero-arrow {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 1px solid var(--border-active); color: var(--accent-secondary);
+      animation: bounceDown 2s ease-in-out infinite; cursor: pointer;
+      text-decoration: none; transition: border-color 0.2s, background 0.2s;
+    }
+    .hero-arrow:hover { border-color: var(--accent); background: rgba(123, 60, 245, 0.1); }
+    @keyframes bounceDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+    /* ── STEPS ── */
+    .steps-section { padding: 80px 0; background: var(--bg-elevated); }
+    .steps-heading {
+      font-family: var(--font-head); font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 700; text-align: center; margin-bottom: 48px; letter-spacing: -0.02em;
+    }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .step-card {
+      background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 32px 24px; text-align: center; position: relative;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .step-card:hover {
+      border-color: var(--border-active);
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+    .step-num {
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--teal-light);
+      letter-spacing: 0.1em; margin-bottom: 16px;
+    }
+    .step-icon {
+      width: 56px; height: 56px; margin: 0 auto 20px; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(123, 60, 245, 0.15), rgba(0, 217, 164, 0.1));
+      border: 1px solid var(--border-active);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-icon svg { width: 28px; height: 28px; color: var(--accent-secondary); }
+    .step-card h3 {
+      font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 10px; color: var(--white);
+    }
+    .step-card p { color: var(--gray); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── CONNECTOR LINES (desktop) ── */
+    .step-card:not(:last-child)::after {
+      content: ''; position: absolute; top: 50%; right: -12px;
+      width: 24px; height: 1px;
+      background: linear-gradient(90deg, var(--accent), var(--teal));
+      opacity: 0.3; z-index: 1;
+    }
+
+    /* ── ACTIVE STEP HIGHLIGHT ── */
+    .step-card[data-step="1"].active {
+      border-color: var(--teal);
+      box-shadow: 0 0 30px var(--teal-glow);
+    }
+    .step-card[data-step="2"].active {
+      border-color: var(--teal);
+      box-shadow: 0 0 30px var(--teal-glow);
+    }
+    .step-card.completed {
+      border-color: rgba(0, 217, 164, 0.3);
+    }
+    .step-card.completed .step-num { color: var(--teal); }
+    .step-card.completed .step-icon { border-color: rgba(0, 217, 164, 0.3); }
+    .step-card.completed::before {
+      content: ''; position: absolute; top: 16px; right: 16px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--teal); display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── FORM / BOOKING SECTIONS ── */
+    .form-section { padding: 80px 0 100px; }
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--teal-light); margin-bottom: 12px; text-align: center;
+    }
+    .form-heading {
+      font-family: var(--font-head); font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 700; text-align: center; margin-bottom: 12px; letter-spacing: -0.02em;
+    }
+    .form-sub {
+      color: var(--gray); font-size: 0.95rem; text-align: center;
+      margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto;
+    }
+    .form-wrap {
+      background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-active); border-radius: var(--radius-lg);
+      padding: 48px 40px; position: relative; overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.3), 0 0 60px var(--accent-glow);
+    }
+    .form-wrap::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 0%, rgba(123, 60, 245, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .form-wrap iframe {
+      width: 100%; min-height: 600px; border: none; position: relative; z-index: 1;
+    }
+
+    /* ── BOOKING SECTION (hidden by default) ── */
+    .booking-section { display: none; padding: 0 0 100px; }
+    .booking-section.visible { display: block; }
+    .booking-wrap {
+      background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 217, 164, 0.25); border-radius: var(--radius-lg);
+      padding: 48px 40px; position: relative; overflow: hidden;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.3), 0 0 60px var(--teal-glow);
+    }
+    .booking-wrap::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 0%, rgba(0, 217, 164, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── SUCCESS CHECKMARK ── */
+    .success-banner {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 24px; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, rgba(0, 217, 164, 0.1), rgba(90, 236, 197, 0.05));
+      border: 1px solid rgba(0, 217, 164, 0.25);
+      margin-bottom: 32px;
+    }
+    .success-icon {
+      width: 40px; height: 40px; min-width: 40px; border-radius: 50%;
+      background: rgba(0, 217, 164, 0.15); border: 1px solid rgba(0, 217, 164, 0.3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .success-icon svg { width: 20px; height: 20px; color: var(--teal-light); }
+    .success-text h4 {
+      font-family: var(--font-head); font-size: 1rem; font-weight: 700;
+      color: var(--teal-light); margin-bottom: 4px;
+    }
+    .success-text p { color: var(--gray-light); font-size: 0.9rem; line-height: 1.5; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      padding: 40px 0; border-top: 1px solid var(--border); text-align: center;
+    }
+    .footer-text { color: var(--gray); font-size: 0.85rem; line-height: 1.6; }
+    .footer-text a { color: var(--accent-secondary); text-decoration: none; transition: color 0.15s; }
+    .footer-text a:hover { color: var(--white); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 810px) {
+      .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+      .step-card:not(:last-child)::after { display: none; }
+      .form-wrap, .booking-wrap { padding: 32px 20px; }
+      .hero { padding: 120px 20px 48px; }
+    }
+
+    @media (max-width: 400px) {
+      .form-wrap, .booking-wrap { padding: 24px 16px; border-radius: var(--radius-md); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">AI <span>Drivers</span></a>
+      <a href="/" class="nav-back">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to home
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-mesh"></div>
+    <div class="hero-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">NEW MEMBER ONBOARDING</div>
+      <h1>Start Your <span class="accent">AI Build</span></h1>
+      <p class="hero-sub">Two steps. Fill out the questionnaire so we know your business, then book your 1-on-1 assessment call with Kabrin and Elijah.</p>
+      <a href="#step-1" class="hero-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><polyline points="19 12 12 19 5 12"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="steps-section">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Your onboarding</p>
+        <h2 class="steps-heading">Two steps to get started.</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card reveal active" data-step="1">
+          <p class="step-num">01</p>
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <h3>Tell us about your business</h3>
+          <p>Fill out the questionnaire below so we come to your call prepared with automation opportunities mapped out.</p>
+        </div>
+        <div class="step-card reveal" data-step="2">
+          <p class="step-num">02</p>
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+          </div>
+          <h3>Book your assessment call</h3>
+          <p>Pick a time for your 45-minute 1-on-1 with both founders. This is where we map out exactly what to build.</p>
+        </div>
+        <div class="step-card reveal" data-step="3">
+          <p class="step-num">03</p>
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>We start building</h3>
+          <p>After the call, we go to work. Your custom AI system is built and installed within 5 days.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 1: QUESTIONNAIRE -->
+  <section class="form-section" id="step-1">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Step 1 of 2</p>
+        <h2 class="form-heading">Tell us about your business</h2>
+        <p class="form-sub">Takes about 5 minutes. The more detail you give us, the better your assessment call will be.</p>
+      </div>
+      <div class="form-wrap reveal">
+        <!-- ═══════════════════════════════════════════════════
+             SETUP: Replace the Tally embed URL below.
+             Create a Tally form with these 11 questions:
+
+             Business Basics:
+             1. What's your business name and website?
+             2. What industry are you in?
+             3. What do you sell? (Service / Product / Coaching / Consulting / Other)
+             4. Monthly revenue range (dropdown: Under $5K / $5K-$10K / $10K-$25K / $25K-$50K / $50K-$100K / $100K+)
+             5. Team size (dropdown: Just me / 2-5 / 6-10 / 10+)
+
+             Current Operations:
+             6. List 3-5 tasks that take you the most time every week
+             7. What tools do you currently use? (CRM, email, project management, etc.)
+             8. AI experience level (dropdown: Never used it / Tried ChatGPT / Use occasionally / Built automations / Use daily)
+
+             Goals:
+             9. Top 3 business goals for the next 90 days
+             10. If you could automate ONE thing tomorrow, what would it be?
+             11. What made you join AI Drivers?
+
+             Also add: Name, Email, Discord username
+
+             In Tally settings:
+             - Thank you page: "Custom close message" (we handle the transition in JS)
+             - Webhooks: Add https://YOUR-DOMAIN.vercel.app/api/onboarding-webhook
+             ═══════════════════════════════════════════════════ -->
+        <iframe
+          data-tally-src="https://tally.so/embed/rj6RdX?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+          loading="lazy" width="100%" height="600" frameborder="0"
+          marginheight="0" marginwidth="0"
+          title="AI Drivers Onboarding Questionnaire">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: BOOK CALL (hidden until form is submitted) -->
+  <section class="booking-section" id="step-2">
+    <div class="container">
+      <div>
+        <p class="section-label">Step 2 of 2</p>
+        <h2 class="form-heading">Book your assessment call</h2>
+        <p class="form-sub">Pick a time that works. 45 minutes with both Kabrin and Elijah.</p>
+      </div>
+      <div class="booking-wrap">
+        <div class="success-banner">
+          <div class="success-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="success-text">
+            <h4>Questionnaire submitted</h4>
+            <p>We've got your answers. Now pick a time for your 1-on-1 assessment call.</p>
+          </div>
+        </div>
+        <!-- ═══════════════════════════════════════════════════
+             SETUP: Replace the Cal.com embed below.
+
+             1. Create a Cal.com event type:
+                - Name: "AI Drivers Onboarding Call"
+                - Duration: 45 minutes
+                - Hosts: Kabrin + Elijah (both required)
+                - Location: Zoom or Google Meet
+
+             2. Replace "YOUR_CAL_USERNAME/YOUR_EVENT" below
+                with your actual Cal.com link.
+                Example: "ai-drivers/onboarding" or "kabrin/ai-drivers-onboarding"
+
+             3. Cal.com webhook (for Discord notifications):
+                Go to Cal.com > Settings > Developer > Webhooks
+                Add: https://YOUR-DOMAIN.vercel.app/api/cal-webhook
+                Event: BOOKING_CREATED
+             ═══════════════════════════════════════════════════ -->
+        <div id="cal-embed" style="min-height: 500px; position: relative; z-index: 1;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div class="container">
+      <p class="footer-text">Questions? Tag <a href="#">@Kabrin</a> or <a href="#">@Elijah</a> in Discord.</p>
+    </div>
+  </footer>
+
+  <!-- Tally embed loader -->
+  <script src="https://tally.so/widgets/embed.js"></script>
+
+  <!-- Cal.com embed loader -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) { a.q.push(ar); };
+      let d = C.document;
+      C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments;
+        if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true; }
+        if (ar[0] === L) { const api = function () { p(api, arguments); };
+          const namespace = ar[1]; api.q = api.q || [];
+          if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar);
+          return; }
+        p(cal, ar);
+      };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+
+    // Initialize Cal but don't render yet (renders after form submission)
+    Cal("init", "onboarding", { origin: "https://cal.com" });
+  </script>
+
+  <script>
+    // ── SCROLL REVEAL ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── FORM → BOOKING TRANSITION ──
+    // Listen for Tally form submission
+    window.addEventListener('message', function(event) {
+      if (event.data && typeof event.data === 'string') {
+        try {
+          const msg = JSON.parse(event.data);
+          if (msg.event === 'Tally.FormSubmitted') {
+            handleFormSubmitted();
+          }
+        } catch (e) {
+          // Not a JSON message, ignore
+        }
+      }
+
+      // Tally also sends messages as objects
+      if (event.data && event.data.event === 'Tally.FormSubmitted') {
+        handleFormSubmitted();
+      }
+    });
+
+    function handleFormSubmitted() {
+      // 1. Update step cards
+      const step1 = document.querySelector('[data-step="1"]');
+      const step2 = document.querySelector('[data-step="2"]');
+      step1.classList.remove('active');
+      step1.classList.add('completed');
+      step2.classList.add('active');
+
+      // 2. Hide form section, show booking section
+      const formSection = document.getElementById('step-1');
+      const bookingSection = document.getElementById('step-2');
+      formSection.style.display = 'none';
+      bookingSection.classList.add('visible');
+
+      // 3. Render the Cal.com booking widget
+      Cal.ns.onboarding("inline", {
+        elementOrSelector: "#cal-embed",
+        /* ══════════════════════════════════════════
+           SETUP: Replace with your Cal.com link
+           Example: "ai-drivers/onboarding"
+           ══════════════════════════════════════════ */
+        calLink: "team/ai-drivers/onboarding-call-dwy",
+        layout: "month_view",
+        config: {
+          theme: "dark"
+        }
+      });
+
+      Cal.ns.onboarding("ui", {
+        theme: "dark",
+        styles: { branding: { brandColor: "#7b3cf5" } },
+        hideEventTypeDetails: false,
+        layout: "month_view"
+      });
+
+      // 4. Scroll to booking section
+      setTimeout(function() {
+        bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
+  </script>
+</body>
+</html>
