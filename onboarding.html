@@ -273,15 +273,19 @@
     .footer-text a { color: var(--accent-secondary); text-decoration: none; transition: color 0.15s; }
     .footer-text a:hover { color: var(--white); }
 
-    /* ── MOBILE FORM: clean, full-width, no cramped box ── */
+    /* ── MOBILE FORM: full-width, edge-to-edge, minimal scrolling ── */
     @media (max-width: 810px) {
+      /* Let the form section break out of container padding */
+      .form-section .container { padding: 0 8px; }
       .form-wrap {
         background: transparent; border: none; border-radius: 0;
         padding: 0; box-shadow: none; overflow: visible;
       }
-      .form-wrap iframe { min-height: 500px; }
-      .form-section { padding: 24px 0 48px; }
-      .form-sub { margin-bottom: 24px; }
+      .form-wrap iframe { min-height: 400px; }
+      .form-section { padding: 16px 0 32px; }
+      .form-sub { margin-bottom: 16px; font-size: 0.9rem; }
+      .form-heading { margin-bottom: 8px; }
+      .section-label { margin-bottom: 8px; }
       .booking-wrap { padding: 24px 16px; border-radius: var(--radius-md); }
       .discord-wrap { padding: 24px 16px; border-radius: var(--radius-md); }
     }
