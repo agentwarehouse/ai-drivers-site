@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI Drivers | Enterprise AI Agent Deployment</title>
+  <meta name="description" content="Custom AI agent teams deployed into your business. We audit, build, install, train, and embed as your AI operations team. 90-day KPI guarantee. Built by operators with $4M+ in revenue on the same system.">
+  <meta property="og:title" content="AI Drivers | We Audit. We Build. We Embed.">
+  <meta property="og:description" content="Custom AI agent teams for your business. 90-day KPI guarantee. Built by operators with $4M+ in revenue on the same system.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #000000;
+      --bg-elevated: #0a0a12;
+      --bg-card: rgba(12, 12, 20, 0.7);
+      --accent: #7b3cf5;
+      --accent-glow: rgba(123, 60, 245, 0.2);
+      --accent-secondary: #c4a1ff;
+      --cyan: #00d4ff;
+      --cyan-glow: rgba(0, 212, 255, 0.15);
+      --white: #f0f0f5;
+      --gray: #8a8a9a;
+      --gray-light: #b0b0c0;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-active: rgba(123, 60, 245, 0.2);
+      --font-head: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --radius-sm: 12px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 1000px;
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      z-index: 1001; border-radius: 0 2px 2px 0;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 0; background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border); transition: all 0.2s;
+    }
+    nav.scrolled { padding: 10px 0; background: rgba(0, 0, 0, 0.95); }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; color: var(--white); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-logo span { color: var(--cyan); }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { color: var(--gray); font-size: 0.875rem; text-decoration: none; transition: color 0.15s; font-family: var(--font-body); }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      color: var(--white) !important; padding: 10px 24px; border-radius: var(--radius-pill);
+      font-size: 0.875rem; font-weight: 600; text-decoration: none;
+      transition: transform 0.15s var(--ease-spring), box-shadow 0.2s;
+    }
+    .nav-cta:hover { transform: scale(1.04); box-shadow: 0 0 30px var(--accent-glow); }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 18px 44px; background: linear-gradient(135deg, var(--accent), var(--cyan));
+      color: var(--white); font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+      text-decoration: none; border-radius: var(--radius-pill); border: none; cursor: pointer;
+      transition: transform 0.15s var(--ease-spring), box-shadow 0.2s;
+      animation: ctaPulse 3s ease-in-out infinite;
+    }
+    .btn:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--accent-glow), 0 0 80px var(--cyan-glow); animation: none; }
+    @keyframes ctaPulse { 0%, 100% { box-shadow: 0 0 15px var(--accent-glow); } 50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 60px var(--cyan-glow); } }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; background: transparent; color: var(--gray-light);
+      font-family: var(--font-head); font-size: 1rem; font-weight: 500;
+      text-decoration: none; border-radius: var(--radius-pill);
+      border: 1px solid var(--border-active);
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { color: var(--white); border-color: var(--cyan); background: rgba(0, 212, 255, 0.05); }
+
+    .friction { color: var(--gray); font-size: 0.875rem; margin-top: 16px; text-align: center; }
+
+    /* ── SECTION STYLES ── */
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 16px;
+    }
+    .section-heading {
+      font-family: var(--font-head); font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.15; margin-bottom: 24px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+    }
+    .section-body { color: var(--gray-light); font-size: 1.05rem; line-height: 1.8; max-width: 720px; }
+    .section-body p { margin-bottom: 20px; }
+
+    section { padding: 100px 0; position: relative; }
+    section.alt-bg { background: var(--bg-elevated); }
+
+    /* ── GLASS CARD ── */
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .glass-card:hover { border-color: var(--border-active); }
+    .glass-card.highlighted {
+      border-color: rgba(0, 212, 255, 0.3);
+      background: rgba(0, 212, 255, 0.04);
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; position: relative; padding: 120px 0 80px;
+    }
+    .hero-mesh {
+      position: absolute; inset: 0; z-index: 0; overflow: hidden;
+    }
+    .hero-mesh::before {
+      content: ''; position: absolute; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(123, 60, 245, 0.12) 0%, transparent 70%);
+      top: 10%; left: -10%; filter: blur(80px);
+    }
+    .hero-mesh::after {
+      content: ''; position: absolute; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+      bottom: 10%; right: -5%; filter: blur(80px);
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--cyan);
+      padding: 8px 20px; border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      background: rgba(0, 212, 255, 0.04);
+      margin-bottom: 32px;
+    }
+    .hero h1 {
+      font-family: var(--font-head); font-weight: 800;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      letter-spacing: -0.03em; line-height: 1.1;
+      max-width: 900px; margin: 0 auto 24px;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      color: var(--gray-light); max-width: 680px; margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .hero-ctas { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+    .hero-proof {
+      font-family: var(--font-mono); font-size: 0.8rem; color: var(--gray);
+      letter-spacing: 0.02em;
+    }
+    .hero-proof strong { color: var(--cyan); }
+
+    /* ── STAT CALLOUT ── */
+    .stat-callout {
+      background: var(--bg-card); border: 1px solid var(--border-active);
+      border-radius: var(--radius-md); padding: 40px; text-align: center;
+      max-width: 600px; margin: 48px auto 0;
+    }
+    .stat-callout .stat-number {
+      font-family: var(--font-mono); font-size: 3.5rem; font-weight: 700;
+      color: var(--accent-secondary); line-height: 1;
+    }
+    .stat-callout .stat-desc { color: var(--gray); font-size: 0.95rem; margin-top: 12px; }
+
+    /* ── COMPARISON GRID ── */
+    .comparison-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 20px; margin-top: 48px;
+    }
+    .comparison-grid .glass-card h3 {
+      font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .comparison-grid .glass-card p { color: var(--gray); font-size: 0.92rem; line-height: 1.6; }
+    .comparison-grid .highlighted h3 { color: var(--cyan); }
+
+    /* ── PROCESS GRID ── */
+    .process-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 24px; margin-top: 48px;
+    }
+    .process-card { padding: 36px; }
+    .process-label {
+      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
+    }
+    .process-card h3 {
+      font-family: var(--font-head); font-size: 1.15rem; font-weight: 700;
+      margin-bottom: 12px; color: var(--white);
+    }
+    .process-card p { color: var(--gray-light); font-size: 0.92rem; line-height: 1.7; }
+
+    /* ── FOUNDERS ── */
+    .founders-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 48px; margin-top: 48px;
+    }
+    .founder-card { }
+    .founder-name {
+      font-family: var(--font-head); font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .founder-role {
+      font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan);
+      letter-spacing: 0.05em; margin-bottom: 20px;
+    }
+    .founder-card p { color: var(--gray-light); font-size: 0.95rem; line-height: 1.7; margin-bottom: 12px; }
+
+    .credibility-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 20px; margin-top: 64px;
+    }
+    .cred-item { text-align: center; }
+    .cred-number {
+      font-family: var(--font-mono); font-size: 2rem; font-weight: 700;
+      color: var(--cyan); line-height: 1;
+    }
+    .cred-label { color: var(--gray); font-size: 0.8rem; margin-top: 8px; }
+
+    /* ── PROOF GRID ── */
+    .proof-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 48px;
+    }
+    .proof-card { text-align: center; padding: 36px 24px; }
+    .proof-number {
+      font-family: var(--font-mono); font-size: 2.2rem; font-weight: 700;
+      color: var(--cyan); line-height: 1;
+    }
+    .proof-label { color: var(--gray); font-size: 0.85rem; margin-top: 10px; line-height: 1.4; }
+
+    /* ── INDUSTRY GRID ── */
+    .industry-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 48px;
+    }
+    .industry-card h3 {
+      font-family: var(--font-head); font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 12px; color: var(--white);
+    }
+    .industry-card .industry-problem {
+      color: var(--gray); font-size: 0.88rem; font-style: italic; margin-bottom: 16px; line-height: 1.5;
+    }
+    .industry-card ul { list-style: none; padding: 0; }
+    .industry-card li {
+      color: var(--gray-light); font-size: 0.88rem; padding: 4px 0 4px 16px;
+      position: relative; line-height: 1.5;
+    }
+    .industry-card li::before {
+      content: ''; position: absolute; left: 0; top: 11px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    /* ── QUALIFICATION ── */
+    .qual-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 32px; margin-top: 48px;
+    }
+    .qual-card h3 {
+      font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .qual-for h3 { color: var(--cyan); }
+    .qual-not h3 { color: var(--accent-secondary); }
+    .qual-card ul { list-style: none; padding: 0; }
+    .qual-card li {
+      color: var(--gray-light); font-size: 0.95rem; padding: 10px 0 10px 28px;
+      position: relative; line-height: 1.6;
+    }
+    .qual-for li::before { content: '\2713'; position: absolute; left: 0; color: var(--cyan); font-weight: 700; }
+    .qual-not li::before { content: '\2717'; position: absolute; left: 0; color: var(--accent-secondary); font-weight: 700; }
+
+    .downsell {
+      margin-top: 48px; padding: 32px; border-radius: var(--radius-md);
+      background: rgba(123, 60, 245, 0.06); border: 1px solid rgba(123, 60, 245, 0.15);
+      text-align: center;
+    }
+    .downsell h4 { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; }
+    .downsell p { color: var(--gray-light); font-size: 0.92rem; max-width: 600px; margin: 0 auto 16px; line-height: 1.6; }
+    .downsell a { color: var(--accent-secondary); text-decoration: underline; font-weight: 500; }
+
+    /* ── GUARANTEE ── */
+    .guarantee-card {
+      max-width: 800px; margin: 48px auto 0; padding: 48px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(123, 60, 245, 0.05));
+      border: 1px solid rgba(0, 212, 255, 0.2);
+    }
+    .guarantee-card h3 {
+      font-family: var(--font-head); font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800; margin-bottom: 24px;
+    }
+    .guarantee-card p { color: var(--gray-light); font-size: 1rem; line-height: 1.7; margin-bottom: 16px; }
+    .guarantee-card ol {
+      list-style: none; padding: 0; counter-reset: stip; margin-top: 24px;
+    }
+    .guarantee-card li {
+      color: var(--gray-light); font-size: 0.95rem; padding: 8px 0 8px 32px;
+      position: relative; line-height: 1.6; counter-increment: stip;
+    }
+    .guarantee-card li::before {
+      content: counter(stip); position: absolute; left: 0;
+      font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan); font-weight: 700;
+    }
+
+    /* ── FAQ ── */
+    .faq-list { max-width: 750px; margin: 48px auto 0; }
+    .faq-item {
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      margin-bottom: 12px; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item.open { border-color: var(--border-active); }
+    .faq-q {
+      width: 100%; padding: 20px 24px; background: none; border: none;
+      color: var(--white); font-family: var(--font-head); font-size: 1rem;
+      font-weight: 600; text-align: left; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .faq-q::after {
+      content: '+'; font-family: var(--font-mono); font-size: 1.2rem;
+      color: var(--cyan); transition: transform 0.3s;
+    }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-out);
+    }
+    .faq-a-inner { padding: 0 24px 20px; color: var(--gray-light); font-size: 0.95rem; line-height: 1.7; }
+
+    /* ── FINAL CTA ── */
+    .final-cta {
+      padding: 120px 0; text-align: center; position: relative;
+    }
+    .final-cta .cta-mesh {
+      position: absolute; inset: 0; overflow: hidden; z-index: 0;
+    }
+    .final-cta .cta-mesh::before {
+      content: ''; position: absolute; width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(123, 60, 245, 0.1) 0%, transparent 60%);
+      top: -20%; left: 20%; filter: blur(100px);
+    }
+    .final-cta .cta-mesh::after {
+      content: ''; position: absolute; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.06) 0%, transparent 60%);
+      bottom: -10%; right: 10%; filter: blur(100px);
+    }
+    .final-cta .container { position: relative; z-index: 1; }
+    .cta-stats {
+      display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+      margin: 32px 0; font-family: var(--font-mono); font-size: 0.85rem; color: var(--gray);
+    }
+    .cta-stats strong { color: var(--white); }
+    .cta-friction-list {
+      list-style: none; padding: 0; margin-top: 20px;
+      color: var(--gray); font-size: 0.875rem;
+    }
+    .cta-friction-list li { margin: 6px 0; }
+    .guarantee-line { color: var(--gray); font-size: 0.9rem; max-width: 600px; margin: 24px auto 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 0; border-top: 1px solid var(--border); text-align: center;
+    }
+    footer p { color: var(--gray); font-size: 0.8rem; margin: 4px 0; }
+    footer a { color: var(--accent-secondary); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── MOBILE CTA BAR ── */
+    .mobile-cta {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 99; padding: 12px 16px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+    }
+    .mobile-cta .btn { width: 100%; font-size: 1rem; padding: 16px; animation: none; }
+
+    /* ── SECTION DIVIDER ── */
+    .divider {
+      height: 1px; max-width: 200px; margin: 0 auto;
+      background: linear-gradient(90deg, transparent, var(--border-active), transparent);
+    }
+
+    /* ── CTA SECTION (mid-page) ── */
+    .mid-cta { text-align: center; padding: 64px 0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 810px) {
+      section { padding: 72px 0; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { min-height: auto; padding: 120px 0 60px; }
+      .hero h1 { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+      .comparison-grid,
+      .process-grid,
+      .founders-grid,
+      .qual-grid { grid-template-columns: 1fr; }
+      .credibility-bar { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .industry-grid { grid-template-columns: 1fr; }
+      .cta-stats { flex-direction: column; gap: 12px; }
+      .mobile-cta { display: block; }
+      .guarantee-card { padding: 32px 24px; }
+      body { padding-bottom: 80px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .btn { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCROLL PROGRESS -->
+  <div class="scroll-progress"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">AI <span>DRIVERS</span></a>
+      <div class="nav-links">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#about">About Us</a>
+        <a href="#results">Results</a>
+        <a href="#faq">FAQ</a>
+        <a href="#" class="nav-cta">Book a Discovery Call</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-mesh"></div>
+    <div class="container">
+      <div class="hero-badge reveal">AI Drivers &bull; Enterprise</div>
+      <h1 class="reveal">We audit your operations, build custom AI systems, and embed as your AI team.</h1>
+      <p class="hero-sub reveal">The same system behind $4M+ in revenue across our own businesses. We find what's costing you time and money, build the fix, and stay until the numbers move. Two operators. One methodology. Results in 90 days or we keep working for free.</p>
+      <div class="hero-ctas reveal">
+        <a href="#" class="btn">Book a Discovery Call <span>&rarr;</span></a>
+        <a href="#how-it-works" class="btn-ghost">See How It Works <span>&darr;</span></a>
+      </div>
+      <p class="hero-proof reveal"><strong>$4M+</strong> in revenue &nbsp;|&nbsp; <strong>33+</strong> businesses on the system &nbsp;|&nbsp; <strong>Platform-agnostic</strong> builds</p>
+    </div>
+  </section>
+
+  <!-- THE PROBLEM -->
+  <section class="alt-bg">
+    <div class="container">
+      <div class="section-label reveal">THE PROBLEM</div>
+      <h2 class="section-heading reveal">Your team is talented. They're spending half their time on work that doesn't require a human brain.</h2>
+      <div class="section-body reveal">
+        <p>Every business hits this wall. Revenue is growing, but the operations underneath it are manual, disconnected, and held together by people doing repetitive work that should be systemized.</p>
+        <p>Your team writes the same types of emails, builds the same types of reports, runs the same research processes, onboards clients the same way. Over and over. The work is real, but it doesn't need a person sitting in front of a screen for eight hours to get done.</p>
+        <p>You've tried the obvious solutions. ChatGPT for a few tasks. Maybe a Zapier workflow. Maybe you hired a consultant who gave you a slide deck and left. Nothing changed because nothing was connected, nothing was trained on your data, and nobody stayed to make sure it actually worked.</p>
+        <p>Meanwhile, your competitors are figuring this out. The ones who move first don't just save money. They operate at a fundamentally different speed.</p>
+      </div>
+      <div class="stat-callout reveal">
+        <div class="stat-number" data-count="95">0</div>
+        <div class="stat-desc">of enterprise AI pilots deliver zero measurable return. (MIT Sloan)<br>The gap is not technology. It's implementation.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE DISTINCTION -->
+  <section id="how-it-works">
+    <div class="container">
+      <div class="section-label reveal">WHAT WE BUILD</div>
+      <h2 class="section-heading reveal">AI agents are not chatbots. They're not Zapier. And they're not the tools your team already tried.</h2>
+      <div class="section-body reveal">
+        <p>There is a meaningful difference between what most companies call "AI implementation" and what we deploy. Understanding that difference is worth 60 seconds.</p>
+      </div>
+      <div class="comparison-grid">
+        <div class="glass-card reveal">
+          <h3>Chatbot</h3>
+          <p>Answers questions from a knowledge base. Useful for customer support. Not a business operations tool. It waits for someone to ask it something.</p>
+        </div>
+        <div class="glass-card reveal">
+          <h3>Workflow Automation</h3>
+          <p>Zapier, Make. Connects Tool A to Tool B. Saves 20 minutes on a task. Doesn't think, doesn't produce, doesn't learn.</p>
+        </div>
+        <div class="glass-card reveal">
+          <h3>Point-Solution AI</h3>
+          <p>ChatGPT, Copilot. Generic tools that require you to prompt, review, and manage every output. No business context. No memory. No SOPs.</p>
+        </div>
+        <div class="glass-card highlighted reveal">
+          <h3>AI Agent Teams</h3>
+          <p>Custom multi-agent systems trained on YOUR SOPs, YOUR data, YOUR quality standards. They research, write, build, onboard, and manage. Connected. Trained. Producing finished work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE PROCESS -->
+  <section class="alt-bg">
+    <div class="container">
+      <div class="section-label reveal">THE PROCESS</div>
+      <h2 class="section-heading reveal">Five phases. From audit to embedded AI operations team.</h2>
+      <div class="section-body reveal">
+        <p>Every engagement follows the same methodology. We don't sell hours. We sell outcomes. The scope and timeline are custom to your business.</p>
+      </div>
+      <div class="process-grid">
+        <div class="glass-card process-card reveal">
+          <div class="process-label">PHASE 01</div>
+          <h3>Audit</h3>
+          <p>We map your operations across marketing, sales, and fulfillment. Identify the highest-leverage workflows. You get an Architecture Document with system design and projected capacity gains before anything is built.</p>
+        </div>
+        <div class="glass-card process-card reveal">
+          <div class="process-label">PHASE 02</div>
+          <h3>Build</h3>
+          <p>Custom multi-agent system trained on your SOPs, data, brand voice, and quality standards. Platform-agnostic. Claude, GPT, Gemini, open-source. Built for how your business actually runs.</p>
+        </div>
+        <div class="glass-card process-card reveal">
+          <div class="process-label">PHASE 03</div>
+          <h3>Install</h3>
+          <p>Deployed into your existing tool stack. CRM, project management, communications, analytics. Wired together. Tested end-to-end. Live in production. Zero technical skills required.</p>
+        </div>
+        <div class="glass-card process-card reveal">
+          <div class="process-label">PHASE 04</div>
+          <h3>Train</h3>
+          <p>Your team trained hands-on. Recorded walkthroughs for every workflow. Written documentation. This is training on their system with their data. Not a course.</p>
+        </div>
+        <div class="glass-card process-card reveal" style="grid-column: 1 / -1; max-width: 600px; margin: 0 auto;">
+          <div class="process-label">PHASE 05</div>
+          <h3>Embed</h3>
+          <p>We stay. Bi-weekly check-ins. System refinement based on real usage data. New agents added as opportunities surface. Performance monitoring against KPIs defined in the audit. We don't hand you a system and disappear. We operate alongside you until it's producing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDERS -->
+  <section id="about">
+    <div class="container">
+      <div class="section-label reveal">WHO BUILDS THIS</div>
+      <h2 class="section-heading reveal">Operators. Not consultants. The system we deploy is the system running our businesses.</h2>
+      <div class="section-body reveal">
+        <p>Most companies selling AI implementation have never run a business that depends on AI. They advise. They consult. They build decks. We built these systems because we needed them for our own operations first.</p>
+      </div>
+      <div class="founders-grid">
+        <div class="founder-card reveal">
+          <div class="founder-name">Kabrin Johal</div>
+          <div class="founder-role">Co-Founder</div>
+          <p>Opened and operated 11 Orange Theory Fitness franchise locations, managing 200+ staff across multiple states. Exited all of them.</p>
+          <p>Launched Crafted Marketing, a high-ticket agency in the information product space. Built the entire fulfillment engine on AI agents. Every deliverable, every campaign, every client engagement runs through the system. $3M+ in total revenue generated.</p>
+        </div>
+        <div class="founder-card reveal">
+          <div class="founder-name">Elijah Bricker</div>
+          <div class="founder-role">Co-Founder</div>
+          <p>Skipped college at 18. Started in commercial real estate. Hit a ceiling. Built Arbory LLC, a marketing agency that generated $1M in revenue for clients in 14 months.</p>
+          <p>Hit another ceiling. Went all-in on systems. Built the AI agent architecture from the ground up. Runs his entire operation on it. Closed-loop automated business where the systems handle execution.</p>
+        </div>
+      </div>
+      <div class="credibility-bar">
+        <div class="cred-item reveal">
+          <div class="cred-number" data-count="4">0</div>
+          <div class="cred-label">$M+ combined revenue</div>
+        </div>
+        <div class="cred-item reveal">
+          <div class="cred-number" data-count="11">0</div>
+          <div class="cred-label">Franchise locations</div>
+        </div>
+        <div class="cred-item reveal">
+          <div class="cred-number" data-count="200">0</div>
+          <div class="cred-label">Staff managed</div>
+        </div>
+        <div class="cred-item reveal">
+          <div class="cred-number" data-count="2">0</div>
+          <div class="cred-label">Businesses automated</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEM PROOF -->
+  <section class="alt-bg" id="results">
+    <div class="container">
+      <div class="section-label reveal">THE EVIDENCE</div>
+      <h2 class="section-heading reveal">Numbers. Not promises.</h2>
+      <div class="proof-grid">
+        <div class="glass-card proof-card reveal">
+          <div class="proof-number">$4M+</div>
+          <div class="proof-label">Revenue generated through the system</div>
+        </div>
+        <div class="glass-card proof-card reveal">
+          <div class="proof-number" data-count="33">0</div>
+          <div class="proof-label">Businesses on the platform</div>
+        </div>
+        <div class="glass-card proof-card reveal">
+          <div class="proof-number" data-count="32">0</div>
+          <div class="proof-label">AI skills in the system</div>
+        </div>
+        <div class="glass-card proof-card reveal">
+          <div class="proof-number" data-count="192">0</div>
+          <div class="proof-label">Standard operating procedures</div>
+        </div>
+        <div class="glass-card proof-card reveal">
+          <div class="proof-number" data-count="11">0</div>
+          <div class="proof-label">Platform integrations</div>
+        </div>
+        <div class="glass-card proof-card reveal">
+          <div class="proof-number">90 days</div>
+          <div class="proof-label">KPI guarantee period</div>
+        </div>
+      </div>
+      <div class="section-body reveal" style="margin-top: 48px;">
+        <p>Both founders operate their primary businesses on this system every day. The system was built under real conditions with real clients, real deadlines, and real revenue on the line.</p>
+      </div>
+      <div class="mid-cta reveal">
+        <a href="#" class="btn">Book a Discovery Call <span>&rarr;</span></a>
+        <p class="friction">30 minutes. No commitment. We'll tell you if this is the right fit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section>
+    <div class="container">
+      <div class="section-label reveal">WHO WE BUILD FOR</div>
+      <h2 class="section-heading reveal">If your team runs repeatable processes, we can build AI systems around them.</h2>
+      <div class="industry-grid">
+        <div class="glass-card industry-card reveal">
+          <h3>Marketing &amp; Ad Agencies</h3>
+          <p class="industry-problem">Fulfillment work eats your margins.</p>
+          <ul>
+            <li>Client reporting and performance dashboards</li>
+            <li>Content production from brief to scheduled post</li>
+            <li>Client onboarding sequences</li>
+          </ul>
+        </div>
+        <div class="glass-card industry-card reveal">
+          <h3>Professional Services</h3>
+          <p class="industry-problem">Administrative processes consume billable hours.</p>
+          <ul>
+            <li>Document drafting with compliance checkpoints</li>
+            <li>Client intake to file creation to team assignment</li>
+            <li>Recurring report generation</li>
+          </ul>
+        </div>
+        <div class="glass-card industry-card reveal">
+          <h3>E-commerce &amp; DTC</h3>
+          <p class="industry-problem">Manual handoffs between systems create delays.</p>
+          <ul>
+            <li>Order processing and fulfillment coordination</li>
+            <li>Customer service triage and response</li>
+            <li>Inventory monitoring with automated reorders</li>
+          </ul>
+        </div>
+        <div class="glass-card industry-card reveal">
+          <h3>Education &amp; Coaching</h3>
+          <p class="industry-problem">Support scales linearly with enrollment.</p>
+          <ul>
+            <li>Student onboarding and welcome sequences</li>
+            <li>Support ticket routing and first-response</li>
+            <li>Content scheduling across platforms</li>
+          </ul>
+        </div>
+        <div class="glass-card industry-card reveal">
+          <h3>SaaS &amp; Technology</h3>
+          <p class="industry-problem">Customer success headcount grows with customers.</p>
+          <ul>
+            <li>Customer onboarding to first value milestone</li>
+            <li>Internal ops processes (HR, finance, procurement)</li>
+            <li>Customer health monitoring and outreach</li>
+          </ul>
+        </div>
+        <div class="glass-card industry-card reveal">
+          <h3>Healthcare &amp; Real Estate</h3>
+          <p class="industry-problem">Compliance-heavy, documentation-heavy processes.</p>
+          <ul>
+            <li>Document processing with compliance validation</li>
+            <li>Scheduling coordination</li>
+            <li>Reporting and regulatory filing preparation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUALIFICATION -->
+  <section class="alt-bg">
+    <div class="container">
+      <div class="section-label reveal">IS THIS THE RIGHT FIT</div>
+      <h2 class="section-heading reveal">This works for a specific type of business. Here's how to tell if yours qualifies.</h2>
+      <div class="qual-grid">
+        <div class="glass-card qual-card qual-for reveal">
+          <h3>This is built for businesses that...</h3>
+          <ul>
+            <li>Run on $500K+/yr in revenue with real operational workflows</li>
+            <li>Have 5+ employees or equivalent contractor spend</li>
+            <li>Are spending $150K+/yr on labor that AI systems can handle</li>
+            <li>Have tried AI casually and failed to systematize it</li>
+            <li>Want a transformation, not another tool</li>
+          </ul>
+        </div>
+        <div class="glass-card qual-card qual-not reveal">
+          <h3>Probably not the right fit if...</h3>
+          <ul>
+            <li>Under $500K/yr revenue (not enough operational complexity)</li>
+            <li>Looking for a chatbot or single AI tool</li>
+            <li>Not willing to commit to the optimization period</li>
+            <li>Team won't participate in training (the system works when people use it)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="downsell reveal">
+        <h4>Running a smaller operation?</h4>
+        <p>Our Done-With-You program is built for solo operators and small teams. Same system. Different scope and price point.</p>
+        <a href="/">Learn more at aidrivers.io &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARANTEE -->
+  <section>
+    <div class="container">
+      <div class="section-label reveal" style="text-align: center;">THE GUARANTEE</div>
+      <h2 class="section-heading reveal" style="text-align: center;">90-Day KPI Guarantee.<br>No other AI implementation firm offers this.</h2>
+      <div class="guarantee-card reveal">
+        <p>We define measurable benchmarks during the audit. Hours saved. Output increased. Capacity unlocked. Specific numbers tied to specific workflows.</p>
+        <p>If the system does not hit those benchmarks within 90 days and you've met the engagement requirements, we continue optimizing at no additional cost until it does.</p>
+        <p>This is not a satisfaction guarantee. This is a performance guarantee with defined KPIs, agreed on before we build.</p>
+        <p style="color: var(--white); font-weight: 600; margin-top: 32px;">What we need from you:</p>
+        <ol>
+          <li>Participate fully in the audit (founder + key stakeholders)</li>
+          <li>Designate an internal point of contact who responds within 48 hours</li>
+          <li>Ensure your team completes training and uses the system minimum 3x per week</li>
+          <li>Attend bi-weekly check-ins during the optimization period</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="alt-bg" id="faq">
+    <div class="container">
+      <div class="section-label reveal" style="text-align: center;">QUESTIONS</div>
+      <h2 class="section-heading reveal" style="text-align: center;">What decision-makers ask before the call.</h2>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-q">How is this different from hiring an AI consultant?</button>
+          <div class="faq-a"><div class="faq-a-inner">Consultants deliver a strategy deck and leave. We audit, build, install, train your team, and embed as your AI operations team. The deliverable is a working system in production, not a PowerPoint.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">What does "custom pricing" mean?</button>
+          <div class="faq-a"><div class="faq-a-inner">Every business has different complexity, team size, and scope. We scope the engagement during the audit. You know the investment before anything is built. No surprise invoices.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">How long does the full process take?</button>
+          <div class="faq-a"><div class="faq-a-inner">Depends on scope. Single-department implementations move faster than multi-department builds. We'll give you a specific timeline during the discovery call based on your operations.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">What AI platforms do you build on?</button>
+          <div class="faq-a"><div class="faq-a-inner">We're platform-agnostic. Claude, GPT, Gemini, open-source models. We build on whatever performs best for your specific use case. You're never locked into one vendor.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">What happens after the optimization period?</button>
+          <div class="faq-a"><div class="faq-a-inner">You own the system. Your team is trained. If you want ongoing support, system expansion, or new agent builds as your business grows, we offer a monthly retainer. But the core system is yours.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">Our data is sensitive. How do you handle security?</button>
+          <div class="faq-a"><div class="faq-a-inner">We install governance frameworks as part of every engagement. Data usage policies, output review processes, approved tool lists, quality standards, escalation procedures. Compliance documentation included.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">We tried AI before and it didn't stick. What's different?</button>
+          <div class="faq-a"><div class="faq-a-inner">95% of AI pilots fail because of implementation, not technology. Nobody mapped the workflows. Nobody trained the system on real business data. Nobody stayed to make sure the team adopted it. That's exactly what the five-phase process solves.</div></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q">Do we need technical staff?</button>
+          <div class="faq-a"><div class="faq-a-inner">No. We handle the build and installation. Your team needs to know their business, show up for training, and use the system. That's it.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="cta-mesh"></div>
+    <div class="container">
+      <div class="section-label reveal">NEXT STEP</div>
+      <h2 class="section-heading reveal">Your competitors are figuring this out. The question is whether you figure it out first.</h2>
+      <div class="section-body reveal" style="max-width: 680px; margin: 0 auto 32px; text-align: center;">
+        <p>Every month you wait, the businesses that moved first pull further ahead. The gap doesn't close. It widens.</p>
+        <p>We've built the system. We run it every day. We've deployed it across 33+ businesses. Now the question is whether yours is next.</p>
+      </div>
+      <div class="cta-stats reveal">
+        <span><strong>Custom</strong> engagement</span>
+        <span><strong>90-day</strong> KPI guarantee</span>
+        <span><strong>Both founders</strong> on every audit</span>
+      </div>
+      <div class="reveal" style="text-align: center;">
+        <a href="#" class="btn">Book a Discovery Call <span>&rarr;</span></a>
+      </div>
+      <ul class="cta-friction-list reveal">
+        <li>30 minutes. No commitment. No sales pitch.</li>
+        <li>We'll tell you if this is the right fit. If it's not, we'll say so.</li>
+        <li>Both founders on the call. You're not getting passed to a junior rep.</li>
+      </ul>
+      <p class="guarantee-line reveal">90-day KPI guarantee. Defined benchmarks. If we don't hit them, we keep working for free until we do.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>AI Drivers. Built by Kabrin Johal + Elijah Bricker.</p>
+      <p><a href="mailto:kabrin@aidrivers.io">kabrin@aidrivers.io</a></p>
+      <p>&copy; 2026 AI Drivers. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- MOBILE CTA -->
+  <div class="mobile-cta">
+    <a href="#" class="btn">Book a Discovery Call <span>&rarr;</span></a>
+  </div>
+
+  <script>
+    var isMobile = window.innerWidth < 810;
+
+    // ── SCROLL PROGRESS ──
+    var progressBar = document.querySelector('.scroll-progress');
+    window.addEventListener('scroll', function() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      if (h > 0) progressBar.style.width = (window.scrollY / h * 100) + '%';
+    }, { passive: true });
+
+    // ── NAV SCROLL ──
+    var nav = document.querySelector('nav');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 60) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    }, { passive: true });
+
+    // ── SMOOTH NAV CLICKS ──
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (href === '#') return;
+        var target = document.querySelector(href);
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+
+    // ── REVEAL ON SCROLL ──
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+
+    // ── ANIMATED COUNTERS ──
+    var counterObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var target = parseInt(el.getAttribute('data-count'));
+          if (!target || el.dataset.counted) return;
+          el.dataset.counted = 'true';
+          var start = 0;
+          var duration = 1500;
+          var startTime = null;
+          function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            var progress = Math.min((timestamp - startTime) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current = Math.floor(eased * target);
+            el.textContent = current;
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = target;
+          }
+          requestAnimationFrame(step);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(function(el) { counterObserver.observe(el); });
+
+    // ── FAQ ACCORDION ──
+    document.querySelectorAll('.faq-q').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.parentElement;
+        var answer = item.querySelector('.faq-a');
+        var isOpen = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+          openItem.classList.remove('open');
+          openItem.querySelector('.faq-a').style.maxHeight = '0';
+        });
+
+        // Open clicked (if it wasn't already open)
+        if (!isOpen) {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // ── MOBILE CTA HIDE ON SCROLL DOWN ──
+    if (isMobile) {
+      var lastScrollY = 0;
+      var mobileCta = document.querySelector('.mobile-cta');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > lastScrollY && window.scrollY > 300) {
+          mobileCta.style.transform = 'translateY(100%)';
+        } else {
+          mobileCta.style.transform = 'translateY(0)';
+        }
+        lastScrollY = window.scrollY;
+      }, { passive: true });
+      mobileCta.style.transition = 'transform 0.3s';
+    }
+  </script>
+</body>
+</html>
